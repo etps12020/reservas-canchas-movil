@@ -41,9 +41,20 @@ public class MainActivity extends AppCompatActivity {
                 String usuarioIngresado  = edtUsuario.getText().toString();
                 String contrasenaIngresada  =  edtContrasena.getText().toString();
 
+                if (usuarioIngresado.equals("")){
+                    edtUsuario.setError("Valor requerido");
+                    edtUsuario.requestFocus();
+                    return;
+                }
+
+                else if (contrasenaIngresada.equals("")){
+                    edtContrasena.setError("Valor requerido");
+                    edtContrasena.requestFocus();
+                    return;
+                }
 
 
-                if(db!=null){
+                else if(db!=null){
                     Cursor cursor = db.rawQuery("SELECT * FROM usuario INNER JOIN estado_usuario ON estado_usuario.idEstado = usuario.idEstado INNER JOIN rol_usuario ON rol_usuario.idRolUsuario =  usuario.idRolUsuario  " , null);
 
 
