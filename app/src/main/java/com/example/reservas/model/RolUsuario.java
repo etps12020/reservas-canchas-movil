@@ -23,6 +23,7 @@ public class RolUsuario {
         this.rol = rol;
     }
 
+
     @NonNull
     @Override
     public String toString() {
