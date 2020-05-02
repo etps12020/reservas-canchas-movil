@@ -1,4 +1,4 @@
-package com.example.reservas;
+package com.example.databases;
 
 import org.junit.Test;
 

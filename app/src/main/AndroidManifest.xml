@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.reservas">
+    package="com.example.databases">
 
     <application
         android:allowBackup="true"
@@ -9,6 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".NavigationDrawer">
+
+
+        </activity>
+        <activity android:name=".views.ListaEdificios" />
+        <activity android:name=".views.FormularioEdificios" />
+        <activity android:name=".views.FormularioCanchas" />
+        <activity android:name=".views.ListaCanchas" />
+        <activity android:name=".views.UsuarioHome" />
+        <activity android:name=".views.AsistenteHome" />
+        <activity android:name=".views.AdministradorHome" />
+        <activity android:name=".views.FormularioUsuarios" />
+        <activity android:name=".views.ListaUsuarios" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
