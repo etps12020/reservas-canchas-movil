@@ -92,6 +92,19 @@
                     android:layout_marginTop="16dp"
                     tools:listitem="@layout/custom_simple_spinner_item" />
 
+                <ImageView
+                    android:id="@+id/imvCancha"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_image_black_24dp" />
+
+                <TextView
+                    android:id="@+id/tvIndicacionImagen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/seleccion_imagen" />
+
                 <Button
                     android:id="@+id/btnCrear"
                     android:layout_width="match_parent"

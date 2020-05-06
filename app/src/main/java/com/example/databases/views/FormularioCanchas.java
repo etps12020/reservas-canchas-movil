@@ -1,16 +1,21 @@
 package com.example.databases.views;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.databases.R;
@@ -36,13 +41,15 @@ import java.util.ArrayList;
 
 public class FormularioCanchas extends AppCompatActivity {
     private Spinner spinner, spinner2,spinner3;
-    EditText edtNombre, edtDescripcion , edtHoraInicio , edtHoraFin , edtFechaCreacion , edtTelefonoContacto ;
+    EditText edtNombre, edtDescripcion , edtHoraInicio , edtHoraFin , edtFechaCreacion , edtTelefonoContacto  ;
+    TextView tvIndicacionImagen;
     Button btnCrear;
     Cancha cancha=new Cancha();
     Button btnSalir;
     EstadoCancha estadoCancha;
     Edificio edificio;
     TipoCancha tipoCancha;
+    ImageView  imvCanha;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +65,8 @@ public class FormularioCanchas extends AppCompatActivity {
         edtHoraInicio= findViewById(R.id.edtHoraInicio);
         edtHoraFin = findViewById(R.id.edtHoraFin);
         edtFechaCreacion = findViewById(R.id.edtFechaCreacion);
+        imvCanha =  findViewById(R.id.imvCancha);
+        tvIndicacionImagen =  findViewById(R.id.tvIndicacionImagen);
 
         btnCrear =  findViewById(R.id.btnCrear);
         spinner = (Spinner)findViewById(R.id.spinner);
@@ -141,6 +150,14 @@ public class FormularioCanchas extends AppCompatActivity {
             spinner3.setSelection(  (edificio.getIdEdificio()  -1)  );
         }
 
+        imvCanha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cargarImagen();
+            }
+        });
+
+
         btnCrear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,7 +223,20 @@ public class FormularioCanchas extends AppCompatActivity {
         });
     }
 
-
-
+    private  void cargarImagen(){
+        Intent intent  =  new Intent( Intent.ACTION_PICK ,  MediaStore.Images.Media.EXTERNAL_CONTENT_URI   );
+        intent.setType("image/");
+        startActivityForResult( intent.createChooser(intent , "Seleccionee la aplicacion ")  ,10);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode==RESULT_OK){
+            Uri path =  data.getData();
+            imvCanha.setImageURI(path);
+        }
+    }
+}
 
