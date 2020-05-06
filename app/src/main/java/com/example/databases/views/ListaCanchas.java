@@ -31,7 +31,7 @@ public class ListaCanchas extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_canchas);
-        btnSalir=findViewById(R.id.btnSalir);
+//        btnSalir=findViewById(R.id.btnSalir);
         listView = findViewById(R.id.lvUsuarios);
         fabAgregarUsuario =  findViewById(R.id.fabAgregarUsuario );
 
@@ -39,7 +39,7 @@ public class ListaCanchas extends AppCompatActivity {
 
         final ArrayList<Cancha> canchas = crudCanchas.listarCanchas();
 
-        CanchasAdapter canchasAdapter =  new CanchasAdapter(getApplicationContext() ,R.layout.item_usuario , canchas );
+        CanchasAdapter canchasAdapter =  new CanchasAdapter(getApplicationContext() ,R.layout.cardview_canchas , canchas );
 
 
         listView.setAdapter(canchasAdapter);
@@ -62,14 +62,14 @@ public class ListaCanchas extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        btnSalir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent( getApplicationContext() , NavigationDrawer.class  );
-                startActivity(i);
-                finish();
-            }
-        });
+//        btnSalir.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent( getApplicationContext() , NavigationDrawer.class  );
+//                startActivity(i);
+//                finish();
+//            }
+//        });
 
     }
 }

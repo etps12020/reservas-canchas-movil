@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.databases.R;
 import com.example.databases.views.ListaCanchas;
+import com.example.databases.views.ListaEdificios;
 import com.example.databases.views.ListaUsuarios;
 
 /**
@@ -62,7 +63,7 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.layoutEdificios:
-                Intent edificios = new Intent( getActivity() ,   ListaCanchas.class);
+                Intent edificios = new Intent( getActivity() ,   ListaEdificios.class);
                 startActivity(edificios);
                 break;
 

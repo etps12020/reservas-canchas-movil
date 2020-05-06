@@ -34,7 +34,7 @@ public class ListaEdificios extends AppCompatActivity {
 
         final ArrayList<Edificio> edificios=  crudEdificio.listarEdificios();
 
-        EdificiosAdapter edificiosAdapter =  new EdificiosAdapter(getApplicationContext() , R.layout.item_edificios , edificios);
+        EdificiosAdapter edificiosAdapter =  new EdificiosAdapter(getApplicationContext() , R.layout.cardview_edificios , edificios);
 
         listaEdificios.setAdapter(edificiosAdapter);
 

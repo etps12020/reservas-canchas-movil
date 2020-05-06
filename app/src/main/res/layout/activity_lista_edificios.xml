@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".views.ListaEdificios">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -15,8 +15,11 @@
             android:id="@+id/listEdificios"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/item_edificios"
-            />
+            tools:listitem="@layout/cardview_edificios"
+            >
+
+
+        </ListView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAgregarEdificio"
@@ -25,9 +28,10 @@
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
             android:src="@drawable/ic_add_white"
-            android:tint="@color/colorPrimary"
+
             app:backgroundTint="@color/colorAccent"
-            app:rippleColor="@android:color/holo_red_dark"></com.google.android.material.floatingactionbutton.FloatingActionButton>
-    </LinearLayout>
+            app:rippleColor="@android:color/holo_red_dark">
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

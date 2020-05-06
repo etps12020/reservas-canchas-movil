@@ -32,7 +32,7 @@ public class EdificiosAdapter extends ArrayAdapter<Edificio> {
         View view =  convertView;
 
         if(view == null){
-            view = LayoutInflater.from(this.context).inflate(R.layout.item_edificios , null);
+            view = LayoutInflater.from(this.context).inflate(R.layout.cardview_edificios , null);
         }
 
         Edificio edificio =  listEdificios.get(position);

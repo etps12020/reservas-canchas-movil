@@ -33,12 +33,12 @@ public class CanchasAdapter extends ArrayAdapter<Cancha> {
         View view =  convertView;
 
         if(view == null){
-            view = LayoutInflater.from(this.context).inflate(R.layout.item_usuario , null);
+            view = LayoutInflater.from(this.context).inflate(R.layout.cardview_canchas , null);
         }
 
         Cancha  cancha = canchas.get(position);
 
-        TextView user =   view.findViewById(R.id.nombreUsuario);
+        TextView user =   view.findViewById(R.id.nombreCancha);
 
         user.setText(cancha.getNombre());
 

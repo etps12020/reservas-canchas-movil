@@ -6,40 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".views.ListaCanchas">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <LinearLayout
+
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <ScrollView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                <ListView
+                    android:id="@+id/lvUsuarios"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:cacheColorHint="#FD100F0F"
+                    tools:listitem="@layout/cardview_canchas">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                </ListView>
 
-                        <ListView
-                            android:id="@+id/lvUsuarios"
-                            android:layout_width="match_parent"
-                            android:layout_height="400dp"
-                            android:cacheColorHint="#FD100F0F"
-                            tools:listitem="@layout/item_usuario">
 
-                        </ListView>
-                    </LinearLayout>
-                </ScrollView>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fabAgregarUsuario"
@@ -49,17 +34,15 @@
                     android:layout_margin="16dp"
                     android:src="@drawable/ic_add_white"></com.google.android.material.floatingactionbutton.FloatingActionButton>
 
-                <Button
-                    android:id="@+id/btnSalir"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:background="#661923"
-                    android:text="Salir"
-                    android:textColor="#FFF"
-                    tools:layout_editor_absoluteY="382dp" />
-            </LinearLayout>
-        </ScrollView>
+<!--                <Button-->
+<!--                    android:id="@+id/btnSalir"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_margin="16dp"-->
+<!--                    android:background="#661923"-->
+<!--                    android:text="Salir"-->
+<!--                    android:textColor="#FFF"-->
+<!--                    tools:layout_editor_absoluteY="382dp" />-->
+            </FrameLayout>
 
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
