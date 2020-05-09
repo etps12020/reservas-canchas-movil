@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.databases.R;
-import com.example.databases.model.EstadoUsuario;
+import com.example.databases.api.usuarios.EstadoUsuario;
 import com.example.databases.model.Usuario;
 
 import java.util.List;

@@ -32,4 +32,8 @@ public interface ReservasCanchasService {
     @Headers("Content-Type: application/json")
     Call<JsonElement> listarRolesUsuario();
 
+    @GET("estadoUsuario.php") //Listar todos los roles de los usuarios
+    @Headers("Content-Type: application/json")
+    Call<JsonElement> listarEstadosUsuarios();
+
 }

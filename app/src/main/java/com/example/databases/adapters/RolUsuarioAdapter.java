@@ -11,17 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.databases.R;
-import com.example.databases.model.RolUsuario;
+import com.example.databases.api.roles.Rol;
 
 import java.util.List;
 
 
-public class RolUsuarioAdapter extends ArrayAdapter<RolUsuario> {
+public class RolUsuarioAdapter extends ArrayAdapter<Rol> {
 
     private Context context;
-    private List<RolUsuario> rolesUsuarios;
+    private List<Rol> rolesUsuarios;
 
-    public RolUsuarioAdapter(@NonNull Context context, int resource, @NonNull List<RolUsuario> objects) {
+    public RolUsuarioAdapter(@NonNull Context context, int resource, @NonNull List<Rol> objects) {
         super(context, resource, objects);
         this.context = context;
         rolesUsuarios = objects;
@@ -38,7 +38,7 @@ public class RolUsuarioAdapter extends ArrayAdapter<RolUsuario> {
         }
 
         TextView texto = view.findViewById(R.id.customSpinnerItem);
-        RolUsuario rolUsuario =  rolesUsuarios.get(position);
+        Rol rolUsuario =  rolesUsuarios.get(position);
         texto.setText(  rolUsuario.getRol()     );
 
         return view;

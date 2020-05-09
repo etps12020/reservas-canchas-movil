@@ -26,8 +26,8 @@ import com.example.databases.db.ContratoReservas;
 import com.example.databases.db.CrudEstadoUsuario;
 import com.example.databases.db.CrudRolUsuario;
 import com.example.databases.db.CrudUsuarios;
-import com.example.databases.model.EstadoUsuario;
-import com.example.databases.model.RolUsuario;
+import com.example.databases.api.usuarios.EstadoUsuario;
+import com.example.databases.api.roles.Rol;
 import com.example.databases.model.Usuario;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -51,9 +51,10 @@ public class FormularioUsuarios extends AppCompatActivity {
     private Button btnCrear;
     private Button btnSalir;
     private EstadoUsuario estadoUsuario ;
-    private RolUsuario  rolUsuario;
+    private Rol  rolUsuario;
     ErrorObject errorObject;
     ArrayList<Rol> rolesUsuariosList;
+    ArrayList<EstadoUsuario> estadoUsuariosList;
     List<ResponseLogin> responseLoginList;
     private ResponseLogin usuario;
 
@@ -76,63 +77,39 @@ public class FormularioUsuarios extends AppCompatActivity {
         spinner2 = (Spinner)findViewById(R.id.spinner2);
 
         retrofitInit();  //Inicializa las clases de retrofit
-        obtenerRolesUsuarios(); //Obtiene la lista de roles de usuario
-
-        final CrudUsuarios crudUsuarios =  new CrudUsuarios(getApplicationContext());
-        final CrudEstadoUsuario crudEstadoUsuario = new CrudEstadoUsuario(getApplicationContext());
-        final CrudRolUsuario crudRolUsuario =  new CrudRolUsuario(getApplicationContext());
-
-        final ArrayList<EstadoUsuario> estadoUsuarioArrayList =  crudEstadoUsuario.listarEstadosUsuarios();
-        final ArrayList<RolUsuario> rolUsuarioArrayList =  crudRolUsuario.listarRolesUsuario();
+        obtenerRolesUsuarios(); //Obtiene  y renderiza la lista de roles de usuario
+        obtenerEstadosUsuarios(); //Obtene y renderiza la lista de estados de usuario
 
 
-        EstadoUsuarioAdapter estadoUsuarioAdapter = new EstadoUsuarioAdapter(getApplicationContext() , R.layout.custom_simple_spinner_item ,  estadoUsuarioArrayList   );
-        final RolUsuarioAdapter rolUsuarioAdapter = new RolUsuarioAdapter(getApplicationContext(), R.layout.custom_simple_spinner_item , rolUsuarioArrayList );
+        if(i.hasExtra(ContratoReservas.TablaUsuario.idusuario)){
+            String id = i.getStringExtra(ContratoReservas.TablaUsuario.idusuario);
+            obtenerInformacionUsuario(id); //Solicitar informacion del usuario
 
-        spinner.setAdapter(rolUsuarioAdapter);
-        spinner2.setAdapter(estadoUsuarioAdapter);
+            //Seleccion del rol y estado de usuario en base a datos de usuario
+        }
 
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                rolUsuario = rolUsuarioArrayList.get(position);
-
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
-
         });
 
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                estadoUsuario = estadoUsuarioArrayList.get(position);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
-        if(i.hasExtra(ContratoReservas.TablaUsuario.idusuario)){
-            String id = i.getStringExtra(ContratoReservas.TablaUsuario.idusuario);
-            obtenerInformacionUsuario(id); //Solicitar informacion del usuario
-            /*
-            estadoUsuario = usuario.getEstadoUsuario();
-            rolUsuario =  usuario.getRolUsuario();
-
-            spinner.setSelection( (rolUsuario.getIdRolUsuario() - 1));
-            spinner2.setSelection(  (estadoUsuario.getIdEstado()  -1)  );
-
-             */
-        }
 
         btnCrear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,26 +133,7 @@ public class FormularioUsuarios extends AppCompatActivity {
                 }else if(TextUtils.isEmpty(contrasena)){
                     edtContrasena.setError("Campo requerido");
                 }else{
-
-//                    //usuario.setUsuario(user);
-//                    usuario.setNombreCompleto(nombreCompleto);
-//                    usuario.setCarnet(carnet);
-//                    usuario.setCorreo(correo);
-//                    usuario.setTelefono(telefono);
-//                    usuario.setPassword(contrasena);
-//                    usuario.setEstadoUsuario(estadoUsuario);
-//                    usuario.setRolUsuario(rolUsuario);
-//                    usuario.setUsuario(user);
-//
-//                    if(i.hasExtra(ContratoReservas.TablaUsuario.idusuario)){
-//                        usuario.setIdUsuario(  Integer.parseInt(i.getStringExtra(ContratoReservas.TablaUsuario.idusuario))  );
-//                        crudUsuarios.editarUsuario(usuario);
-//                        Toast.makeText(FormularioUsuarios.this, "Usuario actualizado correctamente"  , Toast.LENGTH_SHORT).show();
-//                    }else{
-//                        crudUsuarios.agregarUsuario(usuario);
-//                        Toast.makeText(FormularioUsuarios.this, "Usuario creado correctamente", Toast.LENGTH_SHORT).show();
-//                    }
-
+                    realizarAccion(); //Ingresar o Actualizar
                 }
             }
         });
@@ -233,6 +191,7 @@ public class FormularioUsuarios extends AppCompatActivity {
         edtContrasena.setText( usuario.getPassword()  );
     }
 
+    //Obtener lista de roles de usuario
     private void obtenerRolesUsuarios(){
         Call<JsonElement> rolesUsuarios    =  reservasCanchasService.listarRolesUsuario();
 
@@ -247,6 +206,9 @@ public class FormularioUsuarios extends AppCompatActivity {
                     }else{
                         //Lista de roles de usuario
                         rolesUsuariosList = new Gson().fromJson(jsonString , new TypeToken<ArrayList<Rol>>(){}.getType() );
+                        RolUsuarioAdapter rolUsuarioAdapter = new RolUsuarioAdapter(getApplicationContext(), R.layout.custom_simple_spinner_item , rolesUsuariosList );
+                        spinner.setAdapter(rolUsuarioAdapter);
+
                     }
                 }
             }
@@ -258,11 +220,40 @@ public class FormularioUsuarios extends AppCompatActivity {
         });
     }
 
+    //Obtener lista de estados de usuarios
     private void obtenerEstadosUsuarios(){
+        final Call<JsonElement>  estadosUsuarios =  reservasCanchasService.listarEstadosUsuarios();
+
+        estadosUsuarios.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                String jsonString  = response.body().toString();
+                if(response.isSuccessful()){
+                    if(jsonString.contains("mensaje")){ //Mensaje en caso de falta de datos
+                        errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
+                        Toast.makeText(getApplicationContext(), errorObject.getMensaje(), Toast.LENGTH_SHORT).show();
+                    }else{
+                        estadoUsuariosList = new Gson().fromJson(jsonString , new TypeToken<List<EstadoUsuario>>(){}.getType() );
+                        EstadoUsuarioAdapter estadoUsuarioAdapter = new EstadoUsuarioAdapter(getApplicationContext() , R.layout.custom_simple_spinner_item , estadoUsuariosList );
+                        spinner2.setAdapter(estadoUsuarioAdapter);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonElement> call, Throwable t) {
+                Toast.makeText(getApplicationContext() , "Error en la comunicacion con el servidor", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
+    //Actualizar o ingresar
+    private void realizarAccion(){
 
+    }
+
+    //Inicializacion de retrofit
     private void retrofitInit(){
         reservasCanchasClient = ReservasCanchasClient.getInstance();
         reservasCanchasService =  reservasCanchasClient.getReservasCanchasService();

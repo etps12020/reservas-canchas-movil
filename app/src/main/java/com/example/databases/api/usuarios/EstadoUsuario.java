@@ -1,5 +1,4 @@
-
-package com.example.databases.api.roles;
+package com.example.databases.api.usuarios;
 
 import androidx.annotation.NonNull;
 
@@ -7,31 +6,31 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class Rol {
+public class EstadoUsuario {
 
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("rol")
+    @SerializedName("estado")
     @Expose
-    private String rol;
+    private String estado;
 
     /**
      * No args constructor for use in serialization
      *
      */
-    public Rol() {
+    public EstadoUsuario() {
     }
 
     /**
      *
+     * @param estado
      * @param id
-     * @param rol
      */
-    public Rol(Integer id, String rol) {
+    public EstadoUsuario(Integer id, String estado) {
         super();
         this.id = id;
-        this.rol = rol;
+        this.estado = estado;
     }
 
     public Integer getId() {
@@ -42,17 +41,17 @@ public class Rol {
         this.id = id;
     }
 
-    public String getRol() {
-        return rol;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     @NonNull
     @Override
     public String toString() {
-        return this.rol;
+        return   this.estado ;
     }
 }
