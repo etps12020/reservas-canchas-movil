@@ -14,15 +14,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.databases.R;
+import com.example.databases.api.retrofit.ReservasCanchasClient;
+import com.example.databases.api.retrofit.ReservasCanchasService;
 import com.example.databases.api.usuarios.ResponseLogin;
 import com.google.gson.Gson;
 
 public class PerfilFragment extends Fragment {
 
     Gson gson =  new Gson();
-
-    EditText edtNombre ,  edtCorreo  , edtTelefono  , edtContrasena , edtConfirmarContrasena;
-    Button btnActualizarPerfil;
+    private ReservasCanchasService reservasCanchasService;
+    private ReservasCanchasClient reservasCanchasClient;
+    private EditText edtNombre ,  edtCorreo  , edtTelefono  , edtContrasena , edtConfirmarContrasena;
+    private Button btnActualizarPerfil;
 
 
     public PerfilFragment() {
@@ -42,8 +45,11 @@ public class PerfilFragment extends Fragment {
         edtConfirmarContrasena =  view.findViewById(R.id.edtConfirmPassword);
         btnActualizarPerfil =  view.findViewById(R.id.btnActualizarPerfil);
 
+        retrofitInit();
+
         SharedPreferences  sharedPreferences  = getActivity().getSharedPreferences("reservasUtec", Context.MODE_PRIVATE);
         String strJson  = sharedPreferences.getString("usuarioLogin"  , null);
+
 
         if(strJson!=null){ //Si el usuario se encuentra dentro de las preferencias
             ResponseLogin userLogin =  gson.fromJson(  strJson ,  ResponseLogin.class  );
@@ -66,7 +72,14 @@ public class PerfilFragment extends Fragment {
         return view;
     }
 
+
+    private void retrofitInit(){
+        reservasCanchasClient = ReservasCanchasClient.getInstance();
+        reservasCanchasService =  reservasCanchasClient.getReservasCanchasService();
+    }
+
     private void actualizarInformacionUsuario(){
+
          //Hacer la solictud de actualizacio  del usuario
 
             //Mostrar mensaje segun  la transaccion  sea exitosa o error

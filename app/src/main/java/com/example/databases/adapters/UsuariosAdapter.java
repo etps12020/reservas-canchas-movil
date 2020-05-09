@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.databases.R;
+import com.example.databases.api.usuarios.ResponseLogin;
 import com.example.databases.db.Conexion;
 import com.example.databases.model.Usuario;
 
@@ -19,13 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 //Adaptador para hacer enlace entre los objetos de tipo usuario y los elementos graficos (listas , spinners , etc)
-public class UsuariosAdapter extends ArrayAdapter<Usuario> {
+public class UsuariosAdapter extends ArrayAdapter<ResponseLogin> {
 
 
-    private List<Usuario> usuarios;
+    private List<ResponseLogin> usuarios;
     private Context context;
 
-    public UsuariosAdapter(@NonNull Context context, int resource, @NonNull List<Usuario> objects) {
+    public UsuariosAdapter(@NonNull Context context, int resource, @NonNull List<ResponseLogin> objects) {
         super(context, resource, objects);
         this.context =  context;
         this.usuarios =  objects;
@@ -43,7 +44,7 @@ public class UsuariosAdapter extends ArrayAdapter<Usuario> {
             view = LayoutInflater.from(this.context).inflate(R.layout.item_usuario , null);
         }
 
-        Usuario usuario =  usuarios.get(position);
+        ResponseLogin usuario =  usuarios.get(position);
 
         TextView user =   view.findViewById(R.id.nombreUsuario);
 
