@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 //                    if(usuario.getEstadoUsuario().getIdEstado()==1){
 //                        Toast.makeText( getApplicationContext() , "Bienvenido "+usuario.getNombreCompleto() , Toast.LENGTH_SHORT   ).show();
 //
-//                        Intent intent ;
+//                                 Intent intent ;
 //                        if(usuario.getRolUsuario().getIdRolUsuario()==1){
 //                            intent =  new Intent(getApplicationContext() , NavigationDrawer.class);
 //                        }else if(usuario.getRolUsuario().getIdRolUsuario()==2){
@@ -150,12 +150,21 @@ public class MainActivity extends AppCompatActivity {
                     if(jsonString.contains("mensaje")){ //Errores
                         errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
                         Toast.makeText(getApplicationContext(), errorObject.getMensaje(), Toast.LENGTH_SHORT).show();
+
                     }else{
                         responseLoginList = new Gson().fromJson(jsonString , new TypeToken<List<ResponseLogin>>(){}.getType() );
 
-                        for (int i=0; i< responseLoginList.size() ; i ++){
-                            Toast.makeText(getApplicationContext(),  "Bienvenido "+responseLoginList.get(i).getNombre()  , Toast.LENGTH_SHORT).show();
+
+                        if(responseLoginList.size()>=1){
+
+                            Toast.makeText(getApplicationContext(),  "Bienvenido "+responseLoginList.get(0).getNombre()  , Toast.LENGTH_SHORT).show();
+
+                            Intent intent =  new Intent(getApplicationContext() , NavigationDrawer.class);
+                            startActivity(intent);
+                            finish();
                         }
+
+
                     }
                 }
 
