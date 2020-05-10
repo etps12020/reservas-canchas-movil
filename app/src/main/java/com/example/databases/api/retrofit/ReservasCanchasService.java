@@ -46,9 +46,9 @@ public interface ReservasCanchasService {
     @Headers("Content-Type: application/json")
     Call<JsonElement> listarEstadosUsuarios();
 
-
-
-
+    @GET("disponibilidad.php") //Listar horarios disponibles
+    @Headers("Content-Type: application/json")
+    Call<JsonElement> listarHorariosDisponibles(@Query("fecha") String fecha  , @Query("cancha") String cancha);
 
 
 }
