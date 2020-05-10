@@ -20,9 +20,7 @@ public interface ReservasCanchasService {
     @Headers("Content-Type: application/json")
     Call<JsonElement> listarReservas(
             @Query("usuario") String usuario ,
-            @Query("fecha") String fecha  ,
-            @Query("numReservacion") String numReservacion ,
-            @Query("cancha") String cancha);
+            @Query("fecha") String fecha);
 
 
     /*RUTAS PARA MANEJO DE USUARIOS*/

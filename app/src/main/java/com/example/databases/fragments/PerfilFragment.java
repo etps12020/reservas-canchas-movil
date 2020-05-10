@@ -17,16 +17,15 @@ import com.example.databases.R;
 import com.example.databases.api.retrofit.ReservasCanchasClient;
 import com.example.databases.api.retrofit.ReservasCanchasService;
 import com.example.databases.api.usuarios.ResponseLogin;
+import com.example.databases.api.utilidades.Session;
 import com.google.gson.Gson;
 
 public class PerfilFragment extends Fragment {
 
-    Gson gson =  new Gson();
     private ReservasCanchasService reservasCanchasService;
     private ReservasCanchasClient reservasCanchasClient;
     private EditText edtNombre ,  edtCorreo  , edtTelefono  , edtContrasena , edtConfirmarContrasena;
     private Button btnActualizarPerfil;
-
 
     public PerfilFragment() {
         // Required empty public constructor
@@ -47,12 +46,8 @@ public class PerfilFragment extends Fragment {
 
         retrofitInit();
 
-        SharedPreferences  sharedPreferences  = getActivity().getSharedPreferences("reservasUtec", Context.MODE_PRIVATE);
-        String strJson  = sharedPreferences.getString("usuarioLogin"  , null);
-
-
-        if(strJson!=null){ //Si el usuario se encuentra dentro de las preferencias
-            ResponseLogin userLogin =  gson.fromJson(  strJson ,  ResponseLogin.class  );
+        ResponseLogin userLogin = Session.obtenerSessionUsuario(getActivity());
+        if(userLogin!=null){ //Si el usuario se encuentra dentro de las preferencias
             edtNombre.setText(userLogin.getNombre());
             edtCorreo.setText(userLogin.getCorreo());
             edtTelefono.setText(userLogin.getTelefono());

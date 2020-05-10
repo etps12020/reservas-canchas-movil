@@ -19,12 +19,14 @@ import com.example.databases.api.retrofit.ReservasCanchasClient;
 import com.example.databases.api.retrofit.ReservasCanchasService;
 import com.example.databases.api.usuarios.ResponseLogin;
 import com.example.databases.api.utilidades.ErrorObject;
+import com.example.databases.api.utilidades.Session;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -42,6 +44,7 @@ public class ListaReservas extends AppCompatActivity  implements DatePickerDialo
     private ErrorObject errorObject;
     private FloatingActionButton fabAgregarReserva;
     private FloatingActionButton fabFiltroFecha;
+    private ResponseLogin userLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +57,10 @@ public class ListaReservas extends AppCompatActivity  implements DatePickerDialo
         lvReservas.setFocusable(false);
 
 
-        retrofitInit(); //Iniciaalizacion de retrofit
+        userLogin = Session.obtenerSessionUsuario(getApplicationContext()); //Obtener session del usuario
+        retrofitInit(); //Inicializacion de retrofit
         listarReservas();
+
 
         lvReservas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -88,11 +93,37 @@ public class ListaReservas extends AppCompatActivity  implements DatePickerDialo
 
     private void listarReservas(){
 
-        String usuario = "2";
+        String usuario = "";
         String fecha="";
-        String numReservacion = "";
-        String cancha = "";
-        Call<JsonElement> listarReservas =reservasCanchasService.listarReservas( usuario , fecha ,  numReservacion ,  cancha  );
+
+        //Verificar nivel de usuario logeado
+        int idRol = userLogin.getIdRol();
+        if(idRol==1 || idRol==2){
+
+            //Si es de un rol administrativo podra ver reservas con filtros de fechas
+            Calendar calendar =  Calendar.getInstance();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            fecha  = simpleDateFormat.format(calendar.getTime());  //Utilizara como fecha
+            usuario = null;
+
+
+        }else{
+            usuario =  String.valueOf( userLogin.getId()); //Se enviara el id del usuario Logeado
+            fecha = null;
+        }
+
+        filtrarReservas(usuario , fecha);
+    }
+
+
+    private void retrofitInit(){
+        reservasCanchasClient = ReservasCanchasClient.getInstance();
+        reservasCanchasService =  reservasCanchasClient.getReservasCanchasService();
+    }
+
+    public void filtrarReservas(String usuario , String fecha){
+
+        Call<JsonElement> listarReservas =reservasCanchasService.listarReservas( usuario , fecha );
 
         listarReservas.enqueue(new Callback<JsonElement>() {
             @Override
@@ -101,38 +132,23 @@ public class ListaReservas extends AppCompatActivity  implements DatePickerDialo
                 if(response.isSuccessful()){
                     String jsonString  = response.body().toString();
 
-
-
                     if(jsonString.contains("mensaje")){ //Mensajes de Usuario inactivo o usuario no existe
                         errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
                         Toast.makeText(getApplicationContext(), errorObject.getMensaje(), Toast.LENGTH_SHORT).show();
                     }else{
                         reservaArrayList = new Gson().fromJson(jsonString , new TypeToken<ArrayList<Reserva>>(){}.getType() );
                         ReservasAdapter reservasAdapter = new ReservasAdapter(getApplicationContext() , R.layout.item_list_reserva ,  reservaArrayList );
-
                         lvReservas.setAdapter(reservasAdapter);
-
-
-
                     }
-
                 }
-
             }
 
             @Override
             public void onFailure(Call<JsonElement> call, Throwable t) {
-
                 Toast.makeText(getApplicationContext(), "Error al comunicarse con el servidor", Toast.LENGTH_SHORT).show();
             }
         });
 
-    }
-
-
-    private void retrofitInit(){
-        reservasCanchasClient = ReservasCanchasClient.getInstance();
-        reservasCanchasService =  reservasCanchasClient.getReservasCanchasService();
     }
 
     @Override
@@ -143,9 +159,10 @@ public class ListaReservas extends AppCompatActivity  implements DatePickerDialo
         calendar.set(Calendar.MONTH , month);
         calendar.set(Calendar.DAY_OF_MONTH , dayOfMonth);
 
-        String fechaActual  = DateFormat.getInstance().format(calendar.getTime());
-
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaSeleccionada  = simpleDateFormat.format(calendar.getTime());
+        filtrarReservas(null, fechaSeleccionada);
         //Consultar nuevamente el listado y poner la fecha actual por defecto
-        Toast.makeText(getApplicationContext(), "Change the list of reserves for day "+fechaActual, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "Change the list of reserves for day "+fechaSeleccionada, Toast.LENGTH_SHORT).show();
     }
 }
