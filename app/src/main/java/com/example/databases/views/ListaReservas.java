@@ -1,11 +1,14 @@
 package com.example.databases.views;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,14 +24,16 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ListaReservas extends AppCompatActivity {
+public class ListaReservas extends AppCompatActivity  implements DatePickerDialog.OnDateSetListener {
 
     private ReservasCanchasService reservasCanchasService;
     private ReservasCanchasClient reservasCanchasClient;
@@ -36,7 +41,7 @@ public class ListaReservas extends AppCompatActivity {
     private ArrayList<Reserva> reservaArrayList;
     private ErrorObject errorObject;
     private FloatingActionButton fabAgregarReserva;
-
+    private FloatingActionButton fabFiltroFecha;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,7 @@ public class ListaReservas extends AppCompatActivity {
 
         lvReservas =  findViewById(R.id.lvReservas);
         fabAgregarReserva =  findViewById(R.id.fabAgregarReserva);
+        fabFiltroFecha =  findViewById(R.id.fabFiltroFecha);
         lvReservas.setFocusable(false);
 
 
@@ -58,13 +64,22 @@ public class ListaReservas extends AppCompatActivity {
             }
         });
 
+        //Crear cuadro de dialogo con calendario
+        fabFiltroFecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment datePicker  = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager() , "date picker");
+
+            }
+        });
+
+        //Agregar nueva reserva
         fabAgregarReserva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent i = new Intent(getApplicationContext() , RealizarReserva.class );
                 startActivity(i);
-
             }
         });
 
@@ -118,5 +133,19 @@ public class ListaReservas extends AppCompatActivity {
     private void retrofitInit(){
         reservasCanchasClient = ReservasCanchasClient.getInstance();
         reservasCanchasService =  reservasCanchasClient.getReservasCanchasService();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+        Calendar calendar =  Calendar.getInstance();
+        calendar.set(Calendar.YEAR ,  year);
+        calendar.set(Calendar.MONTH , month);
+        calendar.set(Calendar.DAY_OF_MONTH , dayOfMonth);
+
+        String fechaActual  = DateFormat.getInstance().format(calendar.getTime());
+
+        //Consultar nuevamente el listado y poner la fecha actual por defecto
+        Toast.makeText(getApplicationContext(), "Change the list of reserves for day "+fechaActual, Toast.LENGTH_SHORT).show();
     }
 }

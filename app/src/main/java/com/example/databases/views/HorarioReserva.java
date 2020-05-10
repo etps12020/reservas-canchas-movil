@@ -1,9 +1,13 @@
 package com.example.databases.views;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -40,9 +44,38 @@ public class HorarioReserva extends AppCompatActivity {
         retrofitInit();
 
         Intent i = getIntent();
+        final String fecha  = i.getStringExtra("fecha" );
+        final String idCancha = i.getStringExtra("idCancha" );
 
-        Toast.makeText(getApplicationContext() , i.getStringExtra("fecha" )+" " +i.getStringExtra("idCancha" ) , Toast.LENGTH_SHORT ).show();
         listarHorarios(i.getStringExtra("fecha" ) , i.getStringExtra("idCancha" )  );
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Deseas realizar la reserva");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), "Reserva realizada satisfactoriamente", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        lvHorarios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                builder.setMessage("Tu reserva sera realizada para el dia "+fecha+" a las "+horarioArrayList.get(position).getHoraInicio()+" horas"  );
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+            }
+        });
     }
 
     private void retrofitInit(){
