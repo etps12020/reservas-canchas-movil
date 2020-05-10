@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.databases.R;
 import com.example.databases.views.ListaCanchas;
 import com.example.databases.views.ListaEdificios;
+import com.example.databases.views.ListaReservas;
 import com.example.databases.views.ListaUsuarios;
 
 /**
@@ -68,7 +69,7 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.layoutReservas:
-                Intent reservas = new Intent( getActivity() ,   ListaCanchas.class);
+                Intent reservas = new Intent( getActivity() ,   ListaReservas.class);
                 startActivity(reservas);
                 break;
         }

@@ -16,6 +16,16 @@ import retrofit2.http.Query;
 public interface ReservasCanchasService {
 
     /*RUTAS PARA MANEJO DE USUARIOS*/
+    @GET("reservacion.php") //Generar Listado de reservas
+    @Headers("Content-Type: application/json")
+    Call<JsonElement> listarReservas(
+            @Query("usuario") String usuario ,
+            @Query("fecha") String fecha  ,
+            @Query("numReservacion") String numReservacion ,
+            @Query("cancha") String cancha);
+
+
+    /*RUTAS PARA MANEJO DE USUARIOS*/
     @GET("login.php") //Login
     @Headers("Content-Type: application/json")
     Call<JsonElement> Login(@Query("usuario")   String usuario  , @Query("password") String password  );
@@ -35,5 +45,10 @@ public interface ReservasCanchasService {
     @GET("estadoUsuario.php") //Listar todos los roles de los usuarios
     @Headers("Content-Type: application/json")
     Call<JsonElement> listarEstadosUsuarios();
+
+
+
+
+
 
 }
