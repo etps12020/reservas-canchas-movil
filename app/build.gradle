@@ -47,4 +47,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.google.code.gson:gson:2.8.5'
 
+    //Searchable Spinner
+    compile 'com.github.MdFarhanRaja:SearchableSpinner:1.2'
+
 }
