@@ -12,12 +12,12 @@
         android:layout_width="379dp"
         android:layout_height="wrap_content"
         android:text="Seleccion el tipo de cancha"
-        app:layout_constraintBottom_toTopOf="@+id/spinner8"
+        app:layout_constraintBottom_toTopOf="@+id/spnTipoCancha"
         app:layout_constraintTop_toBottomOf="@+id/spnUsuarios"
         tools:layout_editor_absoluteX="0dp" />
 
     <Spinner
-        android:id="@+id/spinner8"
+        android:id="@+id/spnTipoCancha"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/textView10"
@@ -29,12 +29,12 @@
         android:layout_width="379dp"
         android:layout_height="wrap_content"
         android:text="Selecione la cancha"
-        app:layout_constraintBottom_toTopOf="@+id/spinner9"
-        app:layout_constraintTop_toBottomOf="@+id/spinner8"
+        app:layout_constraintBottom_toTopOf="@+id/spnCanchas"
+        app:layout_constraintTop_toBottomOf="@+id/spnTipoCancha"
         tools:layout_editor_absoluteX="0dp" />
 
     <Spinner
-        android:id="@+id/spinner9"
+        android:id="@+id/spnCanchas"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/textView11"
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:text="Seleccione el dia de la reserva"
         app:layout_constraintBottom_toTopOf="@+id/calendarViewReserva"
-        app:layout_constraintTop_toBottomOf="@+id/spinner9" />
+        app:layout_constraintTop_toBottomOf="@+id/spnCanchas" />
 
     <CalendarView
         android:id="@+id/calendarViewReserva"
@@ -83,4 +83,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="20dp" />
+
+    <EditText
+        android:id="@+id/edtUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Selecciona Usuario"
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteY="665dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

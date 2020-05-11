@@ -18,6 +18,13 @@
             android:layout_height="200dp"
             app:srcCompat="@drawable/ic_image_black_24dp" />
 
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/seleccion_imagen" />
+
         <EditText
             android:id="@+id/edtNombreEdificio"
             android:layout_width="match_parent"

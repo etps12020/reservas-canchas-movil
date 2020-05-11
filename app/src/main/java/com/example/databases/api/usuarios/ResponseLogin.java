@@ -15,6 +15,9 @@ public class ResponseLogin {
     @SerializedName("usuario")
     @Expose
     private String usuario;
+    @SerializedName("dui")
+    @Expose
+    private String dui;
     @SerializedName("carnet")
     @Expose
     private String carnet;
@@ -33,9 +36,6 @@ public class ResponseLogin {
     @SerializedName("rol")
     @Expose
     private String rol;
-    @SerializedName("idEstado")
-    @Expose
-    private Integer idEstado;
     @SerializedName("estado")
     @Expose
     private String estado;
@@ -54,10 +54,10 @@ public class ResponseLogin {
      *
      * @param password
      * @param idRol
-     * @param idEstado
      * @param estado
      * @param carnet
      * @param correo
+     * @param dui
      * @param fechaCreacion
      * @param usuario
      * @param id
@@ -65,18 +65,18 @@ public class ResponseLogin {
      * @param nombre
      * @param rol
      */
-    public ResponseLogin(Integer id, String nombre, String usuario, String carnet, String correo, String telefono, String password, Integer idRol, String rol, Integer idEstado, String estado, String fechaCreacion) {
+    public ResponseLogin(Integer id, String nombre, String usuario, String dui, String carnet, String correo, String telefono, String password, Integer idRol, String rol, String estado, String fechaCreacion) {
         super();
         this.id = id;
         this.nombre = nombre;
         this.usuario = usuario;
+        this.dui = dui;
         this.carnet = carnet;
         this.correo = correo;
         this.telefono = telefono;
         this.password = password;
         this.idRol = idRol;
         this.rol = rol;
-        this.idEstado = idEstado;
         this.estado = estado;
         this.fechaCreacion = fechaCreacion;
     }
@@ -103,6 +103,14 @@ public class ResponseLogin {
 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+
+    public String getDui() {
+        return dui;
+    }
+
+    public void setDui(String dui) {
+        this.dui = dui;
     }
 
     public String getCarnet() {
@@ -153,14 +161,6 @@ public class ResponseLogin {
         this.rol = rol;
     }
 
-    public Integer getIdEstado() {
-        return idEstado;
-    }
-
-    public void setIdEstado(Integer idEstado) {
-        this.idEstado = idEstado;
-    }
-
     public String getEstado() {
         return estado;
     }
@@ -176,5 +176,7 @@ public class ResponseLogin {
     public void setFechaCreacion(String fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
+
+
 
 }
