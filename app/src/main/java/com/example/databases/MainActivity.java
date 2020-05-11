@@ -17,6 +17,7 @@ import com.example.databases.api.retrofit.ResponseApi;
 import com.example.databases.api.usuarios.RequestLogin;
 import com.example.databases.api.usuarios.ResponseLogin;
 import com.example.databases.api.utilidades.ErrorObject;
+import com.example.databases.api.utilidades.Session;
 import com.example.databases.db.CrudUsuarios;
 import com.example.databases.model.Usuario;
 import com.example.databases.views.AdministradorHome;
@@ -109,12 +110,9 @@ public class MainActivity extends AppCompatActivity {
 
                             Gson  gson =  new Gson();
                             ResponseLogin responseLogin = responseLoginList.get(0);
-
-                            SharedPreferences  sharedPreferences  =  getSharedPreferences("reservasUtec" , Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor =  sharedPreferences.edit();
                             String strUserJson =  gson.toJson(   responseLogin   );  //Convirtiendo en JSON el usuario
-                            editor.putString("usuarioLogin" ,  strUserJson   );
-                            editor.commit();
+
+                            Session.crearSessionUsuario( strUserJson , getApplicationContext()  );
 
 
                             Toast.makeText(getApplicationContext(),  "Bienvenido "+   responseLogin.getNombre()   , Toast.LENGTH_SHORT).show();

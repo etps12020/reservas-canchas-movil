@@ -39,7 +39,7 @@ public class RealizarReserva extends AppCompatActivity {
     CalendarView calendarViewReserva;
     Spinner spnUsuarios , spnTipoCancha , spnCanchas;
     SpinnerDialog spinnerDialogUsuarios , spinnerDialogTipoCancha  , spinnerDialogCanchas;
-    EditText edtUsuario;
+    EditText edtUsuario , edtNombreEdificio , edtTipoCancha , edtCancha ;
     Long date;
     String fecha= "2020-05-08"; //Fecha quemada
     String idCancha ="2"; //Cancha quemada
@@ -53,10 +53,12 @@ public class RealizarReserva extends AppCompatActivity {
         setContentView(R.layout.activity_realizar_reserva);
 
         calendarViewReserva  =  findViewById(R.id.calendarViewReserva);
-        spnUsuarios =  findViewById(R.id.spnUsuarios);
-        spnTipoCancha =  findViewById(R.id.spnTipoCancha);
-        spnCanchas =  findViewById(R.id.spnCanchas);
+
         edtUsuario =  findViewById(R.id.edtUsuario);
+        edtNombreEdificio =  findViewById(R.id.edtNombreEdificio);
+        edtCancha = findViewById(R.id.edtCancha);
+        edtTipoCancha = findViewById(R.id.edtTipoCancha);
+
         duisUsuarios  = new ArrayList<>();
         nombresCanchas = new ArrayList<>();
         nombresTiposCanchas =  new ArrayList<>();
@@ -72,17 +74,17 @@ public class RealizarReserva extends AppCompatActivity {
                 }else{
                     spinnerDialogUsuarios.showSpinerDialog();
                 }
-
-
             }
         });
+
+        
 
 
         spinnerDialogUsuarios = new SpinnerDialog( RealizarReserva.this , duisUsuarios , "Seleccione un usuario"  );
         spinnerDialogUsuarios.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
-            public void onClick(String s, int i) {
-                Toast.makeText(getApplicationContext(), "Selected"+ s, Toast.LENGTH_SHORT).show();
+            public void onClick(String dui, int i) {
+                edtUsuario.setText(  dui  );
             }
         });
 

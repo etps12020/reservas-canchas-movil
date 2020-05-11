@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="20dp"
+    android:id="@+id/nav_header"
     >
     
     <com.makeramen.roundedimageview.RoundedImageView
@@ -28,6 +29,7 @@
         />
     
     <TextView
+        android:id="@+id/userName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/john_doe"
@@ -40,6 +42,7 @@
         android:layout_marginLeft="10dp"></TextView>
 
     <TextView
+        android:id="@+id/userMail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"

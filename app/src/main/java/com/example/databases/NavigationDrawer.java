@@ -12,10 +12,15 @@ import androidx.navigation.ui.NavigationUI;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.example.databases.api.usuarios.ResponseLogin;
+import com.example.databases.api.utilidades.Session;
 import com.google.android.material.navigation.NavigationView;
 
 public class NavigationDrawer extends AppCompatActivity {
+
+    ResponseLogin userLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,7 @@ public class NavigationDrawer extends AppCompatActivity {
 
         final DrawerLayout drawerLayout =  findViewById(R.id.drawerLayout);
         ImageView menuImageView =  findViewById(R.id.imageMenu);
+        userLogin =  Session.obtenerSessionUsuario(getApplicationContext());
 
         menuImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,6 +45,15 @@ public class NavigationDrawer extends AppCompatActivity {
 
         NavController navController  = Navigation.findNavController(this , R.id.navHostFragment);
         NavigationUI.setupWithNavController(navigationView , navController);
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.userName);
+        TextView navMailUser = (TextView) headerView.findViewById(R.id.userMail);
+        navUsername.setText(userLogin.getNombre());
+        navMailUser.setText(userLogin.getCorreo());
+
+
+
     }
 
     @Override

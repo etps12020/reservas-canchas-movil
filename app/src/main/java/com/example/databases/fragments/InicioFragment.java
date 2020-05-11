@@ -11,9 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.databases.R;
+import com.example.databases.api.usuarios.ResponseLogin;
+import com.example.databases.api.utilidades.Session;
 import com.example.databases.views.ListaCanchas;
 import com.example.databases.views.ListaEdificios;
 import com.example.databases.views.ListaReservas;
@@ -25,6 +28,8 @@ import com.example.databases.views.ListaUsuarios;
 public class InicioFragment extends Fragment implements View.OnClickListener {
 
     LinearLayout layoutUsuarios,  layoutCanchas , layoutReservas, layoutEdificios;
+    TextView textUserName;
+    ResponseLogin userLogin;
 
     public InicioFragment() {
         // Required empty public constructor
@@ -37,15 +42,20 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
 
         View view =inflater.inflate(R.layout.fragment_inicio, container, false);
 
+        userLogin = Session.obtenerSessionUsuario(getActivity());
+
         layoutUsuarios =  view.findViewById(R.id.layoutUsuarios);
         layoutCanchas =  view.findViewById(R.id.layoutCanchas);
         layoutEdificios =  view.findViewById(R.id.layoutEdificios);
         layoutReservas =  view.findViewById(R.id.layoutReservas);
+        textUserName =  view.findViewById(R.id.textUserName);
 
         layoutUsuarios.setOnClickListener(this);
         layoutCanchas.setOnClickListener(this);
         layoutEdificios.setOnClickListener(this);
         layoutReservas.setOnClickListener(this);
+
+        textUserName.setText(userLogin.getNombre());
 
         return view;
     }
