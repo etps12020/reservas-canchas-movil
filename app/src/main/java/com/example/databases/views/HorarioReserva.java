@@ -14,10 +14,12 @@ import android.widget.Toast;
 import com.example.databases.R;
 import com.example.databases.adapters.HorariosAdapter;
 import com.example.databases.api.reservas.Horario;
+import com.example.databases.api.reservas.RequestReserva;
 import com.example.databases.api.retrofit.ReservasCanchasClient;
 import com.example.databases.api.retrofit.ReservasCanchasService;
 import com.example.databases.api.usuarios.ResponseLogin;
 import com.example.databases.api.utilidades.ErrorObject;
+import com.example.databases.api.utilidades.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
@@ -35,6 +37,13 @@ public class HorarioReserva extends AppCompatActivity {
     private ReservasCanchasClient reservasCanchasClient;
     private ErrorObject errorObject;
     private ArrayList<Horario> horarioArrayList;
+    private int idCancha;
+    private String fecha;
+    private int idTipoReserva;
+    private String duiUsuario;
+    private ResponseLogin usuarioActual;
+    private int idHorario;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +53,13 @@ public class HorarioReserva extends AppCompatActivity {
         retrofitInit();
 
         Intent i = getIntent();
-        final String fecha  = i.getStringExtra("fecha" );
-        final String idCancha = i.getStringExtra("idCancha" );
+        fecha  = i.getStringExtra("fecha" );
+        idCancha =  Integer.parseInt(i.getStringExtra("idCancha" )) ;
+        idTipoReserva  = Integer.parseInt(i.getStringExtra("idTipo")) ;
+        duiUsuario = i.getStringExtra("dui");
+        usuarioActual = Session.obtenerSessionUsuario(getApplicationContext());
 
-        listarHorarios(i.getStringExtra("fecha" ) , i.getStringExtra("idCancha" )  );
+        listarHorarios(fecha , idCancha  );
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Deseas realizar la reserva");
@@ -55,7 +67,8 @@ public class HorarioReserva extends AppCompatActivity {
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(), "Reserva realizada satisfactoriamente", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Reserva realizada satisfactoriamente", Toast.LENGTH_SHORT).show();
+                realizarReserva();
             }
         });
 
@@ -70,6 +83,7 @@ public class HorarioReserva extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                idHorario = horarioArrayList.get(position).getHorario();
                 builder.setMessage("Tu reserva sera realizada para el dia "+fecha+" a las "+horarioArrayList.get(position).getHoraInicio()+" horas"  );
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
@@ -83,8 +97,8 @@ public class HorarioReserva extends AppCompatActivity {
         reservasCanchasService =  reservasCanchasClient.getReservasCanchasService();
     }
 
-    private  void listarHorarios(String fecha ,String idCancha){
-        Call<JsonElement> listarHorarios =reservasCanchasService.listarHorariosDisponibles(fecha ,idCancha);
+    private  void listarHorarios(String fecha ,int idCancha){
+        Call<JsonElement> listarHorarios =reservasCanchasService.listarHorariosDisponibles(fecha ,String.valueOf(idCancha));
 
         listarHorarios.enqueue(new Callback<JsonElement>() {
             @Override
@@ -110,6 +124,50 @@ public class HorarioReserva extends AppCompatActivity {
 
             }
         });
+    }
 
+
+    private void realizarReserva(){
+
+        Call<JsonElement> realizarReserva;
+        //Verificar el nivel de usuario el cual realiza la solicitud
+        if(usuarioActual.getIdRol() == 3){ //Usuario final
+            realizarReserva= reservasCanchasService.ingresarReserva(fecha ,  null,  usuarioActual.getId()  , null , idHorario , idCancha , idTipoReserva );
+        }else{ //Usuarios administradores y asistentes
+            realizarReserva= reservasCanchasService.ingresarReserva(fecha , usuarioActual.getId() , null  , duiUsuario , idHorario , idCancha , idTipoReserva );
+        }
+
+
+
+        realizarReserva.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+
+                if(response.isSuccessful()){
+                    //Toast.makeText(getApplicationContext(), "Reserva realizada con exito", Toast.LENGTH_SHORT).show();
+                    String jsonString  = response.body().toString();
+
+                        Toast.makeText(getApplicationContext() , jsonString ,  Toast.LENGTH_LONG).show();
+//                    if(!existsError(jsonString)){
+//                        Toast.makeText(getApplicationContext(), "Reserva reali", Toast.LENGTH_SHORT).show();
+//                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonElement> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Error de servidor", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private boolean existsError(String jsonString){
+        if(jsonString.contains("mensaje")){ //Mensajes de Usuario inactivo o usuario no existe
+            errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
+            Toast.makeText(getApplicationContext(), errorObject.getMensaje(), Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
     }
 }
