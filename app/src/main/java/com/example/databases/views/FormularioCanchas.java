@@ -82,10 +82,10 @@ public class FormularioCanchas extends AppCompatActivity {
         final ArrayList<Edificio> edificioArrayList =  crudEdificio.listarEdificios();
         final ArrayList<TipoCancha> tipoCanchaArrayList =  crudTipoCancha.listarTiposCancha();
 
-        final EstadoCanchaAdapter estadoCanchaAdapter = new EstadoCanchaAdapter(getApplicationContext() , R.layout.custom_simple_spinner_item ,  estadoCanchaArrayList   );
+       // final EstadoCanchaAdapter estadoCanchaAdapter = new EstadoCanchaAdapter(getApplicationContext() , R.layout.custom_simple_spinner_item ,  estadoCanchaArrayList   );
         final TipoCanchaAdapter tipoCanchaAdapter = new TipoCanchaAdapter(getApplicationContext(), R.layout.custom_simple_spinner_item , tipoCanchaArrayList );
         final EdificioAdapter edificioAdapter = new EdificioAdapter(getApplicationContext(), R.layout.custom_simple_spinner_item , edificioArrayList );
-        spinner.setAdapter(estadoCanchaAdapter);
+      //  spinner.setAdapter(estadoCanchaAdapter);
         spinner2.setAdapter(tipoCanchaAdapter);
         spinner3.setAdapter(edificioAdapter);
 

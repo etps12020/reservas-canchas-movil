@@ -11,16 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.databases.R;
-import com.example.databases.model.Edificio;
+//import com.example.databases.model.Edificio;
 
 import java.util.List;
+import com.example.databases.api.usuarios.ResponseEdificio;
 
-public class EdificiosAdapter extends ArrayAdapter<Edificio> {
+public class EdificiosAdapter extends ArrayAdapter<ResponseEdificio> {
 
-    private List<Edificio> listEdificios;
+    private List<ResponseEdificio> listEdificios;
     private Context context;
 
-    public EdificiosAdapter(@NonNull Context context, int resource, @NonNull List<Edificio> objects) {
+    public EdificiosAdapter(@NonNull Context context, int resource, @NonNull List<ResponseEdificio> objects) {
         super(context, resource, objects);
         this.context  = context;
         this.listEdificios = objects;
@@ -35,7 +36,7 @@ public class EdificiosAdapter extends ArrayAdapter<Edificio> {
             view = LayoutInflater.from(this.context).inflate(R.layout.cardview_edificios , null);
         }
 
-        Edificio edificio =  listEdificios.get(position);
+        ResponseEdificio edificio =  listEdificios.get(position);
 
         TextView tvEdificio = view.findViewById(R.id.nombreEdificio);
 

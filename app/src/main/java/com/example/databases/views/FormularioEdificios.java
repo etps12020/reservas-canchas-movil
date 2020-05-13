@@ -47,9 +47,9 @@ public class FormularioEdificios extends AppCompatActivity {
         spnEstado =  findViewById(R.id.spnEstadoEdificio);
         btnAccionEdificio =  findViewById(R.id.btnAccionEdificios);
 
-        EstadoEdificioAdapter estadoEdificioAdapter =  new EstadoEdificioAdapter(getApplicationContext() ,  R.layout.custom_simple_spinner_item , estadosEdificios   );
+        //EstadoEdificioAdapter estadoEdificioAdapter =  new EstadoEdificioAdapter(getApplicationContext() ,  R.layout.custom_simple_spinner_item , estadosEdificios   );
 
-        spnEstado.setAdapter(estadoEdificioAdapter);
+       // spnEstado.setAdapter(estadoEdificioAdapter);
 
 
         spnEstado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

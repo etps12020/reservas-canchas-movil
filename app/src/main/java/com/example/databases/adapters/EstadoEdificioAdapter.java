@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.databases.R;
-import com.example.databases.model.EstadoEdificio;
-
+//import com.example.databases.model.EstadoEdificio;
+import com.example.databases.api.usuarios.EstadoEdificio;
 import java.util.List;
 
 public class EstadoEdificioAdapter extends ArrayAdapter<EstadoEdificio> {

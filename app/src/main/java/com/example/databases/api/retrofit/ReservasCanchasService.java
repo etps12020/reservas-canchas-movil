@@ -49,4 +49,16 @@ public interface ReservasCanchasService {
     Call<JsonElement> listarHorariosDisponibles(@Query("fecha") String fecha  , @Query("cancha") String cancha);
 
 
+    //edificios
+    @GET("edificio.php") //Obtener usuario especifico
+    @Headers("Content-Type: application/json")
+    Call<JsonElement> obtenerEdificio(@Query("id")   String id );
+    @GET("estadoEdificio.php") //Listar todos los roles de los usuarios
+    @Headers("Content-Type: application/json")
+    Call<JsonElement> listarEstadosEdificios();
+    @GET("edificio.php") //Listar usuarios existentes
+    @Headers("Content-Type: application/json")
+    Call<JsonElement> listarEdificios();
+
+
 }

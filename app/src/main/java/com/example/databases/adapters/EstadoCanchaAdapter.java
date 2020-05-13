@@ -11,9 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.databases.R;
-import com.example.databases.model.EstadoCancha;
+//import com.example.databases.model.EstadoCancha;
 import com.example.databases.model.EstadoUsuario;
-
+import com.example.databases.api.usuarios.EstadoCancha;
 import java.util.List;
 
 public class EstadoCanchaAdapter extends ArrayAdapter<EstadoCancha> {
