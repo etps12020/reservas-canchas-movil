@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.databases.R;
-import com.example.databases.model.TipoCancha;
-
+//import com.example.databases.model.TipoCancha;
+import com.example.databases.api.tiposReservas.TipoCancha;
 import java.util.List;
 
 public class TipoCanchaAdapter extends ArrayAdapter<TipoCancha> {

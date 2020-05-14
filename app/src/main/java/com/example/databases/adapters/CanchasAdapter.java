@@ -11,14 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.databases.R;
-import com.example.databases.model.Cancha;
-
+//import com.example.databases.model.Cancha;
+import com.example.databases.api.usuarios.ResponseCancha;
 import java.util.List;
 
-public class CanchasAdapter extends ArrayAdapter<Cancha> {
-    private List<Cancha> canchas;
+public class CanchasAdapter extends ArrayAdapter<ResponseCancha> {
+    private List<ResponseCancha> canchas;
     private Context context;
-    public CanchasAdapter(@NonNull Context context, int resource, @NonNull List<Cancha> objects) {
+    public CanchasAdapter(@NonNull Context context, int resource, @NonNull List<ResponseCancha> objects) {
         super(context, resource, objects);
         this.context =  context;
         this.canchas =  objects;
@@ -36,7 +36,7 @@ public class CanchasAdapter extends ArrayAdapter<Cancha> {
             view = LayoutInflater.from(this.context).inflate(R.layout.cardview_canchas , null);
         }
 
-        Cancha  cancha = canchas.get(position);
+        ResponseCancha  cancha = canchas.get(position);
 
         TextView user =   view.findViewById(R.id.nombreCancha);
 

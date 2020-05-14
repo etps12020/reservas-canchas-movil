@@ -91,5 +91,17 @@ public interface ReservasCanchasService {
     @Headers("Content-Type: application/json")
     Call<JsonElement> listarEdificios();
 
-
+    //canchas
+    @GET("cancha.php") //Obtener usuario especifico
+    @Headers("Content-Type: application/json")
+    Call<JsonElement> obtenerCancha(@Query("id")   String id );
+    @GET("estadoCancha.php") //Listar todos los roles de los usuarios
+    @Headers("Content-Type: application/json")
+    Call<JsonElement> listarEstadosCanchas();
+    @GET("cancha.php") //Listar usuarios existentes
+    @Headers("Content-Type: application/json")
+    Call<JsonElement> listarCachas();
+    @GET("tipoCancha.php") //Listar usuarios existentes
+    @Headers("Content-Type: application/json")
+    Call<JsonElement> listarTiposCanchas();
 }
