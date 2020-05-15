@@ -50,7 +50,7 @@ public class ListaCanchas extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_canchas);
-        btnSalir = findViewById(R.id.btnSalir);
+//        btnSalir = findViewById(R.id.btnSalir);
         listView = findViewById(R.id.lvUsuarios);
         fabAgregarUsuario = findViewById(R.id.fabAgregarUsuario);
         //Inicializacion de Retrofit
@@ -75,14 +75,14 @@ public class ListaCanchas extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        btnSalir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), NavigationDrawer.class);
-                startActivity(i);
-                finish();
-            }
-        });
+//        btnSalir.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(getApplicationContext(), NavigationDrawer.class);
+//                startActivity(i);
+//                finish();
+//            }
+//        });
 
     }
 
@@ -123,7 +123,7 @@ public class ListaCanchas extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JsonElement> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Error de comunicación con el servidor", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error de comunicación con el servidor"+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
