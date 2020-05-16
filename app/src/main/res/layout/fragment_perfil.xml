@@ -55,7 +55,7 @@
             android:hint="@string/telefono">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtTelefono"
+                android:id="@+id/edtDui"
                 android:layout_width="match_parent"
                 android:drawableLeft="@drawable/ic_person_black"
                 android:layout_height="wrap_content"

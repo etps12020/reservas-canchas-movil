@@ -1,7 +1,5 @@
 package com.example.databases.fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,14 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.databases.R;
 import com.example.databases.api.retrofit.ReservasCanchasClient;
 import com.example.databases.api.retrofit.ReservasCanchasService;
 import com.example.databases.api.usuarios.ResponseLogin;
 import com.example.databases.api.utilidades.Session;
-import com.google.gson.Gson;
 
 public class PerfilFragment extends Fragment {
 
@@ -39,7 +35,7 @@ public class PerfilFragment extends Fragment {
 
         edtNombre =  view.findViewById(R.id.edtNombre);
         edtCorreo =  view.findViewById(R.id.edtCorreo);
-        edtTelefono =  view.findViewById(R.id.edtTelefono);
+        edtTelefono =  view.findViewById(R.id.edtDui);
         edtContrasena =  view.findViewById(R.id.edtPassword);
         edtConfirmarContrasena =  view.findViewById(R.id.edtConfirmPassword);
         btnActualizarPerfil =  view.findViewById(R.id.btnActualizarPerfil);

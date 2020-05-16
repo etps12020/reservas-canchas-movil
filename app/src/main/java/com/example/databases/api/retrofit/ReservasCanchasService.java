@@ -34,11 +34,22 @@ public interface ReservasCanchasService {
 
     @GET("usuario.php") //Obtener usuario especifico
     @Headers("Content-Type: application/json")
-    Call<JsonElement> obtenerUsuario(@Query("id")   String id );
+    Call<JsonElement> obtenerUsuario(@Query("id")   String id, @Query("accion") String accion );
 
     @GET("usuario.php") //Listar usuarios existentes
     @Headers("Content-Type: application/json")
-    Call<JsonElement> listarUsuarios();
+    Call<JsonElement> listarUsuarios(@Query("id") String id , @Query("accion") String accion );
+
+    @FormUrlEncoded
+    @POST("usuario.php")
+    Call<JsonElement> ingresarUsuario(
+            @Field("nombre") String nombre  ,
+            @Field("dui") String dui ,
+            @Field("carnet") String carnet ,
+            @Field("correo")  String correo ,
+            @Field("telefono")  String telefono ,
+            @Field("rol") long rol
+    );
 
     @GET("rolUsuario.php") //Listar todos los roles de los usuarios
     @Headers("Content-Type: application/json")
@@ -75,9 +86,6 @@ public interface ReservasCanchasService {
             @Field("cancha") int cancha ,
             @Field("tipo") int tipo
             );
-
-
-
 
 
     //edificios

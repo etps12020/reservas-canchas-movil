@@ -19,6 +19,7 @@ import com.example.databases.api.usuarios.ResponseLogin;
 import com.example.databases.api.utilidades.ErrorObject;
 import com.example.databases.api.edificios.Edificio;
 import com.example.databases.api.canchas.Cancha;
+import com.example.databases.api.utilidades.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
@@ -49,6 +50,7 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
 
     private ReservasCanchasService reservasCanchasService; //Instancia de servicios
     private ReservasCanchasClient reservasCanchasClient;  //Clientee retrofit
+    private ResponseLogin usuarioLogin;
     private ErrorObject errorObject=  null; //Objecto de error
 
     @Override
@@ -57,6 +59,8 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
         setContentView(R.layout.activity_realizar_reserva);
 
         calendarViewReserva  =  findViewById(R.id.calendarViewReserva);
+
+        usuarioLogin= Session.obtenerSessionUsuario(getApplicationContext());
 
         edtUsuario =  findViewById(R.id.edtUsuario);
         edtNombreEdificio =  findViewById(R.id.edtNombreEdificio);
@@ -142,7 +146,10 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
 
     private void cargarUsuarios(){
 
-        final Call<JsonElement>  listarUsuarios   =       reservasCanchasService.listarUsuarios();
+        String accion = "buscar";
+        String idUsuario= String.valueOf(  usuarioLogin.getId()    );
+
+        final Call<JsonElement>  listarUsuarios   =       reservasCanchasService.listarUsuarios(idUsuario , accion);
 
         listarUsuarios.enqueue(new Callback<JsonElement>() {
             @Override

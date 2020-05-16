@@ -22,61 +22,96 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/edtUsuario"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Usuario"
-                    android:inputType="textPersonName" />
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="14dp"
+                    android:hint="Nombre">
 
-                <EditText
-                    android:id="@+id/edtNombre"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Nombre Completo"
-                    android:inputType="textPersonName" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtNombre"
+                        android:layout_width="match_parent"
+                        android:drawableLeft="@drawable/ic_person_black"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
 
-                <EditText
-                    android:id="@+id/edtCarnet"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Carnet"
-                    android:inputType="textPersonName" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/edtCorreo"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Correo"
-                    android:inputType="textPersonName" />
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="14dp"
+                    android:hint="Dui">
 
-                <EditText
-                    android:id="@+id/edtTelefono"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Telefono"
-                    android:inputType="textPersonName" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtDui"
+                        android:layout_width="match_parent"
+                        android:drawableLeft="@drawable/ic_person_black"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
 
-                <EditText
-                    android:id="@+id/edtContrasena"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Contraseña"
-                    android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/edtFecha"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Fecha"
-                    android:inputType="textPersonName" />
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="14dp"
+                    android:hint="Carnet">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtCarnet"
+                        android:layout_width="match_parent"
+                        android:drawableLeft="@drawable/ic_person_black"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="14dp"
+                    android:hint="Correo">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtCorreo"
+                        android:layout_width="match_parent"
+                        android:drawableLeft="@drawable/ic_person_black"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="14dp"
+                    android:hint="Telefono">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtTelefono"
+                        android:layout_width="match_parent"
+                        android:drawableLeft="@drawable/ic_person_black"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
 
                 <Spinner
                     android:id="@+id/spinner"
@@ -101,16 +136,6 @@
                     android:background="#661923"
                     android:text="Crear"
                     android:textColor="#FFF" />
-
-                <Button
-                    android:id="@+id/btnSalir"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:background="#661923"
-                    android:text="Salir"
-                    android:textColor="#FFF"
-                    tools:layout_editor_absoluteY="382dp" />
 
             </LinearLayout>
         </ScrollView>

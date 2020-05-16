@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInstaller;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +20,7 @@ import com.example.databases.api.retrofit.ReservasCanchasClient;
 import com.example.databases.api.retrofit.ReservasCanchasService;
 import com.example.databases.api.usuarios.ResponseLogin;
 import com.example.databases.api.utilidades.ErrorObject;
+import com.example.databases.api.utilidades.Session;
 import com.example.databases.db.ContratoReservas;
 import com.example.databases.db.CrudUsuarios;
 import com.example.databases.model.Usuario;
@@ -43,6 +45,7 @@ public class ListaUsuarios extends AppCompatActivity {
     private ReservasCanchasClient reservasCanchasClient;
     private ErrorObject errorObject;
     private ArrayList<ResponseLogin> responseLoginList;
+    private ResponseLogin usuarioActual;
 
 
     @Override
@@ -50,9 +53,12 @@ public class ListaUsuarios extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_administrador);
 
-        btnSalir=findViewById(R.id.btnSalir);
+//        btnSalir=findViewById(R.id.btnSalir);
         listView = findViewById(R.id.lvUsuarios);
         fabAgregarUsuario =  findViewById(R.id.fabAgregarUsuario );
+
+        usuarioActual = Session.obtenerSessionUsuario(getApplicationContext());
+
         //Inicializacion de Retrofit
         retrofitInit();
         //Peticion para listar usuarios
@@ -75,14 +81,14 @@ public class ListaUsuarios extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        btnSalir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent( getApplicationContext() , NavigationDrawer.class  );
-                startActivity(i);
-                finish();
-            }
-        });
+//        btnSalir.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent( getApplicationContext() , NavigationDrawer.class  );
+//                startActivity(i);
+//                finish();
+//            }
+//        });
 
     }
 
@@ -95,8 +101,11 @@ public class ListaUsuarios extends AppCompatActivity {
 
     private void listarUsuarios(){
 
+        String accion = "listar";
+        String idUsuario = String.valueOf(usuarioActual.getId());
 
-        Call<JsonElement> listarUsuariosApi    =  reservasCanchasService.listarUsuarios();
+
+        Call<JsonElement> listarUsuariosApi    =  reservasCanchasService.listarUsuarios(idUsuario , accion);
 
         listarUsuariosApi.enqueue(new Callback<JsonElement>() {
             @Override

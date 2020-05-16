@@ -2,9 +2,7 @@ package com.example.databases.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.databases.NavigationDrawer;
 import com.example.databases.R;
 import com.example.databases.adapters.EstadoUsuarioAdapter;
 import com.example.databases.adapters.RolUsuarioAdapter;
@@ -23,15 +20,10 @@ import com.example.databases.api.retrofit.ReservasCanchasService;
 import com.example.databases.api.usuarios.ResponseLogin;
 import com.example.databases.api.utilidades.ErrorObject;
 import com.example.databases.db.ContratoReservas;
-import com.example.databases.db.CrudEstadoUsuario;
-import com.example.databases.db.CrudRolUsuario;
-import com.example.databases.db.CrudUsuarios;
 import com.example.databases.api.usuarios.EstadoUsuario;
 import com.example.databases.api.roles.Rol;
-import com.example.databases.model.Usuario;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.example.databases.api.roles.Rol;
 import com.google.gson.reflect.TypeToken;
 
 import retrofit2.Call;
@@ -46,7 +38,7 @@ public class FormularioUsuarios extends AppCompatActivity {
     private ReservasCanchasService reservasCanchasService;
     private ReservasCanchasClient reservasCanchasClient;
     private Spinner spinner, spinner2;
-    private EditText edtUsuario, edtNombre , edtCarnet , edtCorreo , edtTelefono , edtContrasena , edtFecha;
+    private EditText edtNombre, edtDui, edtCarnet, edtCorreo, edtTelefono;
 
     private Button btnCrear;
     private Button btnSalir;
@@ -64,14 +56,13 @@ public class FormularioUsuarios extends AppCompatActivity {
         setContentView(R.layout.activity_formulario_usuarios);
 
         final Intent i =  getIntent();
-        btnSalir=findViewById(R.id.btnSalir);
-        edtUsuario = findViewById(R.id.edtUsuario);
-        edtNombre = findViewById(R.id.edtNombre);
-        edtCarnet = findViewById(R.id.edtCarnet);
-        edtCorreo = findViewById(R.id.edtCorreo);
-        edtTelefono = findViewById(R.id.edtTelefono);
-        edtContrasena = findViewById(R.id.edtContrasena);
-        edtFecha = findViewById(R.id.edtFecha);
+
+        final EditText edtNombre =  findViewById(R.id.edtNombre);
+        final EditText edtDui =  findViewById(R.id.edtDui);
+        final EditText edtCarnet =  findViewById(R.id.edtCarnet);
+        final EditText edtCorreo =  findViewById(R.id.edtCorreo);
+        final EditText edtTelefono =  findViewById(R.id.edtTelefono);
+
         btnCrear =  findViewById(R.id.btnCrear);
         spinner = (Spinner)findViewById(R.id.spinner);
         spinner2 = (Spinner)findViewById(R.id.spinner2);
@@ -84,7 +75,6 @@ public class FormularioUsuarios extends AppCompatActivity {
         if(i.hasExtra(ContratoReservas.TablaUsuario.idusuario)){
             String id = i.getStringExtra(ContratoReservas.TablaUsuario.idusuario);
             obtenerInformacionUsuario(id); //Solicitar informacion del usuario
-
             //Seleccion del rol y estado de usuario en base a datos de usuario
         }
 
@@ -115,41 +105,64 @@ public class FormularioUsuarios extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String user = edtUsuario.getText().toString();
+
+                String dui  = edtDui.getText().toString();
                 String nombreCompleto = edtNombre.getText().toString();
                 String carnet =  edtCarnet.getText().toString();
                 String correo =  edtCorreo.getText().toString();
                 String telefono  =  edtTelefono.getText().toString();
-                String contrasena  =  edtContrasena.getText().toString();
+
+
 
                  if(TextUtils.isEmpty(nombreCompleto)){
                     edtNombre.setError("Campo requerido");
-                }else if(TextUtils.isEmpty(carnet)){
+                }else if(TextUtils.isEmpty(dui)){
+                    edtDui.setError("Campo requerido");
+                }
+                 else if(TextUtils.isEmpty(carnet)){
                     edtCarnet.setError("Campo requerido");
                 }else if(TextUtils.isEmpty(correo)){
                     edtCorreo.setError("Campo requerido");
                 }else if(TextUtils.isEmpty(telefono)){
                     edtTelefono.setError("Campo requerido");
-                }else if(TextUtils.isEmpty(contrasena)){
-                    edtContrasena.setError("Campo requerido");
                 }else{
-                    realizarAccion(); //Ingresar o Actualizar
+
+
+                     Call<JsonElement> ingresarUsuario  = reservasCanchasService.ingresarUsuario(
+                             nombreCompleto ,
+                             dui  ,
+                             carnet ,
+                             correo ,
+                             telefono ,
+                             rolesUsuariosList.get((int) spinner.getSelectedItemId()).getId()
+                     );
+
+                     ingresarUsuario.enqueue(new Callback<JsonElement>() {
+                         @Override
+                         public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                             String jsonString  = response.body().toString();
+
+                             Toast.makeText(getApplicationContext(), jsonString, Toast.LENGTH_SHORT).show();
+
+
+                         }
+
+                         @Override
+                         public void onFailure(Call<JsonElement> call, Throwable t) {
+
+                         }
+                     });
                 }
             }
         });
 
-        btnSalir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent( getApplicationContext() ,ListaUsuarios.class  );
-                startActivity(i);
-                finish();
-            }
-        });
+
     }
 
     private void obtenerInformacionUsuario(String idusuario){
-        Call<JsonElement> infoUsuario =  reservasCanchasService.obtenerUsuario(idusuario);
+
+
+        Call<JsonElement> infoUsuario =  reservasCanchasService.obtenerUsuario(idusuario , "buscar");
 
         infoUsuario.enqueue(new Callback<JsonElement>() {
             @Override
@@ -182,13 +195,13 @@ public class FormularioUsuarios extends AppCompatActivity {
     }
 
     private void mostrarInformacionUsuario(){
-        edtUsuario.setText(  usuario.getUsuario()   );
-        edtNombre.setText( usuario.getNombre());
-        edtCarnet.setText(usuario.getCarnet());
-        edtCorreo.setText(  usuario.getCorreo()  );
-        edtTelefono.setText(usuario.getTelefono());
-        edtFecha.setText(usuario.getFechaCreacion());
-        edtContrasena.setText( usuario.getPassword()  );
+//        edtUsuario.setText(  usuario.getUsuario()   );
+//        edtNombre.setText( usuario.getNombre());
+//        edtCarnet.setText(usuario.getCarnet());
+//        edtCorreo.setText(  usuario.getCorreo()  );
+//        edtTelefono.setText(usuario.getTelefono());
+//        edtFecha.setText(usuario.getFechaCreacion());
+//        edtContrasena.setText( usuario.getPassword()  );
     }
 
     //Obtener lista de roles de usuario
