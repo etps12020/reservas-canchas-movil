@@ -1,5 +1,6 @@
 package com.example.databases.api.retrofit;
 
+import com.example.databases.api.canchas.RequestUpdateCancha;
 import com.example.databases.api.edifcios.RequestUpdateEdificio;
 import com.example.databases.api.reservas.RequestReserva;
 import com.example.databases.api.usuarios.RequestLogin;
@@ -170,19 +171,10 @@ public interface ReservasCanchasService {
     );
 
 
-    @FormUrlEncoded
+
     @PUT("cancha.php") //Actualizacion de canchas
     Call<JsonElement> actualizarCanchas(
-            @Field("id") int id ,
-            @Field("nombre") String nombre  ,
-            @Field("descripcion") String descripcion  ,
-            @Field("telefono") String telefono ,
-            @Field("horaInicio") int horaInicio ,
-            @Field("horaFin") int horaFin ,
-            @Field("idEdificio") int idEdificio ,
-            @Field("idTipoCancha") int idTipoCancha ,
-            @Field("estado") int estado ,
-            @Field("imagen") String imagen
+            @Body RequestUpdateCancha requestUpdateCancha
     );
 
 

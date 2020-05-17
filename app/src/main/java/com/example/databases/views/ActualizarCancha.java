@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.renderscript.RSIllegalArgumentException;
 import android.util.Base64;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -22,6 +23,7 @@ import com.example.databases.adapters.EdificioAdapter;
 import com.example.databases.adapters.EstadoCanchaAdapter;
 import com.example.databases.adapters.TipoCanchaAdapter;
 import com.example.databases.api.canchas.Cancha;
+import com.example.databases.api.canchas.RequestUpdateCancha;
 import com.example.databases.api.canchas.TipoCancha;
 import com.example.databases.api.edificios.Edificio;
 import com.example.databases.api.horarios.Horario;
@@ -33,9 +35,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.galaxyofandroid.spinerdialog.OnSpinerItemClick;
+import in.galaxyofandroid.spinerdialog.SpinnerDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,8 +52,10 @@ public class ActualizarCancha extends AppCompatActivity {
     private Spinner spnEdificio , spnTipoCancha , spnEstadoCancha;
     private ImageView imvCancha;
     private ErrorObject errorObject;
+    private SpinnerDialog spinnerDialogHoraInicio ,  spinnerDialogHoraFin;
     private ReservasCanchasService reservasCanchasService;
     private ReservasCanchasClient reservasCanchasClient;
+    private Button btnActualizar;
 
     private ArrayList<Edificio> edificioArrayList;
     private ArrayList<TipoCancha> tipoCanchaArrayList;
@@ -55,6 +63,8 @@ public class ActualizarCancha extends AppCompatActivity {
     private ArrayList<Horario> horarioArrayList;
     private ArrayList<String> horas;
     private Cancha canchaSeleccionada;
+    private int indexHoraInicio , indexHoraFin;
+    private String imagen;
 
 
 
@@ -69,22 +79,117 @@ public class ActualizarCancha extends AppCompatActivity {
         edtHoraInicio  =  findViewById(R.id.edtHoraInicio);
         edtHoraFin =  findViewById(R.id.edtHoraFin);
         imvCancha =  findViewById(R.id.imvCancha);
+        btnActualizar =   findViewById(R.id.btnActualizar);
 
         spnEdificio =  findViewById(R.id.spnEdificio);
         spnTipoCancha = findViewById(R.id.spnTipoCancha);
         spnEstadoCancha =  findViewById(R.id.spnEstadoCancha);
 
+        horas =  new ArrayList<>();
+
         retrofitInit();
 
-        Intent i  =  getIntent();
-
+        final Intent i  =  getIntent();
         obtenerDatosCancha(i.getStringExtra("id"));
-
-
         imvCancha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cargarImagen();
+            }
+        });
+
+        spinnerDialogHoraInicio = new SpinnerDialog( ActualizarCancha.this , horas , "Seleccione una hora de inicio");
+        spinnerDialogHoraInicio.bindOnSpinerListener(new OnSpinerItemClick() {
+            @Override
+            public void onClick(String hora, int i) {
+                indexHoraInicio  = i;
+                edtHoraInicio.setText(hora);
+            }
+        });
+
+        spinnerDialogHoraFin =  new SpinnerDialog( ActualizarCancha.this , horas ,  "Seleccione una hora fin");
+        spinnerDialogHoraFin.bindOnSpinerListener(new OnSpinerItemClick() {
+            @Override
+            public void onClick(String hora, int i) {
+                indexHoraFin = i;
+                edtHoraFin.setText(hora);
+
+            }
+        });
+
+        edtHoraInicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                spinnerDialogHoraInicio.showSpinerDialog();
+            }
+        });
+
+        edtHoraFin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                spinnerDialogHoraFin.showSpinerDialog();
+            }
+        });
+
+
+        btnActualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String nombre =  edtNombre.getText().toString();
+                String descripcion =  edtDescripcion.getText().toString();
+                String telefono =  edtTelefono.getText().toString();
+                String horaInicio =  edtHoraInicio.getText().toString();
+                String horaFin  =  edtHoraFin.getText().toString();
+
+                if(nombre.isEmpty()){
+                    edtNombre.setError("Campo nombre es requerido");
+                }else if(descripcion.isEmpty()){
+                    edtDescripcion.setError("Campo descripcion es requerido");
+                }else if(telefono.isEmpty()){
+                    edtTelefono.setError("Campo teleno es requerido");
+                }else if(horaInicio.isEmpty()){
+                    edtHoraInicio.setError("Seleccione una hora");
+                }else if(horaFin.isEmpty()){
+                    edtHoraFin.setError("Seleccione una hora");
+                }else{
+
+                }
+
+
+
+                RequestUpdateCancha requestUpdateCancha =  new RequestUpdateCancha(
+                        Integer.parseInt(i.getStringExtra("id")) ,
+                        nombre ,
+                        descripcion ,
+                        telefono ,
+                        horarioArrayList.get(indexHoraInicio).getHoraInicio() ,
+                        horarioArrayList.get(indexHoraFin).getHoraFin() ,
+                        edificioArrayList.get(spnEdificio.getSelectedItemPosition()).getId() ,
+                        tipoCanchaArrayList.get( spnTipoCancha.getSelectedItemPosition()  ).getId() ,
+                        estadoCanchaArrayList.get( spnEstadoCancha.getSelectedItemPosition()  ).getId(),
+                        imagen
+                );
+
+                Call<JsonElement> actualizarCancha =  reservasCanchasService.actualizarCanchas(requestUpdateCancha);
+
+                actualizarCancha.enqueue(new Callback<JsonElement>() {
+                    @Override
+                    public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+
+                        String jsonString  = response.body().toString();
+
+                        Toast.makeText(getApplicationContext(), jsonString, Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonElement> call, Throwable t) {
+
+                    }
+                });
+
+
             }
         });
 
@@ -178,10 +283,17 @@ public class ActualizarCancha extends AppCompatActivity {
                     if(!existsError(jsonString)) {
                         horarioArrayList = new Gson().fromJson(jsonString , new TypeToken<List<Horario>>(){}.getType() );
                         //Sacar los valores textuales y tambien los ids actuales de cada uno de las horas
+                        for(Horario horario: horarioArrayList){
+                            horas.add(horario.getHoraInicio()+" "+horario.getHoraFin());
+                        }
+
+                        //Indice de la hora Inicial
+                        indexHoraInicio =  findIndexTextHorariosInicio(  canchaSeleccionada.getHoraInicio()  );
+                        //Indice de la hora final
+                        indexHoraFin = findIndexHorariosFin( canchaSeleccionada.getHoraFin()  );
 
                     }
                 }
-
             @Override
             public void onFailure(Call<JsonElement> call, Throwable t) {
 
@@ -220,7 +332,7 @@ public class ActualizarCancha extends AppCompatActivity {
                         imvCancha.setImageBitmap(decodedByte);
 
                         //Obtener horarios de canchas
-                        //obtenerHorariosCanchas();
+                        obtenerHorariosCanchas();
                         //Obtener Edificios Canchas
                         obtenerEdificios();
                         //Obtener Tipos canchas
@@ -287,7 +399,15 @@ public class ActualizarCancha extends AppCompatActivity {
 
         if(resultCode==RESULT_OK){
             Uri path =  data.getData();
-            imvCancha.setImageURI(path);
+//            imvCancha.setImageURI(path);
+            try {
+                Bitmap bitmap  = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver() , path);
+                imagen = convertirImagenString(bitmap);
+                imvCancha.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -298,5 +418,37 @@ public class ActualizarCancha extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    private int findIndexTextHorariosInicio(String horaInicio){
+        int index = 0;
+        for(Horario horario: horarioArrayList){
+            if(horario.getHoraInicio().equals(horaInicio)){
+                return index;
+            }else{
+                index++;
+            }
+        }
+        return index;
+    }
+    private int findIndexHorariosFin(String horaFin){
+        int index= 0;
+        for(Horario horario: horarioArrayList){
+            if(horario.getHoraInicio().equals(horaFin)){
+                return index;
+            }else{
+                index++;
+            }
+        }
+
+        return index;
+    }
+
+    private String convertirImagenString(Bitmap bitmap){
+        ByteArrayOutputStream array =  new ByteArrayOutputStream();
+        bitmap.compress( Bitmap.CompressFormat.JPEG ,  100 , array   );
+        byte[] imagenByte =  array.toByteArray();
+        String imagenString = Base64.encodeToString(  imagenByte , Base64.DEFAULT );
+        return imagenString;
     }
 }
