@@ -24,6 +24,9 @@ public class ResponseEdificio {
     @SerializedName("fechaCreacion")
     @Expose
     private String fechaCreacion;
+    @SerializedName("imagen")
+    @Expose
+    private String imagen;
 
     /**
      * No args constructor for use in serialization
@@ -56,6 +59,14 @@ public class ResponseEdificio {
 
         this.estado = estado;
         this.fechaCreacion = fechaCreacion;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     public Integer getId() {

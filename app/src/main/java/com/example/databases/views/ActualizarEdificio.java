@@ -4,9 +4,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.JsonReader;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +29,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.example.databases.api.edificios.Edificio;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -44,6 +50,7 @@ public class ActualizarEdificio extends AppCompatActivity {
     private ErrorObject errorObject;
     private ArrayList<EstadoEdificio> estadoEdificioArrayList;
     private Edificio  edificioSeleccionado;
+    private String imagenEdificio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +116,11 @@ public class ActualizarEdificio extends AppCompatActivity {
                             edtNombreEdificio.setText(edificioSeleccionado.getNombre());
                             edtDescripcion.setText(edificioSeleccionado.getDescripcion());
                             edtDireccion.setText(edificioSeleccionado.getDireccion());
+
+                            String base64Image = edificioSeleccionado.getImagen();
+                            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                            imvEdificio.setImageBitmap(decodedByte);
                             cargarEstadosEstadosEdificios();
                         }
 
@@ -188,7 +200,22 @@ public class ActualizarEdificio extends AppCompatActivity {
         if(resultCode==RESULT_OK){
             Uri path =  data.getData();
             imvEdificio.setImageURI(path);
+            try {
+                Bitmap bitmap  = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver() , path);
+                imagenEdificio = convertirImgString(bitmap);
+                Toast.makeText(getApplicationContext(), imagenEdificio, Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    private String convertirImgString(Bitmap bitmap){
+        ByteArrayOutputStream array =  new ByteArrayOutputStream();
+        bitmap.compress( Bitmap.CompressFormat.JPEG ,  100 , array   );
+        byte[] imagenByte =  array.toByteArray();
+        String imagenString = Base64.encodeToString(  imagenByte , Base64.DEFAULT );
+        return imagenString;
     }
 
 

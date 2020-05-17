@@ -4,10 +4,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.JsonReader;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -24,8 +28,15 @@ import com.example.databases.db.CrudEdificio;
 import com.example.databases.db.CrudEstadoEdificio;
 import com.example.databases.model.Edificio;
 import com.example.databases.model.EstadoEdificio;
+import com.google.gson.JsonElement;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FormularioEdificios extends AppCompatActivity {
 
@@ -35,6 +46,7 @@ public class FormularioEdificios extends AppCompatActivity {
     private Spinner spnEstado;
     private Button btnAccionEdificio;
     private ImageView imvEdificio;
+    private String imagenEdificio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +72,43 @@ public class FormularioEdificios extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                 String nombreEdificio =  edtNombreEdificio.getText().toString();
+                 String direccion  =  edtDireccion.getText().toString();
+                 String descripcion  =  edtDescripcion.getText().toString();
+
+
+                 if(nombreEdificio.isEmpty()){
+                   edtNombreEdificio.setError("Campo requerido");
+                 } else if(direccion.isEmpty()){
+                     edtDireccion.setError("Canpo requerido");
+                 }else if(descripcion.isEmpty()){
+                     edtDescripcion.setError("Campo requerido" );
+                 }else if(imagenEdificio.isEmpty()){
+                     Toast.makeText(getApplicationContext(), "Selecciona una imagen", Toast.LENGTH_SHORT).show();
+                 }else{
+                     Call<JsonElement> ingresarCancha = reservasCanchasService.ingresarEdifcio(nombreEdificio , direccion ,  descripcion , imagenEdificio);;
+
+                     ingresarCancha.enqueue(new Callback<JsonElement>() {
+                         @Override
+                         public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                             String jsonString  = response.body().toString();
+
+                             Toast.makeText(getApplicationContext(), jsonString, Toast.LENGTH_LONG).show();
+
+
+
+                         }
+
+                         @Override
+                         public void onFailure(Call<JsonElement> call, Throwable t) {
+                             Toast.makeText(getApplicationContext(), t.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                         }
+                     });
+                 }
+
+
+
+
 
             }
         });
@@ -79,12 +128,35 @@ public class FormularioEdificios extends AppCompatActivity {
 
         if(resultCode==RESULT_OK){
             Uri path =  data.getData();
-            imvEdificio.setImageURI(path);
+//            imvEdificio.setImageURI(path);
+            try {
+                Bitmap bitmap  = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver() , path);
+                imagenEdificio = convertirImagenString(bitmap);
+
+
+                byte[] decodedString = Base64.decode(imagenEdificio, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                imvEdificio.setImageBitmap(decodedByte);
+
+                Toast.makeText(getApplicationContext(), imagenEdificio.substring(0,10), Toast.LENGTH_SHORT).show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void retrofitInit() {
         reservasCanchasClient = ReservasCanchasClient.getInstance();
         reservasCanchasService = reservasCanchasClient.getReservasCanchasService();
+    }
+
+    private String convertirImagenString(Bitmap bitmap){
+        ByteArrayOutputStream array =  new ByteArrayOutputStream();
+        bitmap.compress( Bitmap.CompressFormat.JPEG ,  100 , array   );
+        byte[] imagenByte =  array.toByteArray();
+        String imagenString = Base64.encodeToString(  imagenByte , Base64.DEFAULT );
+        return imagenString;
+
     }
 }

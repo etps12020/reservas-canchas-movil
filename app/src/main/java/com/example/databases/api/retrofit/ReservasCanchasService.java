@@ -125,6 +125,7 @@ public interface ReservasCanchasService {
     Call<JsonElement> ingresarEdifcio(
             @Field("nombre") String nombre ,
             @Field("direccion") String direccion,
+            @Field("descripcion") String descripcion,
             @Field("imagen") String imagen
     );
 

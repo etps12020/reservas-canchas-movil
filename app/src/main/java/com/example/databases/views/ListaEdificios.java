@@ -72,14 +72,6 @@ public class ListaEdificios extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        //btnSalir.setOnClickListener(new View.OnClickListener() {
-           // @Override
-           // public void onClick(View v) {
-               // Intent i = new Intent( getApplicationContext() , NavigationDrawer.class  );
-                //startActivity(i);
-                //finish();
-            //}
-       // });
 
     }
 
