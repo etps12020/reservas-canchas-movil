@@ -67,8 +67,8 @@ public class ListaUsuarios extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent( getApplicationContext() , FormularioUsuarios.class  );
-                i.putExtra(ContratoReservas.TablaUsuario.idusuario , String.valueOf(responseLoginList.get(position).getId()) );
+                Intent i = new Intent( getApplicationContext() , ActualizarUsuario.class  );
+                i.putExtra("id" , String.valueOf(responseLoginList.get(position).getId()) );
                 startActivity(i);
 
             }

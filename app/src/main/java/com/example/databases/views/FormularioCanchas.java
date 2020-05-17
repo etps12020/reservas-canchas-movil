@@ -70,7 +70,7 @@ public class FormularioCanchas extends AppCompatActivity {
 
         btnCrear =  findViewById(R.id.btnCrear);
         spinner = (Spinner)findViewById(R.id.spinner);
-        spinner2 = (Spinner)findViewById(R.id.spinner2);
+//        spinner2 = (Spinner)findViewById(R.id.spinner2);
         spinner3 = (Spinner)findViewById(R.id.spinner3);
 
 

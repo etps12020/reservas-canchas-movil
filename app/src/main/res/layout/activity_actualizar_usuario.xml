@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.FormularioUsuarios">
+    tools:context=".views.ActualizarUsuario">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -112,17 +113,59 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="14dp"
+                    android:hint="Telefono">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtContrasena"
+                        android:layout_width="match_parent"
+                        android:drawableLeft="@drawable/ic_person_black"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="14dp"
+                    android:hint="Telefono">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtConfirmacionContrasenia"
+                        android:layout_width="match_parent"
+                        android:drawableLeft="@drawable/ic_person_black"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
 
                 <Spinner
-                    android:id="@+id/spinner"
+                    android:id="@+id/spnRol"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     tools:listitem="@layout/custom_simple_spinner_item" />
 
+                <Spinner
+                    android:id="@+id/spnEstado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    tools:listitem="@layout/custom_simple_spinner_item" />
 
                 <Button
-                    android:id="@+id/btnCrear"
+                    android:id="@+id/btnActualizar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
@@ -133,4 +176,6 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

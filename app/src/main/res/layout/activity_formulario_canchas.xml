@@ -84,14 +84,14 @@
                     android:inputType="textPersonName" />
 
                 <Spinner
-                    android:id="@+id/spinner"
+                    android:id="@+id/spnRol"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     tools:listitem="@layout/custom_simple_spinner_item" />
 
                 <Spinner
-                    android:id="@+id/spinner2"
+                    android:id="@+id/spnRol"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"

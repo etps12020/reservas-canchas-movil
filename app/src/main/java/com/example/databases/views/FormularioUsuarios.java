@@ -65,11 +65,11 @@ public class FormularioUsuarios extends AppCompatActivity {
 
         btnCrear =  findViewById(R.id.btnCrear);
         spinner = (Spinner)findViewById(R.id.spinner);
-        spinner2 = (Spinner)findViewById(R.id.spinner2);
+
 
         retrofitInit();  //Inicializa las clases de retrofit
         obtenerRolesUsuarios(); //Obtiene  y renderiza la lista de roles de usuario
-        obtenerEstadosUsuarios(); //Obtene y renderiza la lista de estados de usuario
+//        obtenerEstadosUsuarios(); //Obtene y renderiza la lista de estados de usuario
 
 
         if(i.hasExtra(ContratoReservas.TablaUsuario.idusuario)){
@@ -89,16 +89,7 @@ public class FormularioUsuarios extends AppCompatActivity {
             }
         });
 
-        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
 
 
         btnCrear.setOnClickListener(new View.OnClickListener() {
@@ -258,11 +249,6 @@ public class FormularioUsuarios extends AppCompatActivity {
                 Toast.makeText(getApplicationContext() , "Error en la comunicacion con el servidor", Toast.LENGTH_SHORT).show();
             }
         });
-
-    }
-
-    //Actualizar o ingresar
-    private void realizarAccion(){
 
     }
 

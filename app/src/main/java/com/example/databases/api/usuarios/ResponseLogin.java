@@ -36,6 +36,9 @@ public class ResponseLogin {
     @SerializedName("rol")
     @Expose
     private String rol;
+    @SerializedName("idEstado")
+    @Expose
+    private int idEstado;
     @SerializedName("estado")
     @Expose
     private String estado;
@@ -48,6 +51,14 @@ public class ResponseLogin {
      *
      */
     public ResponseLogin() {
+    }
+
+    public int getIdEstado() {
+        return idEstado;
+    }
+
+    public void setIdEstado(int idEstado) {
+        this.idEstado = idEstado;
     }
 
     /**
@@ -65,6 +76,8 @@ public class ResponseLogin {
      * @param nombre
      * @param rol
      */
+
+
     public ResponseLogin(Integer id, String nombre, String usuario, String dui, String carnet, String correo, String telefono, String password, Integer idRol, String rol, String estado, String fechaCreacion) {
         super();
         this.id = id;

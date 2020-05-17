@@ -2,6 +2,8 @@ package com.example.databases.api.retrofit;
 
 import com.example.databases.api.reservas.RequestReserva;
 import com.example.databases.api.usuarios.RequestLogin;
+import com.example.databases.api.usuarios.RequestUpdateUser;
+import com.example.databases.api.usuarios.RequestUpdateUserAsistente;
 import com.example.databases.api.usuarios.ResponseLogin;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -15,6 +17,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface ReservasCanchasService {
@@ -50,6 +53,22 @@ public interface ReservasCanchasService {
             @Field("telefono")  String telefono ,
             @Field("rol") long rol
     );
+
+
+
+    @PUT("usuario.php") //Actualizacion de usuarios para Administradores
+    Call<JsonElement> actualizarUsuario(
+            @Body RequestUpdateUser requestUpdateUser
+    );
+
+
+    @PUT("usuario.php") //Actualizacion   de usuarios para usuarios asistentes
+    Call<JsonElement> actualizarUsuario(
+            @Body RequestUpdateUserAsistente requestUpdateUserAsistente
+            );
+
+
+
 
     @GET("rolUsuario.php") //Listar todos los roles de los usuarios
     @Headers("Content-Type: application/json")
@@ -92,24 +111,82 @@ public interface ReservasCanchasService {
     @GET("edificio.php") //Obtener usuario especifico
     @Headers("Content-Type: application/json")
     Call<JsonElement> obtenerEdificio(@Query("id")   String id );
+
     @GET("estadoEdificio.php") //Listar todos los roles de los usuarios
     @Headers("Content-Type: application/json")
     Call<JsonElement> listarEstadosEdificios();
+
     @GET("edificio.php") //Listar usuarios existentes
     @Headers("Content-Type: application/json")
     Call<JsonElement> listarEdificios();
+
+    @FormUrlEncoded
+    @POST("edificio.php") //Ingreso de edificios
+    Call<JsonElement> ingresarEdifcio(
+            @Field("nombre") String nombre ,
+            @Field("direccion") String direccion,
+            @Field("imagen") String imagen
+    );
+
+
+    @FormUrlEncoded
+    @PUT("edificio.php") //Actaulizacion de edificios
+    Call<JsonElement> actualizarEdificio(
+            @Field("id") int id ,
+            @Field("nombre") String nombre ,
+            @Field("direccion") String direccion ,
+            @Field("descripcion") String descripcion ,
+            @Field("estado") int estado ,
+            @Field("imagen") String imagen
+    );
+
 
     //canchas
     @GET("cancha.php") //Obtener usuario especifico
     @Headers("Content-Type: application/json")
     Call<JsonElement> obtenerCancha(@Query("id")   String id );
+
     @GET("estadoCancha.php") //Listar todos los roles de los usuarios
     @Headers("Content-Type: application/json")
     Call<JsonElement> listarEstadosCanchas();
+
     @GET("cancha.php") //Listar usuarios existentes
     @Headers("Content-Type: application/json")
     Call<JsonElement> listarCachas();
+
     @GET("tipoCancha.php") //Listar usuarios existentes
     @Headers("Content-Type: application/json")
     Call<JsonElement> listarTiposCanchas();
+
+    @FormUrlEncoded
+    @POST("cancha.php") //Ingreso de canchas
+    Call<JsonElement> ingresarCanchas(
+            @Field("nombre") String nombre ,
+            @Field("descripcion") String descripcion ,
+            @Field("telefono") String telefono ,
+            @Field("horaInicio") String horaInicio ,
+            @Field("horaFin") String horaFin ,
+            @Field("idEdificio") int idEdificio ,
+            @Field("idTipoCancha") int idTipoCancha ,
+            @Field("imagen") String imagen
+    );
+
+
+    @FormUrlEncoded
+    @PUT("cancha.php") //Actualizacion de canchas
+    Call<JsonElement> actualizarCanchas(
+            @Field("id") int id ,
+            @Field("nombre") String nombre  ,
+            @Field("descripcion") String descripcion  ,
+            @Field("telefono") String telefono ,
+            @Field("horaInicio") String horaInicio ,
+            @Field("horaFin") String horaFin ,
+            @Field("idEdificio") int idEdificio ,
+            @Field("idTipoCancha") int idTipoCancha ,
+            @Field("estado") int estado ,
+            @Field("imagen") String imagen
+    );
+
+
+
 }
