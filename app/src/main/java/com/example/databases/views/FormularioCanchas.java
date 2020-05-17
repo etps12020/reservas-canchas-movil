@@ -4,10 +4,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,6 +34,8 @@ import com.example.databases.api.edificios.Edificio;
 import com.example.databases.api.canchas.TipoCancha;
 import com.example.databases.api.utilidades.ErrorObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,12 +58,13 @@ public class FormularioCanchas extends AppCompatActivity {
     private ArrayList<String> horarios;
     private ErrorObject errorObject;
 
-    ImageView  imvCanha;
-    TextView edtNombre , edtDescripcion  , edtTelefono , edtHoraInicio ,  edtHoraFin ;
-    Spinner spnTipoCancha ,  spnEdificio;
-    Button btnCrear;
-    int idTipoCancha , idEdificioCancha , idHoraInicio , idHoraFin;
-    String imagen;
+    private ImageView  imvCanha;
+    private TextView edtNombre , edtDescripcion  , edtTelefono , edtHoraInicio ,  edtHoraFin ;
+    private Spinner spnTipoCancha ,  spnEdificio;
+    private Button btnCrear;
+    private int idTipoCancha , idEdificioCancha , idHoraInicio , idHoraFin;
+    private int indexHoraInicio , indexHoraFin;
+    private String imagen="";
 
 
     @Override
@@ -89,7 +94,7 @@ public class FormularioCanchas extends AppCompatActivity {
         spndHoraInicio.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
             public void onClick(String hora, int i) {
-                Toast.makeText(getApplicationContext(), ""+i, Toast.LENGTH_SHORT).show();
+                indexHoraInicio = i;
                 edtHoraInicio.setText(hora);
             }
         });
@@ -98,7 +103,7 @@ public class FormularioCanchas extends AppCompatActivity {
         spndHoraFin.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
             public void onClick(String hora, int i) {
-                Toast.makeText(getApplicationContext(), ""+i, Toast.LENGTH_SHORT).show();
+                indexHoraFin = i;
                 edtHoraFin.setText(hora);
             }
         });
@@ -136,23 +141,37 @@ public class FormularioCanchas extends AppCompatActivity {
                 String nombre =  edtNombre.getText().toString();
                 String descripcion =  edtDescripcion.getText().toString();
                 String telefono  =  edtTelefono.getText().toString();
+                String horaInicio = edtHoraInicio.getText().toString();
+                String horaFin =  edtHoraFin.getText().toString();
 
                 if(nombre.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "El campo nombre es requerido", Toast.LENGTH_SHORT).show();
+                    edtNombre.setError("El campo nombre es requerido");
                 }else if(descripcion.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "El campo descripcion es requerido", Toast.LENGTH_SHORT).show();
+                    edtDescripcion.setError("El campo descripcion es requerido");
                 }else if(telefono.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "El campo telefono es requirido", Toast.LENGTH_SHORT).show();
+                    edtTelefono.setError("El campo telefono es requirido");
+                }else if(horaInicio.isEmpty() ||  horaFin.isEmpty()){
+                    if(horaInicio.isEmpty()){
+                        edtHoraInicio.setError("Seleccione una hora");
+                    }else{
+                        edtHoraFin.setError("Seleccione una hora");
+                    }
+                }
+                else if(indexHoraFin<=indexHoraInicio){
+                    Toast.makeText(getApplicationContext(), "Horario invalido", Toast.LENGTH_SHORT).show();
+                }else if(imagen.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Seleccione una imagen", Toast.LENGTH_SHORT).show();
                 }else{
+
                     //Ingresar cancha
                     Call<JsonElement> ingresarCancha = reservasCanchasService.ingresarCanchas(
                             nombre ,
                             descripcion,
                             telefono,
-                            idHoraInicio,
-                            idHoraFin,
-                            idEdificioCancha,
-                            idTipoCancha,
+                            horarioArrayList.get(indexHoraInicio).getHoraInicio(),
+                            horarioArrayList.get(indexHoraFin).getHoraFin(),
+                            edificioArrayList.get(spnEdificio.getSelectedItemPosition()).getId(),
+                            tipoCanchaArrayList.get(spnTipoCancha.getSelectedItemPosition()).getId()  ,
                             imagen
                     );
 
@@ -161,6 +180,8 @@ public class FormularioCanchas extends AppCompatActivity {
                         public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
 
                             String jsonString  = response.body().toString();
+
+                            Toast.makeText(getApplicationContext(), jsonString, Toast.LENGTH_SHORT).show();
 
                         }
 
@@ -249,7 +270,6 @@ public class FormularioCanchas extends AppCompatActivity {
 
                 if(!existsError(jsonString)){ //Si no hay errores en la peticion
                     horarioArrayList = new Gson().fromJson(jsonString , new TypeToken<List<Horario>>(){}.getType() );
-
                     for (Horario horario: horarioArrayList){
                         horarios.add(horario.getHoraInicio()+" - "+horario.getHoraFin());
                     }
@@ -280,10 +300,16 @@ public class FormularioCanchas extends AppCompatActivity {
 
         if(resultCode==RESULT_OK){
             Uri path =  data.getData();
-            imvCanha.setImageURI(path);
+//            imvCanha.setImageURI(path);
+            try {
+                Bitmap bitmap  = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver() , path);
+                imagen = convertirImagenString(bitmap);
+                imvCanha.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
-
 
     private boolean existsError(String jsonResponse){
         if(jsonResponse.contains("mensaje")){ //Mensajes de Usuario inactivo o usuario no existe
@@ -292,6 +318,14 @@ public class FormularioCanchas extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    private String convertirImagenString(Bitmap bitmap){
+        ByteArrayOutputStream array =  new ByteArrayOutputStream();
+        bitmap.compress( Bitmap.CompressFormat.JPEG ,  100 , array   );
+        byte[] imagenByte =  array.toByteArray();
+        String imagenString = Base64.encodeToString(  imagenByte , Base64.DEFAULT );
+        return imagenString;
     }
 }
 

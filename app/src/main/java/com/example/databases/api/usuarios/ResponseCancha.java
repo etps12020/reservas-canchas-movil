@@ -1,44 +1,51 @@
 package com.example.databases.api.usuarios;
 
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+
 public class ResponseCancha {
 
-    @SerializedName("id")
-    @Expose
-    private Integer id;
     @SerializedName("cancha")
     @Expose
     private Integer cancha;
     @SerializedName("nombre")
     @Expose
     private String nombre;
-    @SerializedName("telefonoContacto")
-    @Expose
-    private String telefonoContacto;
     @SerializedName("descripcion")
     @Expose
     private String descripcion;
+    @SerializedName("telefonoContacto")
+    @Expose
+    private String telefonoContacto;
     @SerializedName("horaInicio")
     @Expose
     private String horaInicio;
     @SerializedName("horaFin")
     @Expose
     private String horaFin;
+    @SerializedName("idEdificio")
+    @Expose
+    private Integer idEdificio;
     @SerializedName("edificio")
     @Expose
     private String edificio;
-
+    @SerializedName("idTipoCancha")
+    @Expose
+    private Integer idTipoCancha;
     @SerializedName("tipo")
     @Expose
     private String tipo;
+    @SerializedName("idEstado")
+    @Expose
+    private Integer idEstado;
     @SerializedName("estado")
     @Expose
     private String estado;
-    @SerializedName("fechaCreacion")
+    @SerializedName("imagen")
     @Expose
-    private String fechaCreacion;
+    private String imagen;
 
     /**
      * No args constructor for use in serialization
@@ -49,35 +56,35 @@ public class ResponseCancha {
 
     /**
      *
-     *
-     *
-     * @param estado
-     *
-     *
-     *
-     * @param fechaCreacion
      * @param descripcion
-     * @param id
-     * @param horaInicio
-     * @param nombre
-     *
-     * @param fechaCreacion
-     * @param horaFin
+     * @param idEdificio
      * @param tipo
-     * @param edificio
+     * @param estado
+     * @param idTipoCancha
+     * @param imagen
+     * @param nombre
+     * @param horaInicio
+     * @param horaFin
+     * @param idEstado
+     * @param cancha
      * @param telefonoContacto
+     * @param edificio
      */
-    public ResponseCancha(Integer id, String nombre, String horaInicio,String horaFin, String tipo,String descripcion, String edificio,String telefonoContacto,  String estado, String fechaCreacion) {
+    public ResponseCancha(Integer cancha, String nombre, String descripcion, String telefonoContacto, String horaInicio, String horaFin, Integer idEdificio, String edificio, Integer idTipoCancha, String tipo, Integer idEstado, String estado, String imagen) {
         super();
-        this.id = id;
+        this.cancha = cancha;
         this.nombre = nombre;
-        this.horaInicio= horaInicio;
         this.descripcion = descripcion;
-        this.horaFin=horaFin;
-        this.edificio=edificio;
-        this.tipo=tipo;
+        this.telefonoContacto = telefonoContacto;
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
+        this.idEdificio = idEdificio;
+        this.edificio = edificio;
+        this.idTipoCancha = idTipoCancha;
+        this.tipo = tipo;
+        this.idEstado = idEstado;
         this.estado = estado;
-        this.fechaCreacion = fechaCreacion;
+        this.imagen = imagen;
     }
 
     public Integer getCancha() {
@@ -86,14 +93,6 @@ public class ResponseCancha {
 
     public void setCancha(Integer cancha) {
         this.cancha = cancha;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getNombre() {
@@ -120,12 +119,44 @@ public class ResponseCancha {
         this.telefonoContacto = telefonoContacto;
     }
 
+    public String getHoraInicio() {
+        return horaInicio;
+    }
+
+    public void setHoraInicio(String horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public String getHoraFin() {
+        return horaFin;
+    }
+
+    public void setHoraFin(String horaFin) {
+        this.horaFin = horaFin;
+    }
+
+    public Integer getIdEdificio() {
+        return idEdificio;
+    }
+
+    public void setIdEdificio(Integer idEdificio) {
+        this.idEdificio = idEdificio;
+    }
+
     public String getEdificio() {
         return edificio;
     }
 
     public void setEdificio(String edificio) {
         this.edificio = edificio;
+    }
+
+    public Integer getIdTipoCancha() {
+        return idTipoCancha;
+    }
+
+    public void setIdTipoCancha(Integer idTipoCancha) {
+        this.idTipoCancha = idTipoCancha;
     }
 
     public String getTipo() {
@@ -136,20 +167,14 @@ public class ResponseCancha {
         this.tipo = tipo;
     }
 
-    public String getHoraFin() {
-        return horaFin;
+    public Integer getIdEstado() {
+        return idEstado;
     }
 
-    public void setHoraFin(String horaFin) {
-        this.horaFin = horaFin;
-    }
-    public String getHoraInicio() {
-        return horaInicio;
+    public void setIdEstado(Integer idEstado) {
+        this.idEstado = idEstado;
     }
 
-    public void setHoraInicio(String horaInicio) {
-        this.horaInicio = horaInicio;
-    }
     public String getEstado() {
         return estado;
     }
@@ -158,12 +183,12 @@ public class ResponseCancha {
         this.estado = estado;
     }
 
-    public String getFechaCreacion() {
-        return fechaCreacion;
+    public String getImagen() {
+        return imagen;
     }
 
-    public void setFechaCreacion(String fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
 

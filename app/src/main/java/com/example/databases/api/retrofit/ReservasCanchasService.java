@@ -162,8 +162,8 @@ public interface ReservasCanchasService {
             @Field("nombre") String nombre ,
             @Field("descripcion") String descripcion ,
             @Field("telefono") String telefono ,
-            @Field("horaInicio") int horaInicio ,
-            @Field("horaFin") int horaFin ,
+            @Field("horaInicio") String horaInicio ,
+            @Field("horaFin") String horaFin ,
             @Field("idEdificio") int idEdificio ,
             @Field("idTipoCancha") int idTipoCancha ,
             @Field("imagen") String imagen

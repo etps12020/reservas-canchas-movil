@@ -137,9 +137,6 @@ public class FormularioEdificios extends AppCompatActivity {
 //                byte[] decodedString = Base64.decode(imagenEdificio, Base64.DEFAULT);
 //                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                  imvEdificio.setImageBitmap(bitmap);
-
-                Toast.makeText(getApplicationContext(), imagenEdificio.substring(0,10), Toast.LENGTH_SHORT).show();
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -157,6 +154,5 @@ public class FormularioEdificios extends AppCompatActivity {
         byte[] imagenByte =  array.toByteArray();
         String imagenString = Base64.encodeToString(  imagenByte , Base64.DEFAULT );
         return imagenString;
-
     }
 }

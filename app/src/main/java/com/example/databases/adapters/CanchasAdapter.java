@@ -1,10 +1,14 @@
 package com.example.databases.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,10 +41,13 @@ public class CanchasAdapter extends ArrayAdapter<ResponseCancha> {
         }
 
         ResponseCancha  cancha = canchas.get(position);
-
         TextView user =   view.findViewById(R.id.nombreCancha);
-
+        ImageView imagenCard =  view.findViewById(R.id.imagenCard);
         user.setText(cancha.getNombre());
+
+        byte[] decodedString = Base64.decode(  cancha.getImagen() , Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        imagenCard.setImageBitmap(decodedByte);
 
 
         return view;

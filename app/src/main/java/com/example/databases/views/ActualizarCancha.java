@@ -4,10 +4,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.renderscript.RSIllegalArgumentException;
+import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -211,6 +214,11 @@ public class ActualizarCancha extends AppCompatActivity {
                         edtDescripcion.setText(canchaSeleccionada.getDescripcion());
                         edtHoraInicio.setText(canchaSeleccionada.getHoraInicio());
                         edtHoraFin.setText(canchaSeleccionada.getHoraFin());
+
+                        byte[] decodedString = Base64.decode(  canchaSeleccionada.getImagen() , Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        imvCancha.setImageBitmap(decodedByte);
+
                         //Obtener horarios de canchas
                         //obtenerHorariosCanchas();
                         //Obtener Edificios Canchas
