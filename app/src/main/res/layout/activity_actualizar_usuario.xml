@@ -170,7 +170,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:background="#661923"
-                    android:text="Crear"
+                    android:text="Actualizar"
                     android:textColor="#FFF" />
 
             </LinearLayout>
