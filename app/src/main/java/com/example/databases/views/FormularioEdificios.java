@@ -132,11 +132,11 @@ public class FormularioEdificios extends AppCompatActivity {
             try {
                 Bitmap bitmap  = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver() , path);
                 imagenEdificio = convertirImagenString(bitmap);
-
-
-                byte[] decodedString = Base64.decode(imagenEdificio, Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                imvEdificio.setImageBitmap(decodedByte);
+//
+//
+//                byte[] decodedString = Base64.decode(imagenEdificio, Base64.DEFAULT);
+//                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                 imvEdificio.setImageBitmap(bitmap);
 
                 Toast.makeText(getApplicationContext(), imagenEdificio.substring(0,10), Toast.LENGTH_SHORT).show();
 

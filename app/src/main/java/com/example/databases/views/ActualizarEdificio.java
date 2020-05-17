@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.databases.R;
 import com.example.databases.adapters.EstadoEdificioAdapter;
+import com.example.databases.api.edifcios.RequestUpdateEdificio;
 import com.example.databases.api.retrofit.ReservasCanchasClient;
 import com.example.databases.api.retrofit.ReservasCanchasService;
 import com.example.databases.api.roles.Rol;
@@ -51,6 +52,7 @@ public class ActualizarEdificio extends AppCompatActivity {
     private ArrayList<EstadoEdificio> estadoEdificioArrayList;
     private Edificio  edificioSeleccionado;
     private String imagenEdificio;
+    private int idEstadEdificio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class ActualizarEdificio extends AppCompatActivity {
         btnAccionEdificios =  findViewById(R.id.btnAccionEdificios);
         imvEdificio =  findViewById(R.id.imvEdificio);
         retrofitInit();
-        Intent i  = getIntent();
+        final Intent i  = getIntent();
         obtenerDatosEdificio(  i.getStringExtra("id")  );
 
         imvEdificio.setOnClickListener(new View.OnClickListener() {
@@ -83,12 +85,40 @@ public class ActualizarEdificio extends AppCompatActivity {
                 String descripcion   = edtDescripcion.getText().toString();
 
                 if(nombreEdificio.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "El nombre del edificio es requerido", Toast.LENGTH_SHORT).show();
+                    edtNombreEdificio.setError("Campo requerido");
                 }else if(direccion.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "La direccion es requrida", Toast.LENGTH_SHORT).show();
+                    edtDireccion.setError("Campo requerido");
                 }else if(descripcion.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "La descripcion es requerida", Toast.LENGTH_SHORT).show();
+                    edtDescripcion.setError("Campo requerido");
+                }else if(imagenEdificio.isEmpty()){
+                    Toast.makeText(ActualizarEdificio.this, "Seleccione una imagen", Toast.LENGTH_SHORT).show();
                 }else{
+
+                    RequestUpdateEdificio requestUpdateEdificio  =  new RequestUpdateEdificio(
+                            Integer.parseInt(i.getStringExtra("id")) ,
+                            nombreEdificio ,
+                            direccion ,
+                            descripcion ,
+                            idEstadEdificio ,
+                            imagenEdificio
+                    );
+
+                    Call<JsonElement> actualizarEdificio =  reservasCanchasService.actualizarEdificio(requestUpdateEdificio);
+
+                    actualizarEdificio.enqueue(new Callback<JsonElement>() {
+                        @Override
+                        public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+
+                            String jsonString  = response.body().toString();
+                            Toast.makeText(getApplicationContext(), jsonString, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<JsonElement> call, Throwable t) {
+
+                        }
+                    });
+
 
 
                 }
@@ -116,8 +146,8 @@ public class ActualizarEdificio extends AppCompatActivity {
                             edtNombreEdificio.setText(edificioSeleccionado.getNombre());
                             edtDescripcion.setText(edificioSeleccionado.getDescripcion());
                             edtDireccion.setText(edificioSeleccionado.getDireccion());
-
                             String base64Image = edificioSeleccionado.getImagen();
+                            imagenEdificio = edificioSeleccionado.getImagen();
                             byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
                             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                             imvEdificio.setImageBitmap(decodedByte);
@@ -162,6 +192,7 @@ public class ActualizarEdificio extends AppCompatActivity {
                         EstadoEdificioAdapter estadoEdificioAdapter =  new EstadoEdificioAdapter( getApplicationContext() , R.layout.support_simple_spinner_dropdown_item , estadoEdificioArrayList);
                         spnEstadoEdificio.setAdapter(estadoEdificioAdapter);
                         int indexEstadoEdificio  = findIndexEstadoUsuario(edificioSeleccionado.getIdEstado());
+                        idEstadEdificio =  edificioSeleccionado.getIdEstado();
                         spnEstadoEdificio.setSelection(indexEstadoEdificio);
                     }
                 }
@@ -203,7 +234,6 @@ public class ActualizarEdificio extends AppCompatActivity {
             try {
                 Bitmap bitmap  = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver() , path);
                 imagenEdificio = convertirImgString(bitmap);
-                Toast.makeText(getApplicationContext(), imagenEdificio, Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
