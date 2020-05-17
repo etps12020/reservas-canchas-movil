@@ -54,7 +54,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:orientation="horizontal">
+
         <ImageButton
+            android:id="@+id/btnAceptar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_check_white_24dp"
@@ -63,6 +65,7 @@
             >
         </ImageButton>
         <ImageButton
+            android:id="@+id/btnRechazar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_close_white_24dp"

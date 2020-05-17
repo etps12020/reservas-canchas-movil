@@ -24,12 +24,22 @@ import retrofit2.http.Query;
 
 public interface ReservasCanchasService {
 
-    /*RUTAS PARA MANEJO DE USUARIOS*/
+    /*RUTAS PARA MANEJO DE RESERVACIONES*/
     @GET("reservacion.php") //Generar Listado de reservas
     @Headers("Content-Type: application/json")
     Call<JsonElement> listarReservas(
             @Query("usuario") String usuario ,
             @Query("fecha") String fecha);
+
+
+    @GET("estadoReservacion.php")
+    @Headers("Content-Type: application/json")
+    Call<JsonElement> listarEstadosReservacion();
+
+    @PUT("reservacion.php")
+    Call<JsonElement> actualizarReservacion();
+
+
 
 
     /*RUTAS PARA MANEJO DE USUARIOS*/
