@@ -87,7 +87,7 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
 
                 RequestUpdateReserva requestUpdateReserva =  new RequestUpdateReserva(reserva.getNumReservacion() , userLogin.getId() ,  3 , ""  );
                 Call<JsonElement> aprobarReserva = reservasCanchasService.actualizarReservacion(requestUpdateReserva);
-                                 
+
             }
         });
 
