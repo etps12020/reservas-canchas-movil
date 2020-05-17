@@ -3,6 +3,7 @@ package com.example.databases.api.retrofit;
 import com.example.databases.api.canchas.RequestUpdateCancha;
 import com.example.databases.api.edifcios.RequestUpdateEdificio;
 import com.example.databases.api.reservas.RequestReserva;
+import com.example.databases.api.reservas.RequestUpdateReserva;
 import com.example.databases.api.usuarios.RequestLogin;
 import com.example.databases.api.usuarios.RequestUpdateUser;
 import com.example.databases.api.usuarios.RequestUpdateUserAsistente;
@@ -37,10 +38,7 @@ public interface ReservasCanchasService {
     Call<JsonElement> listarEstadosReservacion();
 
     @PUT("reservacion.php")
-    Call<JsonElement> actualizarReservacion();
-
-
-
+    Call<JsonElement> actualizarReservacion(@Body RequestUpdateReserva requestUpdateReserva);
 
     /*RUTAS PARA MANEJO DE USUARIOS*/
     @GET("login.php") //Login

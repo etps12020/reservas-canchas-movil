@@ -7,26 +7,43 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.databases.R;
+import com.example.databases.api.reservas.RequestUpdateReserva;
 import com.example.databases.api.reservas.Reserva;
+import com.example.databases.api.retrofit.ReservasCanchasClient;
+import com.example.databases.api.retrofit.ReservasCanchasService;
+import com.example.databases.api.usuarios.ResponseLogin;
+import com.example.databases.api.utilidades.Session;
 import com.example.databases.views.DetalleReserva;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
+
+import retrofit2.Call;
 
 public class ReservasAdapter  extends ArrayAdapter<Reserva> {
     private List<Reserva> reservaList;
     private Context context;
+    private ResponseLogin userLogin;
+    private ReservasCanchasService reservasCanchasService;
+    private ReservasCanchasClient reservasCanchasClient;
+
 
     public ReservasAdapter(@NonNull Context context, int resource, @NonNull List<Reserva> objects) {
         super(context, resource, objects);
         this.context =  context;
         this.reservaList = objects;
+        this.userLogin = Session.obtenerSessionUsuario(this.context);
+        retrofitInit();
     }
 
 
@@ -44,6 +61,9 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
 
         ImageButton btnAceptar = view.findViewById(R.id.btnAceptar);
         ImageButton  btnRechazar =  view.findViewById(R.id.btnRechazar);
+        TextView nombreCompleto = view.findViewById(R.id.tvNombreCompleto);
+        TextView tvFechaHora = view.findViewById(R.id.tvFechaHora);
+        TextView tvNumeroReserva= view.findViewById(R.id.tvNumeroReserva);
 
         //Click en elemento de lista
         view.setOnClickListener(new View.OnClickListener() {
@@ -63,20 +83,41 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
         btnAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,  "Aceptar Reserva" , Toast.LENGTH_SHORT).show();
+                //Actualizar a estado 3
+
+                RequestUpdateReserva requestUpdateReserva =  new RequestUpdateReserva(reserva.getNumReservacion() , userLogin.getId() ,  3 , ""  );
+                Call<JsonElement> aprobarReserva = reservasCanchasService.actualizarReservacion(requestUpdateReserva);
+                                 
             }
         });
 
         btnRechazar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Rechazar reserva", Toast.LENGTH_SHORT).show();
+                //Actualizar a estado 2
             }
         });
+
+        tvFechaHora.setText( reserva.getFechaReservacion()+" "+reserva.getHoraInicio()  );
+
+        //Si el usuario es administrador mostrara el nombre
+        if(userLogin.getIdRol()==1 || userLogin.getIdRol()==2 ){
+            nombreCompleto.setText( reserva.getNombreCompleto()    );
+        }else{
+            nombreCompleto.setText( ""   );
+        }
+
+        tvNumeroReserva.setText(  String.valueOf(  reserva.getNumReservacion() + ")"   )   );
+
 
 
 
         return view;
+    }
+
+    private void retrofitInit(){
+        reservasCanchasClient = ReservasCanchasClient.getInstance();
+        reservasCanchasService =  reservasCanchasClient.getReservasCanchasService();
     }
 }
 

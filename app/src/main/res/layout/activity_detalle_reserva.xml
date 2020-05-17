@@ -74,6 +74,7 @@
             android:layout_height="wrap_content"
             android:text="Cancha reservada"
             android:layout_marginLeft="16dp"
+            android:textColor="@color/colorPrimary"
             >
         </TextView>
         <Spinner
@@ -90,6 +91,7 @@
             android:layout_height="wrap_content"
             android:text="Estado Reserva"
             android:layout_marginLeft="16dp"
+            android:textColor="@color/colorPrimary"
             >
 
         </TextView>

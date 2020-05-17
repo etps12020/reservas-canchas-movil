@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -13,6 +15,7 @@ import com.example.databases.adapters.EstadoReservaAdapter;
 import com.example.databases.adapters.SpinnerCanchaAdapter;
 import com.example.databases.api.canchas.Cancha;
 import com.example.databases.api.reservas.EstadoReserva;
+import com.example.databases.api.reservas.RequestUpdateReserva;
 import com.example.databases.api.reservas.Reserva;
 import com.example.databases.api.retrofit.ReservasCanchasClient;
 import com.example.databases.api.retrofit.ReservasCanchasService;
@@ -34,6 +37,7 @@ public class DetalleReserva extends AppCompatActivity {
 
     private EditText edtNombre ,  edtNumeroReservacion , edtFechaHora , comentarioCancenlacion;
     private Spinner spnCancha , spnEstadosReservacion;
+    private Button btnActualizar;
     private Reserva reservaSeleccionada ;
     private ErrorObject errorObject;
     private ResponseLogin usuarioLogin;
@@ -51,6 +55,7 @@ public class DetalleReserva extends AppCompatActivity {
         edtNumeroReservacion =  findViewById(R.id.edtNumReserva);
         edtFechaHora =  findViewById(R.id.edtFecha);
         comentarioCancenlacion =  findViewById(R.id.comentarioCancenlacion);
+        btnActualizar =  findViewById(R.id.btnActualizar);
 
         spnCancha =  findViewById(R.id.spnCancha);
         spnEstadosReservacion =  findViewById(R.id.spnEstadosReservacion);
@@ -59,7 +64,7 @@ public class DetalleReserva extends AppCompatActivity {
 
 
         Intent i  =  getIntent();
-        String  jsonReserva =     i.getStringExtra("infoReserva");
+        final String  jsonReserva =     i.getStringExtra("infoReserva");
         Gson gson =  new Gson();
 
         reservaSeleccionada =  gson.fromJson(  jsonReserva ,  Reserva.class  );
@@ -71,6 +76,56 @@ public class DetalleReserva extends AppCompatActivity {
 
         listarEstadosReservaciones();
         listarCanchas();
+
+
+        btnActualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                  String comentario =  comentarioCancenlacion.getText().toString();
+                  int idEstadoReserva =  estadoReservaArrayList.get(spnEstadosReservacion.getSelectedItemPosition()).getId();
+
+
+                  if(idEstadoReserva == 5  && comentario.isEmpty() ){ //Si la reserva fue cancelada pedir comnetario de justificacion
+                    comentarioCancenlacion.setError("Campo requerido");
+                  }else {
+                      RequestUpdateReserva requestUpdateReserva = new RequestUpdateReserva(reservaSeleccionada.getNumReservacion(),
+                              usuarioLogin.getId(), idEstadoReserva, comentario);
+
+                      Call<JsonElement> actualizar =  reservasCanchasService.actualizarReservacion(requestUpdateReserva);
+
+
+                      actualizar.enqueue(new Callback<JsonElement>() {
+                          @Override
+                          public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+
+                              if(response.isSuccessful()){
+                                  String jsonString  = response.body().toString();
+                                  Toast.makeText(getApplicationContext(), jsonString, Toast.LENGTH_SHORT).show();
+//                                  if(jsonString.contains("mensaje")){ //Mensajes de Usuario inactivo o usuario no existe
+//                                      errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
+//                                      Toast.makeText(getApplicationContext(), errorObject.getMensaje(), Toast.LENGTH_SHORT).show();
+//                                  }else{
+//
+//                                  }
+//
+                              }
+
+                          }
+
+                          @Override
+                          public void onFailure(Call<JsonElement> call, Throwable t) {
+
+                          }
+                      });
+
+
+
+                  }
+
+
+            }
+        });
 
     }
 
