@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/imvEdificio"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             app:srcCompat="@drawable/ic_image_black_24dp" />
@@ -49,15 +49,13 @@
             android:hint="Descripciòn"
             android:inputType="textPersonName" />
 
-        <Spinner
-            android:id="@+id/spnEstadoEdificio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/btnAccionEdificios"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Accion" />
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorWhite"
+            android:text="Ingresar" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

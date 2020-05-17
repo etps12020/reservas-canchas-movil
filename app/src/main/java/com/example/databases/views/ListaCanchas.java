@@ -61,10 +61,9 @@ public class ListaCanchas extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(getApplicationContext(), FormularioCanchas.class);
-                i.putExtra(ContratoReservas.TablaCancha.idCancha, String.valueOf(responseCanchaList.get(position).getId()));
+                Intent i = new Intent(getApplicationContext(), ActualizarCancha.class);
+                i.putExtra("id", String.valueOf(  responseCanchaList.get(position).getCancha() )   );
                 startActivity(i);
-
             }
         });
 

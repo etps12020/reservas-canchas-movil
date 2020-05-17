@@ -8,6 +8,9 @@ public class ResponseCancha {
     @SerializedName("id")
     @Expose
     private Integer id;
+    @SerializedName("cancha")
+    @Expose
+    private Integer cancha;
     @SerializedName("nombre")
     @Expose
     private String nombre;
@@ -70,11 +73,19 @@ public class ResponseCancha {
         this.nombre = nombre;
         this.horaInicio= horaInicio;
         this.descripcion = descripcion;
-this.horaFin=horaFin;
-this.edificio=edificio;
-this.tipo=tipo;
+        this.horaFin=horaFin;
+        this.edificio=edificio;
+        this.tipo=tipo;
         this.estado = estado;
         this.fechaCreacion = fechaCreacion;
+    }
+
+    public Integer getCancha() {
+        return cancha;
+    }
+
+    public void setCancha(Integer cancha) {
+        this.cancha = cancha;
     }
 
     public Integer getId() {

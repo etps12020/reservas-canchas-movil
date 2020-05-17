@@ -58,8 +58,8 @@ public class ListaEdificios extends AppCompatActivity {
         listaEdificios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent( getApplicationContext() , FormularioUsuarios.class  );
-                i.putExtra(ContratoReservas.TablaEdificio.idEdificio , String.valueOf(responseEdificioList.get(position).getId()) );
+                Intent i = new Intent( getApplicationContext() , ActualizarEdificio.class  );
+                i.putExtra("id" , String.valueOf(responseEdificioList.get(position).getId()) );
                 startActivity(i);
 
             }

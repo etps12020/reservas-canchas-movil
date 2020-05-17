@@ -299,6 +299,7 @@ public class ActualizarUsuario extends AppCompatActivity {
         reservasCanchasClient = ReservasCanchasClient.getInstance();
         reservasCanchasService =  reservasCanchasClient.getReservasCanchasService();
     }
+
     private int findIndexOfEstado(int idEstado){
         int index=0;
         for (EstadoUsuario estadoUsuario: estadoUsuariosList  ) {

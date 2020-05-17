@@ -108,7 +108,7 @@ public interface ReservasCanchasService {
 
 
     //edificios
-    @GET("edificio.php") //Obtener usuario especifico
+    @GET("edificio.php") //Obtener edificio especifico
     @Headers("Content-Type: application/json")
     Call<JsonElement> obtenerEdificio(@Query("id")   String id );
 
@@ -144,7 +144,7 @@ public interface ReservasCanchasService {
     //canchas
     @GET("cancha.php") //Obtener usuario especifico
     @Headers("Content-Type: application/json")
-    Call<JsonElement> obtenerCancha(@Query("id")   String id );
+    Call<JsonElement> obtenerCancha(@Query("cancha")   String id );
 
     @GET("estadoCancha.php") //Listar todos los roles de los usuarios
     @Headers("Content-Type: application/json")
@@ -153,6 +153,10 @@ public interface ReservasCanchasService {
     @GET("cancha.php") //Listar usuarios existentes
     @Headers("Content-Type: application/json")
     Call<JsonElement> listarCachas();
+
+    @GET("horarioReservacion.php")
+    @Headers("Content-Type: application/json")
+    Call<JsonElement> listarHorariosCanchas();
 
     @GET("tipoCancha.php") //Listar usuarios existentes
     @Headers("Content-Type: application/json")
@@ -164,8 +168,8 @@ public interface ReservasCanchasService {
             @Field("nombre") String nombre ,
             @Field("descripcion") String descripcion ,
             @Field("telefono") String telefono ,
-            @Field("horaInicio") String horaInicio ,
-            @Field("horaFin") String horaFin ,
+            @Field("horaInicio") int horaInicio ,
+            @Field("horaFin") int horaFin ,
             @Field("idEdificio") int idEdificio ,
             @Field("idTipoCancha") int idTipoCancha ,
             @Field("imagen") String imagen
@@ -179,13 +183,15 @@ public interface ReservasCanchasService {
             @Field("nombre") String nombre  ,
             @Field("descripcion") String descripcion  ,
             @Field("telefono") String telefono ,
-            @Field("horaInicio") String horaInicio ,
-            @Field("horaFin") String horaFin ,
+            @Field("horaInicio") int horaInicio ,
+            @Field("horaFin") int horaFin ,
             @Field("idEdificio") int idEdificio ,
             @Field("idTipoCancha") int idTipoCancha ,
             @Field("estado") int estado ,
             @Field("imagen") String imagen
     );
+
+
 
 
 

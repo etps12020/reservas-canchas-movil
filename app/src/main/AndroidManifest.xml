@@ -4,7 +4,7 @@
     android:targetSandboxVersion="1">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.ActualizarUsuario"></activity>
+        <activity android:name=".views.ActualizarEdificio"></activity>
+        <activity android:name=".views.ActualizarCancha" />
+        <activity android:name=".views.ActualizarUsuario" />
         <activity android:name=".views.HorarioReserva" />
         <activity android:name=".views.RealizarReserva" />
         <activity android:name=".views.DetalleReserva" />
