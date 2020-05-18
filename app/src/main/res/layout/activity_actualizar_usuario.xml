@@ -120,7 +120,7 @@
                     android:layout_marginTop="14dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="14dp"
-                    android:hint="Telefono">
+                    android:hint="Contraseña">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtContrasena"
@@ -138,7 +138,7 @@
                     android:layout_marginTop="14dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="14dp"
-                    android:hint="Telefono">
+                    android:hint="Confirmar Contraseña">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtConfirmacionContrasenia"
