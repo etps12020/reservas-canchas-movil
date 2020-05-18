@@ -8,8 +8,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -25,7 +25,8 @@
                     android:id="@+id/imvEdificio"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    app:srcCompat="@drawable/ic_image_black_24dp" />
+                    app:srcCompat="@drawable/ic_image_black_24dp"
+                    android:contentDescription="TODO" />
 
                 <TextView
                     android:id="@+id/textView6"
