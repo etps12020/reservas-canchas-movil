@@ -46,7 +46,7 @@ public class CanchasAdapter extends ArrayAdapter<ResponseCancha> {
 
         ImageView imagenCard =  view.findViewById(R.id.imagenCard);
         user.setText(cancha.getNombre());
-        direccion.setText(  "Tipo: "+cancha.getTipo()+"\n Horario: "+cancha.getHoraInicio()+" "+cancha.getHoraFin()   );
+        direccion.setText(  "Ubicacion: "+cancha.getEdificio()+"\nTipo: "+cancha.getTipo()+"\nHorario: "+cancha.getHoraInicio()+"AM  = "+cancha.getHoraFin()+" PM"   );
 
 
         byte[] decodedString = Base64.decode(  cancha.getImagen() , Base64.DEFAULT);

@@ -90,53 +90,47 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-
-
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_margin="16dp"
-                    >
-                    <EditText
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="14dp"
+                    android:hint="Hora Apertura">
+
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtHoraInicio"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
+                        android:drawableLeft="@drawable/ic_access_time_black_24dp"
                         android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:text="07:00:00 AM"
                         android:enabled="false"
-                        android:layout_weight="5"
-                        android:inputType="textPersonName" />
+                        />
 
-                    <ImageButton
-                        android:id="@+id/imbHoraInicio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/ic_access_time_black_24dp"
-                        android:text="Button" />
-                </LinearLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_margin="16dp"
-                    >
-                    <EditText
-                        android:id="@+id/edtHoraFin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:enabled="false"
-                        android:layout_weight="5"
-                        android:inputType="textPersonName" />
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="14dp"
+                    android:hint="Hora cierre">
 
-                    <ImageButton
-                        android:id="@+id/imbHoraFin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/ic_access_time_black_24dp"
-                        android:text="Button" />
-                </LinearLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtHoraFin"
+                        android:layout_width="match_parent"
+                        android:drawableLeft="@drawable/ic_access_time_black_24dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:text="18:00:00 PM"
+                        android:enabled="false"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
 
 

@@ -54,7 +54,7 @@ public class FormularioCanchas extends AppCompatActivity {
     private ReservasCanchasClient reservasCanchasClient;
     private Spinner spinner, spinner2,spinner3;
     private SpinnerDialog spndHoraInicio ,  spndHoraFin;
-    private ImageButton imbHoraInicio , imbHoraFin;
+
 
     private ArrayList<Horario> horarioArrayList;
     private ArrayList<Edificio> edificioArrayList;
@@ -87,15 +87,13 @@ public class FormularioCanchas extends AppCompatActivity {
         spnEdificio= findViewById(R.id.spnEdificio);
         spnTipoCancha= findViewById(R.id.spnTipoCancha);
         btnCrear   =  findViewById(R.id.btnCrear);
-        imbHoraInicio =  findViewById(R.id.imbHoraInicio);
-        imbHoraFin =  findViewById(R.id.imbHoraFin);
 
         horarios =  new ArrayList<>();
         retrofitInit();
 
         cargarTiposCanchas();
         cargarEdificios();
-        cargarHoras();
+//        cargarHoras();
 
 
         getSupportActionBar().setTitle(title);
@@ -133,22 +131,7 @@ public class FormularioCanchas extends AppCompatActivity {
             }
         });
 
-        imbHoraInicio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                spndHoraInicio.showSpinerDialog();
-            }
-        });
-
-        imbHoraFin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                spndHoraFin.showSpinerDialog();
-
-            }
-        });
 
         imvCanha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,9 +165,7 @@ public class FormularioCanchas extends AppCompatActivity {
                         edtHoraFin.setError("Seleccione una hora");
                     }
                 }
-                else if(indexHoraFin<=indexHoraInicio){
-                    Toast.makeText(getApplicationContext(), "Horario invalido", Toast.LENGTH_SHORT).show();
-                }else if(imagen.isEmpty()){
+                else if(imagen.isEmpty()){
                     Toast.makeText(getApplicationContext(), "Seleccione una imagen", Toast.LENGTH_SHORT).show();
                 }else{
 
@@ -193,8 +174,8 @@ public class FormularioCanchas extends AppCompatActivity {
                             nombre ,
                             descripcion,
                             telefono,
-                            horarioArrayList.get(indexHoraInicio).getHoraInicio(),
-                            horarioArrayList.get(indexHoraFin).getHoraFin(),
+                            "07:00:00",
+                            "18:00:00",
                             edificioArrayList.get(spnEdificio.getSelectedItemPosition()).getId(),
                             tipoCanchaArrayList.get(spnTipoCancha.getSelectedItemPosition()).getId()  ,
                             imagen

@@ -59,7 +59,7 @@ public class ActualizarCancha extends AppCompatActivity {
     private ReservasCanchasService reservasCanchasService;
     private ReservasCanchasClient reservasCanchasClient;
     private Button btnActualizar;
-    private ImageButton imbHoraInicio , imbHoraFin;
+
 
     private ArrayList<Edificio> edificioArrayList;
     private ArrayList<TipoCancha> tipoCanchaArrayList;
@@ -85,8 +85,6 @@ public class ActualizarCancha extends AppCompatActivity {
         edtHoraFin =  findViewById(R.id.edtHoraFin);
         imvCancha =  findViewById(R.id.imvCancha);
         btnActualizar =   findViewById(R.id.btnActualizar);
-        imbHoraInicio =  findViewById(R.id.imbHoraInicio);
-        imbHoraFin =  findViewById(R.id.imbHoraFin);
 
         spnEdificio =  findViewById(R.id.spnEdificio);
         spnTipoCancha = findViewById(R.id.spnTipoCancha);
@@ -144,19 +142,19 @@ public class ActualizarCancha extends AppCompatActivity {
         });
 
 
-        imbHoraInicio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                spinnerDialogHoraInicio.showSpinerDialog();
-            }
-        });
-
-        imbHoraFin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                spinnerDialogHoraFin.showSpinerDialog();
-            }
-        });
+//        imbHoraInicio.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                spinnerDialogHoraInicio.showSpinerDialog();
+//            }
+//        });
+//
+//        imbHoraFin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                spinnerDialogHoraFin.showSpinerDialog();
+//            }
+//        });
 
 
         btnActualizar.setOnClickListener(new View.OnClickListener() {
@@ -191,8 +189,8 @@ public class ActualizarCancha extends AppCompatActivity {
                         nombre ,
                         descripcion ,
                         telefono ,
-                        horarioArrayList.get(indexHoraInicio).getHoraInicio() ,
-                        horarioArrayList.get(indexHoraFin).getHoraFin() ,
+                        "07:00:00" ,
+                        "18:00:00",
                         edificioArrayList.get(spnEdificio.getSelectedItemPosition()).getId() ,
                         tipoCanchaArrayList.get( spnTipoCancha.getSelectedItemPosition()  ).getId() ,
                         estadoCanchaArrayList.get( spnEstadoCancha.getSelectedItemPosition()  ).getId(),
@@ -323,11 +321,6 @@ public class ActualizarCancha extends AppCompatActivity {
                             horas.add(horario.getHoraInicio()+" "+horario.getHoraFin());
                         }
 
-                        //Indice de la hora Inicial
-                        indexHoraInicio =  findIndexTextHorariosInicio(  canchaSeleccionada.getHoraInicio()  );
-                        //Indice de la hora final
-                        indexHoraFin = findIndexHorariosFin( canchaSeleccionada.getHoraFin()  );
-
                     }
                 }
             @Override
@@ -369,7 +362,7 @@ public class ActualizarCancha extends AppCompatActivity {
                         imvCancha.setImageBitmap(decodedByte);
 
                         //Obtener horarios de canchas
-                        obtenerHorariosCanchas();
+                        //obtenerHorariosCanchas();
                         //Obtener Edificios Canchas
                         obtenerEdificios();
                         //Obtener Tipos canchas
