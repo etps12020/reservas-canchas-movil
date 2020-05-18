@@ -64,8 +64,6 @@ public interface ReservasCanchasService {
             @Field("rol") long rol
     );
 
-
-
     @PUT("usuario.php") //Actualizacion de usuarios para Administradores
     Call<JsonElement> actualizarUsuario(
             @Body RequestUpdateUser requestUpdateUser

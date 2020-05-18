@@ -1,6 +1,7 @@
 package com.example.databases;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -9,10 +10,14 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.ClipData;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.databases.api.usuarios.ResponseLogin;
 import com.example.databases.api.utilidades.Session;
@@ -43,7 +48,7 @@ public class NavigationDrawer extends AppCompatActivity {
         NavigationView navigationView =  findViewById(R.id.navigationView);
         navigationView.setItemIconTintList(null);
 
-        NavController navController  = Navigation.findNavController(this , R.id.navHostFragment);
+        final NavController navController  = Navigation.findNavController(this , R.id.navHostFragment);
         NavigationUI.setupWithNavController(navigationView , navController);
 
         View headerView = navigationView.getHeaderView(0);
@@ -52,7 +57,21 @@ public class NavigationDrawer extends AppCompatActivity {
         navUsername.setText(userLogin.getNombre());
         navMailUser.setText(userLogin.getCorreo());
 
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id=item.getItemId();
 
+                if (id==R.id.menuCerrarSesion){
+                    finish();
+                }
+                //This is for maintaining the behavior of the Navigation view
+                NavigationUI.onNavDestinationSelected(item,navController);
+                drawerLayout.closeDrawer(GravityCompat.START);
+
+                return false;
+            }
+        });
 
     }
 

@@ -17,6 +17,7 @@ import com.example.databases.api.reservas.Horario;
 import com.example.databases.api.reservas.RequestReserva;
 import com.example.databases.api.retrofit.ReservasCanchasClient;
 import com.example.databases.api.retrofit.ReservasCanchasService;
+import com.example.databases.api.usuarios.Duis;
 import com.example.databases.api.usuarios.ResponseLogin;
 import com.example.databases.api.utilidades.ErrorObject;
 import com.example.databases.api.utilidades.Session;
@@ -122,6 +123,7 @@ public class HorarioReserva extends AppCompatActivity {
             @Override
             public void onFailure(Call<JsonElement> call, Throwable t) {
 
+                Toast.makeText(getApplicationContext() ,   t.getMessage() , Toast.LENGTH_SHORT ).show();
             }
         });
     }

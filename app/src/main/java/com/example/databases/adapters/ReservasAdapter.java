@@ -29,6 +29,8 @@ import org.w3c.dom.Text;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ReservasAdapter  extends ArrayAdapter<Reserva> {
     private List<Reserva> reservaList;
@@ -64,7 +66,6 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
         TextView nombreCompleto = view.findViewById(R.id.tvNombreCompleto);
         TextView tvFechaHora = view.findViewById(R.id.tvFechaHora);
         TextView tvNumeroReserva= view.findViewById(R.id.tvNumeroReserva);
-
         //Click en elemento de lista
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +89,19 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
                 RequestUpdateReserva requestUpdateReserva =  new RequestUpdateReserva(reserva.getNumReservacion() , userLogin.getId() ,  3 , ""  );
                 Call<JsonElement> aprobarReserva = reservasCanchasService.actualizarReservacion(requestUpdateReserva);
 
+                aprobarReserva.enqueue(new Callback<JsonElement>() {
+                    @Override
+                    public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                        String jsonString  = response.body().toString();
+                        Toast.makeText(context ,   jsonString , Toast.LENGTH_SHORT  ).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonElement> call, Throwable t) {
+
+                    }
+                });
+
             }
         });
 
@@ -95,6 +109,24 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
             @Override
             public void onClick(View v) {
                 //Actualizar a estado 2
+
+                RequestUpdateReserva requestUpdateReserva =  new RequestUpdateReserva(reserva.getNumReservacion() , userLogin.getId() ,  2 , ""  );
+                Call<JsonElement> rechazarReserva = reservasCanchasService.actualizarReservacion(requestUpdateReserva);
+                rechazarReserva.enqueue(new Callback<JsonElement>() {
+                    @Override
+                    public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                        String jsonString  = response.body().toString();
+                        Toast.makeText(context ,   jsonString , Toast.LENGTH_SHORT  ).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonElement> call, Throwable t) {
+
+                    }
+                });
+
+
+
             }
         });
 

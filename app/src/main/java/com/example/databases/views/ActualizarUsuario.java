@@ -1,7 +1,9 @@
 package com.example.databases.views;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -51,6 +53,7 @@ public class ActualizarUsuario extends AppCompatActivity {
     private RequestUpdateUserAsistente requestUpdateUserAsistente;
     private Button btnActualizar;
     int estadoUsuario ,  rolUsuario;
+    private AlertDialog.Builder builder;
 
 
     @Override
@@ -75,11 +78,34 @@ public class ActualizarUsuario extends AppCompatActivity {
         spnEstado =  findViewById(R.id.spnEstado);
 
 
+        builder= new AlertDialog.Builder(this);
+        builder.setTitle("Actualizacion de datos");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+
+
+
         retrofitInit();
         final Intent i = getIntent();
         obtenerInformacionUsuario(i.getStringExtra("id"));
 
         usuarioLogin = Session.obtenerSessionUsuario(getApplicationContext());
+
+
+        if(usuarioLogin.getIdRol()==2){
+            edtNombre.setEnabled(false);
+            edtDui.setEnabled(false);
+            edtCorreo.setEnabled(false);
+            edtCarnet.setEnabled(false);
+            spnEstado.setEnabled(false);
+            spnRol.setEnabled(false);
+        }
 
         spnRol.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -116,15 +142,15 @@ public class ActualizarUsuario extends AppCompatActivity {
                 String confirmacionConltrasenia =edtConfirmacionContrasenia.getText().toString();
 
                 if(nombre.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "El campo nombre es requerido", Toast.LENGTH_SHORT).show();
+                    edtNombre.setError("El campo nombre es requerido");
                 }else if(correo.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "El campo correo es requerido", Toast.LENGTH_SHORT).show();
+                    edtDui.setError("El campo correo es requerido");
                 }else if(dui.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "El campo dui es requerido", Toast.LENGTH_SHORT).show();
+                    edtDui.setError("El campo dui es requerido");
                 }else if(carnet.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "El campo carnet es requerido", Toast.LENGTH_SHORT).show();
+                    edtCarnet.setError("El campo carnet es requerido");
                 }else if(telefono.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "El campo telefono es requerido", Toast.LENGTH_SHORT).show();
+                    edtTelefono.setError("El campo telefono es requerido");
                 } else if(!contrasenia.equals(confirmacionConltrasenia)){
                     Toast.makeText(getApplicationContext(), "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
                 }else{
@@ -137,7 +163,12 @@ public class ActualizarUsuario extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                                 String jsonString  = response.body().toString();
-                                Toast.makeText(getApplicationContext(), jsonString, Toast.LENGTH_LONG).show();
+                                if(jsonString.contains("mensaje")){ //Mensaje en caso de falta de datos
+                                    errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
+                                    builder.setMessage(errorObject.getMensaje());
+                                    AlertDialog alertDialog = builder.create();
+                                    alertDialog.show();
+                                }
                             }
 
                             @Override
@@ -156,7 +187,12 @@ public class ActualizarUsuario extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                                 String jsonString  = response.body().toString();
-                                Toast.makeText(getApplicationContext(), jsonString, Toast.LENGTH_SHORT).show();
+                                if(jsonString.contains("mensaje")){ //Mensaje en caso de falta de datos
+                                    errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
+                                    builder.setMessage(errorObject.getMensaje());
+                                    AlertDialog alertDialog = builder.create();
+                                    alertDialog.show();
+                                }
                             }
                             @Override
                             public void onFailure(Call<JsonElement> call, Throwable t) {
@@ -184,7 +220,6 @@ public class ActualizarUsuario extends AppCompatActivity {
                 if(response.isSuccessful()){
 
                     String jsonString  = response.body().toString();
-
 
                     if(jsonString.contains("mensaje")){ //Mensajes de Usuario inactivo o usuario no existe
                         errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);

@@ -1,6 +1,8 @@
 package com.example.databases.api.usuarios;
 
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -191,5 +193,9 @@ public class ResponseCancha {
         this.imagen = imagen;
     }
 
-
+    @NonNull
+    @Override
+    public String toString() {
+        return this.getNombre();
+    }
 }

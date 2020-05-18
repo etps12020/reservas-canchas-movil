@@ -65,6 +65,8 @@
             android:src="@drawable/ic_check_white_24dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
+            android:background="@color/colorTrendingEnd"
+            android:layout_margin="16dp"
             >
         </ImageButton>
         <ImageButton
@@ -74,6 +76,8 @@
             android:src="@drawable/ic_close_white_24dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
+            android:background="@color/colorPastelRed"
+            android:layout_margin="16dp"
             >
         </ImageButton>
     </LinearLayout>

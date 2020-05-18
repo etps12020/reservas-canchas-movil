@@ -53,7 +53,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtDui"
                         android:layout_width="match_parent"
-                        android:drawableLeft="@drawable/ic_person_black"
+                        android:drawableLeft="@drawable/ic_credit_card_black_24dp"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName" />
 
@@ -71,7 +71,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtCarnet"
                         android:layout_width="match_parent"
-                        android:drawableLeft="@drawable/ic_person_black"
+                        android:drawableLeft="@drawable/ic_credit_card_black_24dp"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName" />
 
@@ -89,7 +89,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtCorreo"
                         android:layout_width="match_parent"
-                        android:drawableLeft="@drawable/ic_person_black"
+                        android:drawableLeft="@drawable/ic_email_black_24dp"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName" />
 
@@ -107,7 +107,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtTelefono"
                         android:layout_width="match_parent"
-                        android:drawableLeft="@drawable/ic_person_black"
+                        android:drawableLeft="@drawable/ic_local_phone_black_24dp"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName" />
 
@@ -125,7 +125,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtContrasena"
                         android:layout_width="match_parent"
-                        android:drawableLeft="@drawable/ic_person_black"
+                        android:drawableLeft="@drawable/ic_lock_black"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword" />
 
@@ -143,13 +143,22 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtConfirmacionContrasenia"
                         android:layout_width="match_parent"
-                        android:drawableLeft="@drawable/ic_person_black"
+                        android:drawableLeft="@drawable/ic_lock_black"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Rol usuario"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_marginLeft="16dp"
+                    >
+
+                </TextView>
                 <Spinner
                     android:id="@+id/spnRol"
                     android:layout_width="match_parent"
@@ -157,6 +166,13 @@
                     android:layout_margin="16dp"
                     tools:listitem="@layout/custom_simple_spinner_item" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Estado usuario"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_marginLeft="16dp"
+                    />
                 <Spinner
                     android:id="@+id/spnEstado"
                     android:layout_width="match_parent"

@@ -2,6 +2,7 @@ package com.example.databases.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,9 +13,13 @@ import android.widget.Toast;
 
 import com.example.databases.MainActivity;
 import com.example.databases.R;
+import com.example.databases.adapters.CanchasAdapter;
+import com.example.databases.adapters.SpinnerCanchaAdapter;
 import com.example.databases.api.retrofit.ReservasCanchasClient;
 import com.example.databases.api.retrofit.ReservasCanchasService;
 import com.example.databases.api.tiposReservas.TipoReserva;
+import com.example.databases.api.usuarios.Duis;
+import com.example.databases.api.usuarios.ResponseCancha;
 import com.example.databases.api.usuarios.ResponseLogin;
 import com.example.databases.api.utilidades.ErrorObject;
 import com.example.databases.api.edificios.Edificio;
@@ -25,7 +30,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import in.galaxyofandroid.spinerdialog.OnSpinerItemClick;
@@ -40,11 +47,13 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
     private ArrayList<Cancha> canchas; //Lista dinamica de canchas
     private ArrayList<Edificio> edificios;//Lista dinamica de edificios
     private ArrayList<TipoReserva> tiposReservas; //Lista de tipos de reservas
+    private ArrayList<Duis> duisArrayList;
     private ArrayList<String>  duisUsuarios  , nombresCanchas , nombresEdificios , nombresTipoReservas; //Lista de string para nombres de edificios, edificios, canchas y duis de usuarios
     private CalendarView calendarViewReserva; //Calendario para dia de reserva
     private SpinnerDialog spinnerDialogUsuarios  , spinnerDialogCanchas  , spinnerDialogEdificios ,spinnerDialogTipoReserva ;//Searchables Spinners controls
+    private Spinner spnCancha;
     private EditText edtUsuario , edtNombreEdificio  , edtCancha  , edtTipoReservacion ; //Campos de texto solo para presentacion
-    private String fecha= "2020-05-15"; //Fecha quemada //Fecha de reserva
+    private String fecha; //Fecha quemada //Fecha de reserva
     private String idCancha ="2"; //Cancha quemada //Id de cancha
     private String idCanchaSeleccionada , idEdificioSeleccionado , duiUsuario , idTipoReserva;
 
@@ -64,7 +73,7 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
 
         edtUsuario =  findViewById(R.id.edtUsuario);
         edtNombreEdificio =  findViewById(R.id.edtNombreEdificio);
-        edtCancha = findViewById(R.id.edtCancha);
+        spnCancha =  findViewById(R.id.spnCancha);
         edtTipoReservacion =  findViewById(R.id.edtTipoReservacion);
 
 
@@ -76,7 +85,6 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
 
 
         edtUsuario.setOnClickListener(this); //Evento de busqueda de usuarios
-        edtCancha.setOnClickListener(this); //Evento de busqueda de canchas
         edtNombreEdificio.setOnClickListener(this); //Evento de busqueda de edificios
         edtTipoReservacion.setOnClickListener(this);
 
@@ -90,15 +98,6 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
             }
         });
 
-        spinnerDialogCanchas =new SpinnerDialog( RealizarReserva.this , nombresCanchas , "Seleccione la cancha" );
-        spinnerDialogCanchas.bindOnSpinerListener(new OnSpinerItemClick() {
-            @Override
-            public void onClick(String cancha, int i) {
-                idCancha = String.valueOf(buscarIdCancha(cancha));
-//                Toast.makeText(getApplicationContext(), idCancha, Toast.LENGTH_SHORT).show();
-                edtCancha.setText(cancha);
-            }
-        });
 
         spinnerDialogEdificios = new SpinnerDialog( RealizarReserva.this ,    nombresEdificios , "Seleccione el edificio");
         spinnerDialogEdificios.bindOnSpinerListener(new OnSpinerItemClick() {
@@ -107,6 +106,7 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
                 idEdificioSeleccionado =  String.valueOf( buscarIdEdificio(edificio)   );
 //                Toast.makeText(getApplicationContext(), idEdificioSeleccionado, Toast.LENGTH_SHORT).show();
                 edtNombreEdificio.setText(  edificio );
+                listarCanchas( String.valueOf(   edificios.get(i).getId()    )   );
             }
         });
 
@@ -126,12 +126,22 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
         calendarViewReserva.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
 
-                Intent i = new  Intent(  getApplicationContext() , HorarioReserva.class  );
-                i.putExtra("idCancha" , idCancha);
-                i.putExtra("fecha" , fecha );
-                i.putExtra( "idTipo"  , idTipoReserva   );
-                i.putExtra( "dui" , duiUsuario);
-                startActivity(i);
+
+                Calendar calendar =  Calendar.getInstance();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                fecha  = simpleDateFormat.format(calendar.getTime());  //Utilizara como fecha
+
+                if(canchas.size() ==0 ){
+                    Toast.makeText(getApplicationContext(), "Seleccione una cancha", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent i = new  Intent(  getApplicationContext() , HorarioReserva.class  );
+                    i.putExtra("idCancha" ,  String.valueOf(canchas.get( spnCancha.getSelectedItemPosition()).getCancha())   );
+                    i.putExtra("fecha" , fecha );
+                    i.putExtra( "idTipo"  , idTipoReserva   );
+                    i.putExtra( "dui" , duiUsuario);
+                    startActivity(i);
+                }
+
             }
         });
 
@@ -146,7 +156,7 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
 
     private void cargarUsuarios(){
 
-        String accion = "buscar";
+        String accion = "dui";
         String idUsuario= String.valueOf(  usuarioLogin.getId()    );
 
         final Call<JsonElement>  listarUsuarios   =       reservasCanchasService.listarUsuarios(idUsuario , accion);
@@ -163,10 +173,10 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
                         errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
                         Toast.makeText(getApplicationContext(), errorObject.getMensaje(), Toast.LENGTH_SHORT).show();
                     }else{
-                        usuariosList = new Gson().fromJson(jsonString , new TypeToken<List<ResponseLogin>>(){}.getType() );
-                        if(usuariosList.size()>0){
-                            for(int i=0;  i<usuariosList.size() ; i++){
-                                duisUsuarios.add(  usuariosList.get(i).getDui()  );
+                        duisArrayList = new Gson().fromJson(jsonString , new TypeToken<List<Duis>>(){}.getType() );
+                        if(duisArrayList.size()>0){
+                            for(int i=0;  i<duisArrayList.size() ; i++){
+                                duisUsuarios.add(  duisArrayList.get(i).getDui()  );
                             }
                             spinnerDialogUsuarios.showSpinerDialog();
                         }
@@ -195,14 +205,13 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
 
                         if(!existsError(jsonString)){
                             canchas = new Gson().fromJson(jsonString , new TypeToken<List<Cancha>>(){}.getType() );
-                            if(canchas.size() > 0 ){
-                                for(int i= 0  ; i < canchas.size() ; i++){
-                                    nombresCanchas.add(  canchas.get(i).getNombre());
-                                }
-                                spinnerDialogCanchas.showSpinerDialog();
-                            }
-
+                        }else{
+                            canchas = new ArrayList<>();
                         }
+
+                        SpinnerCanchaAdapter canchasAdapter =  new SpinnerCanchaAdapter( getApplicationContext(), R.layout.support_simple_spinner_dropdown_item ,  canchas   );
+                        spnCancha.setAdapter(canchasAdapter);
+
                     }
             }
             @Override
@@ -321,10 +330,6 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
             }else{
                 spinnerDialogUsuarios.showSpinerDialog();
             }
-
-        }else if(v.getId() == R.id.edtCancha  ){
-
-                listarCanchas(idEdificioSeleccionado);
 
         }else if(v.getId() == R.id.edtNombreEdificio){
 
