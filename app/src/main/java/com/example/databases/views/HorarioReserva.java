@@ -157,8 +157,6 @@ public class HorarioReserva extends AppCompatActivity {
             realizarReserva= reservasCanchasService.ingresarReserva(fecha , usuarioActual.getId() , null  , duiUsuario , idHorario , idCancha , idTipoReserva );
         }
 
-
-
         realizarReserva.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
@@ -167,9 +165,23 @@ public class HorarioReserva extends AppCompatActivity {
                     //Toast.makeText(getApplicationContext(), "Reserva realizada con exito", Toast.LENGTH_SHORT).show();
                     String jsonString  = response.body().toString();
                     errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
-                    builder.setMessage(errorObject.getMensaje() );
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
+
+                    boolean redireccionar = false;
+
+                    //Si la reserva se realizo con exito
+                    if(errorObject.getMensaje()=="Reservacion registrada por Asistente" || errorObject.getMensaje()=="Reservacion registrada por usuario"
+                    ){
+                        redireccionar = true;
+                    }
+                        Toast.makeText(getApplicationContext() , errorObject.getMensaje() , Toast.LENGTH_LONG).show();
+
+                        if(redireccionar){
+                            Intent intent = new Intent( getApplicationContext() , ListaReservas.class  );
+                            startActivity(intent);
+                            finish();
+                        }
+
+
                 }
             }
 

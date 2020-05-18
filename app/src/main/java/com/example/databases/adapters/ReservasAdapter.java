@@ -3,6 +3,7 @@ package com.example.databases.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +70,7 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
         TextView nombreCompleto = view.findViewById(R.id.tvNombreCompleto);
         TextView tvFechaHora = view.findViewById(R.id.tvFechaHora);
         TextView tvNumeroReserva= view.findViewById(R.id.tvNumeroReserva);
+        TextView estadoReserva =  view.findViewById(R.id.estadoReserva);
         //Click en elemento de lista
 
 
@@ -142,7 +144,23 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
             }
         });
 
-        tvFechaHora.setText( reserva.getFechaReservacion()+" "+reserva.getHoraInicio()  );
+        tvFechaHora.setText( "Fecha: "+reserva.getFechaReservacion()+"\nHora: "+reserva.getHoraInicio() );
+        estadoReserva.setText(reserva.getEstado());
+
+        if(reserva.getIdEstado()==1){
+            estadoReserva.setTextColor(Color.parseColor("#00AAE4") );
+        }else if(reserva.getIdEstado()==2){
+            estadoReserva.setTextColor(Color.parseColor("#EFA94A") );
+        }else if(reserva.getIdEstado()==3){
+            estadoReserva.setTextColor(Color.parseColor("#96C93D") );
+        }else if(reserva.getIdEstado()==5 || reserva.getIdEstado()==5){
+            estadoReserva.setTextColor(Color.parseColor("#FF6961") );
+        }else if(reserva.getIdEstado()==6){
+            estadoReserva.setTextColor(Color.parseColor("#5D9B9B") );
+        }else{
+            estadoReserva.setTextColor(Color.parseColor("#00574B") );
+        }
+
 
         //Si el usuario es administrador mostrara el nombre
         if(userLogin.getIdRol()==1 || userLogin.getIdRol()==2 ){
@@ -151,7 +169,7 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
             nombreCompleto.setText( ""   );
         }
 
-        tvNumeroReserva.setText(  String.valueOf(  reserva.getNumReservacion() + ")"   )   );
+        tvNumeroReserva.setText(  String.valueOf(  reserva.getNumReservacion() + ") "   )   );
 
         if(userLogin.getIdRol()==3){
             btnAceptar.setVisibility(View.GONE);
