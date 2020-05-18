@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -61,6 +62,7 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
     private ReservasCanchasClient reservasCanchasClient;  //Clientee retrofit
     private ResponseLogin usuarioLogin;
     private ErrorObject errorObject=  null; //Objecto de error
+    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,7 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
         edtNombreEdificio =  findViewById(R.id.edtNombreEdificio);
         spnCancha =  findViewById(R.id.spnCancha);
         edtTipoReservacion =  findViewById(R.id.edtTipoReservacion);
-
+        linearLayout =  findViewById(R.id.linearLayout);
 
         duisUsuarios  = new ArrayList<>();
         nombresCanchas = new ArrayList<>();
@@ -122,6 +124,9 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
         });
 
 
+        if(usuarioLogin.getIdRol()==3){
+            linearLayout.setVisibility(LinearLayout.GONE);
+        }
 
         calendarViewReserva.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {

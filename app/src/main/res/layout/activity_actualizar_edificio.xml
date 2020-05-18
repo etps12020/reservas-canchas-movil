@@ -25,29 +25,59 @@
         android:gravity="center"
         android:text="@string/seleccion_imagen" />
 
-    <EditText
-        android:id="@+id/edtNombreEdificio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Nombre"
-        android:inputType="textPersonName" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="14dp"
+            android:hint="Nombre">
 
-    <EditText
-        android:id="@+id/edtDireccion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Direcciòn"
-        android:inputType="textPersonName" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtNombreEdificio"
+                android:layout_width="match_parent"
+                android:drawableLeft="@drawable/ic_location_city_black_24dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/edtDescripcion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Descripciòn"
-        android:inputType="textPersonName" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="14dp"
+            android:hint="Direcciòn">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtDireccion"
+                android:layout_width="match_parent"
+                android:drawableLeft="@drawable/ic_location_on_black_24dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="14dp"
+            android:hint="Descripciòn">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtDescripcion"
+                android:layout_width="match_parent"
+                android:drawableLeft="@drawable/ic_description_black_24dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
     <Spinner
         android:id="@+id/spnEstadoEdificio"

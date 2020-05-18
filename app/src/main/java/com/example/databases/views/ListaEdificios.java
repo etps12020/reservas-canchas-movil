@@ -42,6 +42,7 @@ public class ListaEdificios extends AppCompatActivity {
     private ReservasCanchasClient reservasCanchasClient;
     private ErrorObject errorObject;
     private ArrayList<ResponseEdificio> responseEdificioList;
+    private String title="Edificios";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,8 @@ public class ListaEdificios extends AppCompatActivity {
         retrofitInit();
         //Peticion para listar usuarios
         listarEdificios();
+
+        getSupportActionBar().setTitle(title);
 
         listaEdificios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -117,4 +120,10 @@ public class ListaEdificios extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent =  new Intent(getApplicationContext() , NavigationDrawer.class);
+        startActivity(intent);
+        finish();
+    }
 }

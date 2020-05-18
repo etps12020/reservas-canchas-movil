@@ -1,8 +1,10 @@
 package com.example.databases.views;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -65,6 +67,8 @@ public class FormularioCanchas extends AppCompatActivity {
     private int idTipoCancha , idEdificioCancha , idHoraInicio , idHoraFin;
     private int indexHoraInicio , indexHoraFin;
     private String imagen="";
+    private String title="Ingresar Cancha";
+    private AlertDialog.Builder builder;
 
 
     @Override
@@ -88,6 +92,23 @@ public class FormularioCanchas extends AppCompatActivity {
         cargarTiposCanchas();
         cargarEdificios();
         cargarHoras();
+
+
+        getSupportActionBar().setTitle(title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        builder= new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setCancelable(false);
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent i=  new Intent( getApplicationContext() , ListaCanchas.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
 
         spndHoraInicio =  new SpinnerDialog(FormularioCanchas.this , horarios , "Seleccione una hora inicio");
@@ -179,9 +200,21 @@ public class FormularioCanchas extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
 
-                            String jsonString  = response.body().toString();
+                            if(response.isSuccessful()){
+                                String jsonString  = response.body().toString();
 
-                            Toast.makeText(getApplicationContext(), jsonString, Toast.LENGTH_SHORT).show();
+                                if(jsonString.contains("mensaje")){
+                                    ErrorObject errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
+                                    builder.setMessage(errorObject.getMensaje());
+                                    AlertDialog alertDialog = builder.create();
+                                    alertDialog.show();
+                                }
+                            }
+
+
+
+
+
 
                         }
 
@@ -326,6 +359,14 @@ public class FormularioCanchas extends AppCompatActivity {
         byte[] imagenByte =  array.toByteArray();
         String imagenString = Base64.encodeToString(  imagenByte , Base64.DEFAULT );
         return imagenString;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent= new Intent(getApplicationContext() , ListaCanchas.class);
+        startActivity(intent);
+        finish();
+
     }
 }
 

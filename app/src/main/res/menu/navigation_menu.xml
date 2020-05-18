@@ -13,11 +13,11 @@
         android:title="@string/perfil"
         ></item>
 
-    <item
-        android:id="@+id/menuConfiguraciones"
-        android:icon="@drawable/settings"
-        android:title="@string/configuracion"
-        ></item>
+<!--    <item-->
+<!--        android:id="@+id/menuConfiguraciones"-->
+<!--        android:icon="@drawable/settings"-->
+<!--        android:title="@string/configuracion"-->
+<!--        ></item>-->
 
     <item
         android:id="@+id/menuCerrarSesion"

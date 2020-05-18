@@ -45,6 +45,7 @@ public class ListaCanchas extends AppCompatActivity {
     private ReservasCanchasClient reservasCanchasClient;
     private ErrorObject errorObject;
     private ArrayList<ResponseCancha> responseCanchaList;
+    private String title = "Canchas";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,8 @@ public class ListaCanchas extends AppCompatActivity {
         retrofitInit();
         //Peticion para listar usuarios
         listarCanchas();
+
+        getSupportActionBar().setTitle(title);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -74,6 +77,7 @@ public class ListaCanchas extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
 //        btnSalir.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

@@ -44,6 +44,9 @@ public class HorarioReserva extends AppCompatActivity {
     private String duiUsuario;
     private ResponseLogin usuarioActual;
     private int idHorario;
+    private AlertDialog.Builder builder;
+    private String title="Seleccionar horario";
+
 
 
     @Override
@@ -60,7 +63,22 @@ public class HorarioReserva extends AppCompatActivity {
         duiUsuario = i.getStringExtra("dui");
         usuarioActual = Session.obtenerSessionUsuario(getApplicationContext());
 
+        getSupportActionBar().setTitle(title);
+
         listarHorarios(fecha , idCancha  );
+
+
+        builder= new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setCancelable(false);
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Deseas realizar la reserva");
@@ -148,12 +166,10 @@ public class HorarioReserva extends AppCompatActivity {
                 if(response.isSuccessful()){
                     //Toast.makeText(getApplicationContext(), "Reserva realizada con exito", Toast.LENGTH_SHORT).show();
                     String jsonString  = response.body().toString();
-
-                        Toast.makeText(getApplicationContext() , jsonString ,  Toast.LENGTH_LONG).show();
-//                    if(!existsError(jsonString)){
-//                        Toast.makeText(getApplicationContext(), "Reserva reali", Toast.LENGTH_SHORT).show();
-//                    }
-
+                    errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
+                    builder.setMessage(errorObject.getMensaje() );
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
                 }
             }
 
@@ -171,5 +187,10 @@ public class HorarioReserva extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

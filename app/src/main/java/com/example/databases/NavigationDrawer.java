@@ -63,13 +63,16 @@ public class NavigationDrawer extends AppCompatActivity {
                 int id=item.getItemId();
 
                 if (id==R.id.menuCerrarSesion){
+                    Session.cerrarSessionUsuario(getApplicationContext());
                     finish();
-                }
-                //This is for maintaining the behavior of the Navigation view
-                NavigationUI.onNavDestinationSelected(item,navController);
-                drawerLayout.closeDrawer(GravityCompat.START);
+                }else{
+                    //This is for maintaining the behavior of the Navigation view
+                    NavigationUI.onNavDestinationSelected(item,navController);
+                    drawerLayout.closeDrawer(GravityCompat.START);
 
+                }
                 return false;
+
             }
         });
 

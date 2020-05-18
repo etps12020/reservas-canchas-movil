@@ -1,8 +1,10 @@
 package com.example.databases.views;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -65,7 +67,8 @@ public class ActualizarCancha extends AppCompatActivity {
     private Cancha canchaSeleccionada;
     private int indexHoraInicio , indexHoraFin;
     private String imagen;
-
+    private String title="Actualizar Cancha";
+    private AlertDialog.Builder builder;
 
 
     @Override
@@ -86,6 +89,25 @@ public class ActualizarCancha extends AppCompatActivity {
         spnEstadoCancha =  findViewById(R.id.spnEstadoCancha);
 
         horas =  new ArrayList<>();
+
+
+        getSupportActionBar().setTitle(title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+        builder= new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setCancelable(false);
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent i=  new Intent( getApplicationContext() , ListaCanchas.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
 
         retrofitInit();
 
@@ -158,6 +180,7 @@ public class ActualizarCancha extends AppCompatActivity {
 
 
 
+
                 RequestUpdateCancha requestUpdateCancha =  new RequestUpdateCancha(
                         Integer.parseInt(i.getStringExtra("id")) ,
                         nombre ,
@@ -177,9 +200,17 @@ public class ActualizarCancha extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
 
-                        String jsonString  = response.body().toString();
+                        if(response.isSuccessful()){
+                            String jsonString  = response.body().toString();
 
-                        Toast.makeText(getApplicationContext(), jsonString, Toast.LENGTH_SHORT).show();
+                            if(jsonString.contains("mensaje")){
+                                ErrorObject errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
+                                builder.setMessage(errorObject.getMensaje());
+                                AlertDialog alertDialog = builder.create();
+                                alertDialog.show();
+                            }
+
+                        }
 
                     }
 
@@ -450,5 +481,12 @@ public class ActualizarCancha extends AppCompatActivity {
         byte[] imagenByte =  array.toByteArray();
         String imagenString = Base64.encodeToString(  imagenByte , Base64.DEFAULT );
         return imagenString;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent =  new Intent(getApplicationContext() , ListaCanchas.class);
+        startActivity(intent);
+        finish();
     }
 }

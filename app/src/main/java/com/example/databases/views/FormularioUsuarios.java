@@ -178,8 +178,6 @@ public class FormularioUsuarios extends AppCompatActivity {
 
                                          if(responseLoginList.size() > 0 ){
                                              ResponseLogin usuarioIngresado =  responseLoginList.get(0);
-
-
                                              builder.setMessage("Usuario creado exitosamente!!"+"\nUsuario: "+usuarioIngresado.getUsuario()+"\nPassword: "+usuarioIngresado.getPassword()+"\nFecha Creacion: "+usuarioIngresado.getFechaCreacion());
                                              AlertDialog alertDialog = builder.create();
                                              alertDialog.show();

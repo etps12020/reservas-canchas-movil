@@ -12,6 +12,7 @@ import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.databases.NavigationDrawer;
 import com.example.databases.R;
 import com.example.databases.adapters.ReservasAdapter;
 import com.example.databases.api.reservas.Reserva;
@@ -89,7 +90,13 @@ public class ListaReservas extends AppCompatActivity  implements DatePickerDialo
         });
 
 
+        if(userLogin.getIdRol() != 1 && userLogin.getIdRol()!=2){
+            fabFiltroFecha.setVisibility(View.GONE);
+        }
+
+
     }
+
 
     private void listarReservas(){
 
@@ -113,6 +120,8 @@ public class ListaReservas extends AppCompatActivity  implements DatePickerDialo
         }
 
         filtrarReservas(usuario , fecha);
+
+
     }
 
 
@@ -165,4 +174,13 @@ public class ListaReservas extends AppCompatActivity  implements DatePickerDialo
         //Consultar nuevamente el listado y poner la fecha actual por defecto
         //Toast.makeText(getApplicationContext(), "Change the list of reserves for day "+fechaSeleccionada, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent  =  new Intent(getApplicationContext() , NavigationDrawer.class);
+        startActivity(intent);
+        finish();
+    }
+
+
 }

@@ -1,7 +1,9 @@
 package com.example.databases.views;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -46,6 +48,10 @@ public class DetalleReserva extends AppCompatActivity {
 
     private ArrayList<Cancha> canchaArrayList;
     private ArrayList<EstadoReserva> estadoReservaArrayList;
+    private String title="Detalle reserva";
+    private AlertDialog.Builder builder;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,8 @@ public class DetalleReserva extends AppCompatActivity {
 
         retrofitInit();
 
+        getSupportActionBar().setTitle(title);
+
 
         Intent i  =  getIntent();
         final String  jsonReserva =     i.getStringExtra("infoReserva");
@@ -77,6 +85,17 @@ public class DetalleReserva extends AppCompatActivity {
         listarEstadosReservaciones();
         listarCanchas();
 
+        builder= new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setCancelable(false);
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent i=  new Intent( getApplicationContext() , ListaReservas.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
         btnActualizar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,19 +117,16 @@ public class DetalleReserva extends AppCompatActivity {
                       actualizar.enqueue(new Callback<JsonElement>() {
                           @Override
                           public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-
                               if(response.isSuccessful()){
                                   String jsonString  = response.body().toString();
-                                  Toast.makeText(getApplicationContext(), jsonString, Toast.LENGTH_SHORT).show();
-//                                  if(jsonString.contains("mensaje")){ //Mensajes de Usuario inactivo o usuario no existe
-//                                      errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
-//                                      Toast.makeText(getApplicationContext(), errorObject.getMensaje(), Toast.LENGTH_SHORT).show();
-//                                  }else{
-//
-//                                  }
-//
-                              }
 
+                                  if(jsonString.contains("mensaje")){
+                                      ErrorObject errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
+                                      builder.setMessage(errorObject.getMensaje());
+                                      AlertDialog alertDialog = builder.create();
+                                      alertDialog.show();
+                                  }
+                              }
                           }
 
                           @Override

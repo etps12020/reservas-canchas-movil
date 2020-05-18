@@ -27,7 +27,8 @@
                 android:layout_width="match_parent"
                 android:drawableLeft="@drawable/ic_person_black"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:enabled="false"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -39,14 +40,18 @@
             android:layout_marginTop="14dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="14dp"
-            android:hint="Nombre completo">
+            android:hint="Nombre completo"
+
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtNombre"
                 android:layout_width="match_parent"
                 android:drawableLeft="@drawable/ic_person_black"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:enabled="false"
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,7 +70,9 @@
                 android:layout_width="match_parent"
                 android:drawableLeft="@drawable/ic_person_black"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:enabled="false"
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 

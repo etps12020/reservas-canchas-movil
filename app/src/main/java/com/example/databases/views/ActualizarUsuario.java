@@ -170,13 +170,17 @@ public class ActualizarUsuario extends AppCompatActivity {
                         actualizarUsuario.enqueue(new Callback<JsonElement>() {
                             @Override
                             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                                String jsonString  = response.body().toString();
-                                if(jsonString.contains("mensaje")){ //Mensaje en caso de falta de datos
-                                    errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
-                                    builder.setMessage(errorObject.getMensaje());
-                                    AlertDialog alertDialog = builder.create();
-                                    alertDialog.show();
+
+                                if(response.isSuccessful()){
+                                    String jsonString  = response.body().toString();
+                                    if(jsonString.contains("mensaje")){ //Mensaje en caso de falta de datos
+                                        errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
+                                        builder.setMessage(errorObject.getMensaje());
+                                        AlertDialog alertDialog = builder.create();
+                                        alertDialog.show();
+                                    }
                                 }
+
                             }
 
                             @Override

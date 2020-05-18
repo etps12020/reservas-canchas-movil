@@ -15,8 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.ActualizarEdificio"></activity>
-        <activity android:name=".views.ActualizarCancha" />
+        <activity android:name=".views.ActualizarEdificio"   android:parentActivityName=".views.ListaEdificios" ></activity>
+        <activity android:name=".views.ActualizarCancha" android:parentActivityName=".views.ListaCanchas" />
         <activity android:name=".views.ActualizarUsuario"  android:parentActivityName=".views.ListaUsuarios" />
         <activity android:name=".views.HorarioReserva" />
         <activity android:name=".views.RealizarReserva" />
@@ -24,8 +24,8 @@
         <activity android:name=".views.ListaReservas" />
         <activity android:name=".NavigationDrawer" />
         <activity android:name=".views.ListaEdificios" />
-        <activity android:name=".views.FormularioEdificios" />
-        <activity android:name=".views.FormularioCanchas" />
+        <activity android:name=".views.FormularioEdificios"  android:parentActivityName=".views.ListaEdificios"/>
+        <activity android:name=".views.FormularioCanchas" android:parentActivityName=".views.ListaCanchas" />
         <activity android:name=".views.ListaCanchas" />
         <activity android:name=".views.UsuarioHome" />
         <activity android:name=".views.AsistenteHome" />

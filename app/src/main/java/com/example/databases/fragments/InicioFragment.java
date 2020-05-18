@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,20 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
         layoutCanchas.setOnClickListener(this);
         layoutEdificios.setOnClickListener(this);
         layoutReservas.setOnClickListener(this);
+
+
+        if(userLogin.getIdRol()==1){
+
+        }else if(userLogin.getIdRol()==2){
+            layoutCanchas.setVisibility(LinearLayout.INVISIBLE);
+            layoutEdificios.setVisibility(LinearLayout.INVISIBLE);
+        }else{
+            layoutCanchas.setVisibility(LinearLayout.INVISIBLE);
+            layoutEdificios.setVisibility(LinearLayout.INVISIBLE);
+            layoutUsuarios.setVisibility(LinearLayout.INVISIBLE);
+
+        }
+
 
         textUserName.setText(userLogin.getNombre());
 

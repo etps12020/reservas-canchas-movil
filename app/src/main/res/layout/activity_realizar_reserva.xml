@@ -39,7 +39,7 @@
                         android:id="@+id/edtTipoReservacion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_person_black"
+                        android:drawableLeft="@drawable/ic_description_black_24dp"
                         android:inputType="textPersonName" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -50,7 +50,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
                 android:orientation="vertical"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"

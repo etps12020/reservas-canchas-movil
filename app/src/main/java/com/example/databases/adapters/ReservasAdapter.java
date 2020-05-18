@@ -1,5 +1,6 @@
 package com.example.databases.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -19,8 +20,10 @@ import com.example.databases.api.reservas.Reserva;
 import com.example.databases.api.retrofit.ReservasCanchasClient;
 import com.example.databases.api.retrofit.ReservasCanchasService;
 import com.example.databases.api.usuarios.ResponseLogin;
+import com.example.databases.api.utilidades.ErrorObject;
 import com.example.databases.api.utilidades.Session;
 import com.example.databases.views.DetalleReserva;
+import com.example.databases.views.ListaReservas;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
@@ -38,7 +41,7 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
     private ResponseLogin userLogin;
     private ReservasCanchasService reservasCanchasService;
     private ReservasCanchasClient reservasCanchasClient;
-
+    private ErrorObject errorObject;
 
     public ReservasAdapter(@NonNull Context context, int resource, @NonNull List<Reserva> objects) {
         super(context, resource, objects);
@@ -67,6 +70,8 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
         TextView tvFechaHora = view.findViewById(R.id.tvFechaHora);
         TextView tvNumeroReserva= view.findViewById(R.id.tvNumeroReserva);
         //Click en elemento de lista
+
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +80,7 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
                 String reservaJSON =  gson.toJson(   reserva   );
                 Intent i = new Intent(context , DetalleReserva.class);
                 i.putExtra("infoReserva"  , reservaJSON    );
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
 
             }
@@ -93,7 +99,10 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
                     @Override
                     public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                         String jsonString  = response.body().toString();
-                        Toast.makeText(context ,   jsonString , Toast.LENGTH_SHORT  ).show();
+                        if(jsonString.contains("mensaje")){ //Mensajes de Usuario inactivo o usuario no existe
+                            errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
+                            Toast.makeText(context, errorObject.getMensaje(), Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -116,7 +125,10 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
                     @Override
                     public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                         String jsonString  = response.body().toString();
-                        Toast.makeText(context ,   jsonString , Toast.LENGTH_SHORT  ).show();
+                        if(jsonString.contains("mensaje")){ //Mensajes de Usuario inactivo o usuario no existe
+                            errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
+                            Toast.makeText(context, errorObject.getMensaje(), Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -141,6 +153,10 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
 
         tvNumeroReserva.setText(  String.valueOf(  reserva.getNumReservacion() + ")"   )   );
 
+        if(userLogin.getIdRol()==3){
+            btnAceptar.setVisibility(View.GONE);
+            btnRechazar.setVisibility(View.GONE);
+        }
 
 
 

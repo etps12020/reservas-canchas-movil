@@ -1,8 +1,10 @@
 package com.example.databases.views;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -53,6 +55,9 @@ public class ActualizarEdificio extends AppCompatActivity {
     private Edificio  edificioSeleccionado;
     private String imagenEdificio;
     private int idEstadEdificio;
+    private String title="Actualizar Edificio";
+    private AlertDialog.Builder builder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,24 @@ public class ActualizarEdificio extends AppCompatActivity {
         btnAccionEdificios =  findViewById(R.id.btnAccionEdificios);
         imvEdificio =  findViewById(R.id.imvEdificio);
         retrofitInit();
+
+        getSupportActionBar().setTitle(title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+        builder= new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setCancelable(false);
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent i =  new Intent(  getApplicationContext() ,  ListaEdificios.class  );
+                startActivity(i);
+                finish();
+            }
+        });
+
         final Intent i  = getIntent();
         obtenerDatosEdificio(  i.getStringExtra("id")  );
 
@@ -109,8 +132,15 @@ public class ActualizarEdificio extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
 
-                            String jsonString  = response.body().toString();
-                            Toast.makeText(getApplicationContext(), jsonString, Toast.LENGTH_SHORT).show();
+                            if(response.isSuccessful()){
+                                String jsonString  = response.body().toString();
+                                if(jsonString.contains("mensaje")){ //Mensaje en caso de falta de datos
+                                    errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
+                                    builder.setMessage(errorObject.getMensaje());
+                                    AlertDialog alertDialog = builder.create();
+                                    alertDialog.show();
+                                }
+                            }
                         }
 
                         @Override
@@ -248,5 +278,10 @@ public class ActualizarEdificio extends AppCompatActivity {
         return imagenString;
     }
 
-
+    @Override
+    public void onBackPressed() {
+        Intent intent =  new Intent(getApplicationContext() , ListaEdificios.class);
+        startActivity(intent);
+        finish();
+    }
 }

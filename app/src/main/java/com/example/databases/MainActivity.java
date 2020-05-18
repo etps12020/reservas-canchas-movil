@@ -61,25 +61,39 @@ public class MainActivity extends AppCompatActivity {
         edtUsuario =  findViewById(R.id.edtUsuario);
         edtContrasena =  findViewById(R.id.edtContrasena);
 
-        final Net net =  new Net(getApplicationContext());
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        ResponseLogin responseLogin =  Session.obtenerSessionUsuario(getApplicationContext());
 
-                String user =  edtUsuario.getText().toString();
-                String password =  edtContrasena.getText().toString();
+        if(responseLogin!=null){
+            Intent intent =  new Intent(getApplicationContext() , NavigationDrawer.class);
+            startActivity(intent);
+            finish();
+        }else{
+            final Net net =  new Net(getApplicationContext());
 
-                retrofitInit(); //Creacion de instancias de libreria
+            btnLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                if(net.comprobarRed()){
-                    Login(user, password);
-                }else{
-                    Toast.makeText(getApplicationContext(), "Verifica tu conexion a internet", Toast.LENGTH_SHORT).show();
+                    String user =  edtUsuario.getText().toString();
+                    String password =  edtContrasena.getText().toString();
+
+                    retrofitInit(); //Creacion de instancias de libreria
+
+                    if(net.comprobarRed()){
+                        Login(user, password);
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Verifica tu conexion a internet", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
+            });
 
-            }
-        });
+        }
+
+
+
+
 
     }
 

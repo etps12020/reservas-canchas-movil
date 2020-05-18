@@ -1,8 +1,10 @@
 package com.example.databases.views;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,10 +26,12 @@ import com.example.databases.R;
 import com.example.databases.adapters.EstadoEdificioAdapter;
 import com.example.databases.api.retrofit.ReservasCanchasClient;
 import com.example.databases.api.retrofit.ReservasCanchasService;
+import com.example.databases.api.utilidades.ErrorObject;
 import com.example.databases.db.CrudEdificio;
 import com.example.databases.db.CrudEstadoEdificio;
 import com.example.databases.model.Edificio;
 import com.example.databases.model.EstadoEdificio;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import java.io.ByteArrayOutputStream;
@@ -47,6 +51,9 @@ public class FormularioEdificios extends AppCompatActivity {
     private Button btnAccionEdificio;
     private ImageView imvEdificio;
     private String imagenEdificio;
+    private String title="Ingresar Edificio";
+    private AlertDialog.Builder builder;
+    private ErrorObject errorObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +65,27 @@ public class FormularioEdificios extends AppCompatActivity {
         edtDescripcion =  findViewById(R.id.edtDescripcion);
         btnAccionEdificio =  findViewById(R.id.btnAccionEdificios);
         imvEdificio =  findViewById(R.id.imvEdificio);
+
+
+        getSupportActionBar().setTitle(title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        builder= new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setCancelable(false);
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent i =  new Intent(  getApplicationContext() ,  ListaEdificios.class  );
+                startActivity(i);
+                finish();
+            }
+        });
+
+
+
+
 
         retrofitInit();
 
@@ -91,9 +119,16 @@ public class FormularioEdificios extends AppCompatActivity {
                      ingresarCancha.enqueue(new Callback<JsonElement>() {
                          @Override
                          public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                             String jsonString  = response.body().toString();
 
-                             Toast.makeText(getApplicationContext(), jsonString, Toast.LENGTH_LONG).show();
+                             if(response.isSuccessful()){
+                                 String jsonString  = response.body().toString();
+                                 if(jsonString.contains("mensaje")){ //Mensaje en caso de falta de datos
+                                     errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
+                                     builder.setMessage(errorObject.getMensaje());
+                                     AlertDialog alertDialog = builder.create();
+                                     alertDialog.show();
+                                 }
+                             }
 
 
 
@@ -154,5 +189,12 @@ public class FormularioEdificios extends AppCompatActivity {
         byte[] imagenByte =  array.toByteArray();
         String imagenString = Base64.encodeToString(  imagenByte , Base64.DEFAULT );
         return imagenString;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent =  new Intent(getApplicationContext() , ListaEdificios.class);
+        startActivity(intent);
+        finish();
     }
 }

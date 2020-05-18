@@ -18,6 +18,13 @@ public class Session {
         editor.commit();
     }
 
+    public static  void cerrarSessionUsuario(Context context){
+        SharedPreferences sharedPreferences  =  context.getSharedPreferences( ARCHIVO_PREFERENCIAS , Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor =  sharedPreferences.edit();
+        editor.putString(SESSION_USUARIO ,  null   );
+        editor.commit();
+    }
+
     public static ResponseLogin obtenerSessionUsuario(Context context){
         Gson gson =  new Gson();
         SharedPreferences  sharedPreferences  = context.getSharedPreferences( ARCHIVO_PREFERENCIAS , Context.MODE_PRIVATE);
@@ -28,7 +35,7 @@ public class Session {
         }else{
             return null;
         }
-
     }
+
 
 }
