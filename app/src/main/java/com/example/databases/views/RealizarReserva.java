@@ -6,8 +6,10 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -53,6 +55,8 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
     private CalendarView calendarViewReserva; //Calendario para dia de reserva
     private SpinnerDialog spinnerDialogUsuarios  , spinnerDialogCanchas  , spinnerDialogEdificios ,spinnerDialogTipoReserva ;//Searchables Spinners controls
     private Spinner spnCancha;
+    private ImageButton   imbTipoReservacion , imbUsuario , imbEdificio;
+
     private EditText edtUsuario , edtNombreEdificio  , edtCancha  , edtTipoReservacion ; //Campos de texto solo para presentacion
     private String fecha; //Fecha quemada //Fecha de reserva
     private String idCancha ="2"; //Cancha quemada //Id de cancha
@@ -79,16 +83,23 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
         edtTipoReservacion =  findViewById(R.id.edtTipoReservacion);
         linearLayout =  findViewById(R.id.linearLayout);
 
+        imbUsuario  =  findViewById(R.id.imbUsuario);
+        imbTipoReservacion =  findViewById(R.id.imbTipoReservacion);
+        imbEdificio =  findViewById(R.id.imBEdificio);
+
         duisUsuarios  = new ArrayList<>();
         nombresCanchas = new ArrayList<>();
         nombresEdificios =  new ArrayList<>();
         nombresTipoReservas =  new ArrayList<>();
+        canchas =  new ArrayList<>();
+        edificios =  new ArrayList<>();
+        tiposReservas =  new ArrayList<>();
         retrofitInit();
 
 
-        edtUsuario.setOnClickListener(this); //Evento de busqueda de usuarios
-        edtNombreEdificio.setOnClickListener(this); //Evento de busqueda de edificios
-        edtTipoReservacion.setOnClickListener(this);
+        imbUsuario.setOnClickListener(this); //Evento de busqueda de usuarios
+        imbEdificio.setOnClickListener(this); //Evento de busqueda de edificios
+        imbTipoReservacion.setOnClickListener(this);
 
 
         spinnerDialogUsuarios = new SpinnerDialog( RealizarReserva.this , duisUsuarios , "Seleccione un usuario"  );
@@ -131,21 +142,37 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
         calendarViewReserva.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
 
+                String docUsuario  = edtUsuario.getText().toString();
+                String nomEdificio  =  edtNombreEdificio.getText().toString();
+                String tReservacion  =  edtTipoReservacion.getText().toString();
 
-                Calendar calendar =  Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                fecha  = simpleDateFormat.format(calendar.getTime());  //Utilizara como fecha
-
-                if(canchas.size() ==0 ){
-                    Toast.makeText(getApplicationContext(), "Seleccione una cancha", Toast.LENGTH_SHORT).show();
+                if(docUsuario.isEmpty()){
+                    edtUsuario.setError("Campo requerido");
+                }else if(nomEdificio.isEmpty()) {
+                    edtNombreEdificio.setError("Campo requerido");
+                }else if(tReservacion.isEmpty()){
+                    edtTipoReservacion.setError("Campo requerido");
                 }else{
-                    Intent i = new  Intent(  getApplicationContext() , HorarioReserva.class  );
-                    i.putExtra("idCancha" ,  String.valueOf(canchas.get( spnCancha.getSelectedItemPosition()).getCancha())   );
-                    i.putExtra("fecha" , fecha );
-                    i.putExtra( "idTipo"  , idTipoReserva   );
-                    i.putExtra( "dui" , duiUsuario);
-                    startActivity(i);
+                    Calendar calendar =  Calendar.getInstance();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    fecha  = simpleDateFormat.format(calendar.getTime());  //Utilizara como fecha
+
+                    if(canchas.size() ==0 ){
+                        Toast.makeText(getApplicationContext(), "Seleccione una cancha", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Intent i = new  Intent(  getApplicationContext() , HorarioReserva.class  );
+                        i.putExtra("idCancha" ,  String.valueOf(canchas.get( spnCancha.getSelectedItemPosition()).getCancha())   );
+                        i.putExtra("fecha" , fecha );
+                        i.putExtra( "idTipo"  , idTipoReserva   );
+                        i.putExtra( "dui" , duiUsuario);
+                        startActivity(i);
+                    }
+
                 }
+
+
+
+
 
             }
         });
@@ -200,7 +227,7 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
     private  void listarCanchas(String idEdificio){ //Filtra las canchas al hacer la seleccion del edificio
 
         String edificio =  idEdificio;
-        Call<JsonElement> listarCanchas =  reservasCanchasService.filtrarCanchas(null, null , edificio   );
+        final Call<JsonElement> listarCanchas =  reservasCanchasService.filtrarCanchas(null, null , edificio   );
 
         listarCanchas.enqueue(new Callback<JsonElement>() {
             @Override
@@ -209,7 +236,15 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
                         String jsonString  = response.body().toString();
 
                         if(!existsError(jsonString)){
-                            canchas = new Gson().fromJson(jsonString , new TypeToken<List<Cancha>>(){}.getType() );
+
+                            ArrayList<Cancha> listaCanchas = new Gson().fromJson(jsonString , new TypeToken<List<Cancha>>(){}.getType() );
+                            //Canchas activas
+                            for(Cancha cancha: listaCanchas){
+                                if(cancha.getIdEstado()==1){
+                                    canchas.add(cancha);
+                                }
+                            }
+
                         }else{
                             canchas = new ArrayList<>();
                         }
@@ -234,7 +269,15 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
                 if(response.isSuccessful()){
                     String jsonString  = response.body().toString();
                     if(!existsError(jsonString)){
-                        edificios = new Gson().fromJson(jsonString , new TypeToken<ArrayList<Edificio>>(){}.getType() );
+
+                        ArrayList<Edificio> edificiosTemp = new Gson().fromJson(jsonString , new TypeToken<ArrayList<Edificio>>(){}.getType() );
+
+                        for(Edificio edificio: edificiosTemp){
+                            if(edificio.getIdEstado()==1){
+                                edificios.add(edificio);
+                            }
+                        }
+
                         if(edificios.size() >  0){
                             for(int i=0; i<edificios.size() ;  i++){
                                 nombresEdificios.add(  edificios.get(i).getNombre() );
@@ -329,14 +372,14 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
     @Override
     public void onClick(View v) {
 
-        if(v.getId() == R.id.edtUsuario){
+        if(v.getId() == R.id.imbUsuario){
             if(duisUsuarios.size()==0){//Si esta vacio los duis que los llene
                 cargarUsuarios();
             }else{
                 spinnerDialogUsuarios.showSpinerDialog();
             }
 
-        }else if(v.getId() == R.id.edtNombreEdificio){
+        }else if(v.getId() == R.id.imBEdificio){
 
             if(nombresEdificios.size()==0){
                 listarEdificios();
@@ -344,7 +387,7 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
                 spinnerDialogEdificios.showSpinerDialog();
             }
         }
-        else if(v.getId() == R.id.edtTipoReservacion){
+        else if(v.getId() == R.id.imbTipoReservacion){
             if(nombresTipoReservas.size() == 0){
                 listarTiposReservas();
             }else{
@@ -352,6 +395,12 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
             }
         }
 
+    }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent  =  new Intent( getApplicationContext() , ListaReservas.class  );
+        startActivity(intent);
+        finish();
     }
 }

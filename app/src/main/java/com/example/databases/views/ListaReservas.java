@@ -86,6 +86,7 @@ public class ListaReservas extends AppCompatActivity  implements DatePickerDialo
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext() , RealizarReserva.class );
                 startActivity(i);
+                finish();
             }
         });
 
@@ -181,6 +182,5 @@ public class ListaReservas extends AppCompatActivity  implements DatePickerDialo
         startActivity(intent);
         finish();
     }
-
 
 }
