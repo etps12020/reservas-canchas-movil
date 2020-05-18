@@ -118,6 +118,7 @@ public class ActualizarUsuario extends AppCompatActivity {
         spnRol.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                rolUsuario  =  rolesUsuariosList.get(position).getId();
             }
 
             @Override
@@ -128,6 +129,7 @@ public class ActualizarUsuario extends AppCompatActivity {
         spnEstado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                estadoUsuario =  estadoUsuariosList.get(position).getId();
             }
 
             @Override
