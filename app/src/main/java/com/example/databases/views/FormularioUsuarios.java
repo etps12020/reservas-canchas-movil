@@ -1,10 +1,13 @@
 package com.example.databases.views;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -19,6 +22,7 @@ import com.example.databases.api.retrofit.ReservasCanchasClient;
 import com.example.databases.api.retrofit.ReservasCanchasService;
 import com.example.databases.api.usuarios.ResponseLogin;
 import com.example.databases.api.utilidades.ErrorObject;
+import com.example.databases.api.utilidades.Session;
 import com.example.databases.db.ContratoReservas;
 import com.example.databases.api.usuarios.EstadoUsuario;
 import com.example.databases.api.roles.Rol;
@@ -49,6 +53,9 @@ public class FormularioUsuarios extends AppCompatActivity {
     ArrayList<EstadoUsuario> estadoUsuariosList;
     List<ResponseLogin> responseLoginList;
     private ResponseLogin usuario;
+    private ResponseLogin userLogin;
+    private AlertDialog.Builder builder;
+    private String title="Ingresar usuarios";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +73,29 @@ public class FormularioUsuarios extends AppCompatActivity {
         btnCrear =  findViewById(R.id.btnCrear);
         spinner = (Spinner)findViewById(R.id.spinner);
 
+        userLogin = Session.obtenerSessionUsuario(getApplicationContext());
+
 
         retrofitInit();  //Inicializa las clases de retrofit
         obtenerRolesUsuarios(); //Obtiene  y renderiza la lista de roles de usuario
-//        obtenerEstadosUsuarios(); //Obtene y renderiza la lista de estados de usuario
+
+        getSupportActionBar().setTitle(title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+
+        builder= new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setCancelable(false);
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent i=  new Intent( getApplicationContext() , ListaUsuarios.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
 
         if(i.hasExtra(ContratoReservas.TablaUsuario.idusuario)){
@@ -88,9 +114,6 @@ public class FormularioUsuarios extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
-
-
 
         btnCrear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,35 +137,75 @@ public class FormularioUsuarios extends AppCompatActivity {
                     edtCarnet.setError("Campo requerido");
                 }else if(TextUtils.isEmpty(correo)){
                     edtCorreo.setError("Campo requerido");
-                }else if(TextUtils.isEmpty(telefono)){
+                }else if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches() ){
+                    edtCorreo.setError("Correo no valido");
+                 }else if(TextUtils.isEmpty(telefono)){
                     edtTelefono.setError("Campo requerido");
                 }else{
 
 
-                     Call<JsonElement> ingresarUsuario  = reservasCanchasService.ingresarUsuario(
-                             nombreCompleto ,
-                             dui  ,
-                             carnet ,
-                             correo ,
-                             telefono ,
-                             rolesUsuariosList.get((int) spinner.getSelectedItemId()).getId()
-                     );
+                     int idRolUsuarioIngresar = rolesUsuariosList.get((int) spinner.getSelectedItemId()).getId();
+                     int idRolUsuarioLogin  = userLogin.getIdRol();
 
-                     ingresarUsuario.enqueue(new Callback<JsonElement>() {
-                         @Override
-                         public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                             String jsonString  = response.body().toString();
-
-                             Toast.makeText(getApplicationContext(), jsonString, Toast.LENGTH_SHORT).show();
+                     if(idRolUsuarioIngresar==1 &&  idRolUsuarioLogin==2    ){
+                         builder.setMessage("No puedes ingresar usuarios con el rol seleccionado");
+                         AlertDialog alertDialog = builder.create();
+                         alertDialog.show();
+                     }else{
 
 
-                         }
+                         Call<JsonElement> ingresarUsuario  = reservasCanchasService.ingresarUsuario(
+                                 nombreCompleto ,
+                                 dui  ,
+                                 carnet ,
+                                 correo ,
+                                 telefono ,
+                                 idRolUsuarioIngresar
+                         );
 
-                         @Override
-                         public void onFailure(Call<JsonElement> call, Throwable t) {
+                         ingresarUsuario.enqueue(new Callback<JsonElement>() {
+                             @Override
+                             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
 
-                         }
-                     });
+                                 if(response.isSuccessful()){
+                                     String jsonString  = response.body().toString();
+
+                                     if(jsonString.contains("mensaje")){ //Mensajes de Usuario inactivo o usuario no existe
+                                         errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
+                                         Toast.makeText(getApplicationContext(), errorObject.getMensaje(), Toast.LENGTH_SHORT).show();
+                                     }else{
+                                         responseLoginList = new Gson().fromJson(jsonString , new TypeToken<List<ResponseLogin>>(){}.getType() );
+
+                                         if(responseLoginList.size() > 0 ){
+                                             ResponseLogin usuarioIngresado =  responseLoginList.get(0);
+
+
+                                             builder.setMessage("Usuario creado exitosamente!!"+"\nUsuario: "+usuarioIngresado.getUsuario()+"\nPassword: "+usuarioIngresado.getPassword()+"\nFecha Creacion: "+usuarioIngresado.getFechaCreacion());
+                                             AlertDialog alertDialog = builder.create();
+                                             alertDialog.show();
+                                         }
+
+
+                                     }
+
+
+
+                                 }
+
+
+
+
+                             }
+
+                             @Override
+                             public void onFailure(Call<JsonElement> call, Throwable t) {
+                                 Toast.makeText(getApplicationContext(),  t.getMessage().toString()    , Toast.LENGTH_SHORT).show();
+                             }
+                         });
+
+                     }
+
+
                 }
             }
         });
@@ -256,5 +319,13 @@ public class FormularioUsuarios extends AppCompatActivity {
     private void retrofitInit(){
         reservasCanchasClient = ReservasCanchasClient.getInstance();
         reservasCanchasService =  reservasCanchasClient.getReservasCanchasService();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent= new Intent(getApplicationContext() , ListaUsuarios.class);
+        startActivity(intent);
+        finish();
+
     }
 }

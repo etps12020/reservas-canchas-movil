@@ -46,6 +46,7 @@ public class ListaUsuarios extends AppCompatActivity {
     private ErrorObject errorObject;
     private ArrayList<ResponseLogin> responseLoginList;
     private ResponseLogin usuarioActual;
+    private String title ="Usuarios";
 
 
     @Override
@@ -59,6 +60,8 @@ public class ListaUsuarios extends AppCompatActivity {
 
         usuarioActual = Session.obtenerSessionUsuario(getApplicationContext());
 
+        getSupportActionBar().setTitle(title);
+
         //Inicializacion de Retrofit
         retrofitInit();
         //Peticion para listar usuarios
@@ -70,7 +73,7 @@ public class ListaUsuarios extends AppCompatActivity {
                 Intent i = new Intent( getApplicationContext() , ActualizarUsuario.class  );
                 i.putExtra("id" , String.valueOf(responseLoginList.get(position).getId()) );
                 startActivity(i);
-
+                finish();
             }
         });
 
@@ -79,6 +82,7 @@ public class ListaUsuarios extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent( getApplicationContext() , FormularioUsuarios.class  );
                 startActivity(i);
+                finish();
             }
         });
 //        btnSalir.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +138,12 @@ public class ListaUsuarios extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Error de comunicación con el servidor", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent =  new Intent(getApplicationContext() , NavigationDrawer.class);
+        startActivity(intent);
+        finish();
     }
 }

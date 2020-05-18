@@ -54,6 +54,7 @@ public class ActualizarUsuario extends AppCompatActivity {
     private Button btnActualizar;
     int estadoUsuario ,  rolUsuario;
     private AlertDialog.Builder builder;
+    private String title ="Actualizar Usuarios";
 
 
     @Override
@@ -73,18 +74,25 @@ public class ActualizarUsuario extends AppCompatActivity {
 
         btnActualizar =  findViewById(R.id.btnActualizar);
 
+        getSupportActionBar().setTitle(title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
 
         spnRol =  findViewById(R.id.spnRol);
         spnEstado =  findViewById(R.id.spnEstado);
 
 
         builder= new AlertDialog.Builder(this);
-        builder.setTitle("Actualizacion de datos");
+        builder.setTitle(title);
         builder.setCancelable(false);
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                Intent i =  new Intent(  getApplicationContext() ,  ListaUsuarios.class  );
+                startActivity(i);
+                finish();
             }
         });
 
@@ -359,4 +367,10 @@ public class ActualizarUsuario extends AppCompatActivity {
         return  -1;
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext() , ListaUsuarios.class);
+        startActivity(intent);
+        finish();
+    }
 }
