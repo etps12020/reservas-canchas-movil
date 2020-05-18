@@ -154,6 +154,11 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
                     edtTipoReservacion.setError("Campo requerido");
                 }else{
                     Calendar calendar =  Calendar.getInstance();
+
+                    calendar.set(Calendar.YEAR ,  year);
+                    calendar.set(Calendar.MONTH , month);
+                    calendar.set(Calendar.DAY_OF_MONTH , dayOfMonth);
+
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     fecha  = simpleDateFormat.format(calendar.getTime());  //Utilizara como fecha
 
