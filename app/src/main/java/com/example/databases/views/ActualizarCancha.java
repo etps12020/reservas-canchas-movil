@@ -92,8 +92,8 @@ public class ActualizarCancha extends AppCompatActivity {
 
 
         getSupportActionBar().setTitle(title);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
 
 
         builder= new AlertDialog.Builder(this);
@@ -465,7 +465,7 @@ public class ActualizarCancha extends AppCompatActivity {
     private int findIndexHorariosFin(String horaFin){
         int index= 0;
         for(Horario horario: horarioArrayList){
-            if(horario.getHoraInicio().equals(horaFin)){
+            if(horario.getHoraFin().equals(horaFin)){
                 return index;
             }else{
                 index++;

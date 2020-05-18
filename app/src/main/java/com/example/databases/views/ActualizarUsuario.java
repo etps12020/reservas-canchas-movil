@@ -75,8 +75,8 @@ public class ActualizarUsuario extends AppCompatActivity {
         btnActualizar =  findViewById(R.id.btnActualizar);
 
         getSupportActionBar().setTitle(title);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
 
 
 

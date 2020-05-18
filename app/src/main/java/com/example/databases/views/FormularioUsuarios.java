@@ -80,8 +80,8 @@ public class FormularioUsuarios extends AppCompatActivity {
         obtenerRolesUsuarios(); //Obtiene  y renderiza la lista de roles de usuario
 
         getSupportActionBar().setTitle(title);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
 
 
 

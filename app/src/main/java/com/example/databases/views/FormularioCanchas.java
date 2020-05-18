@@ -95,8 +95,8 @@ public class FormularioCanchas extends AppCompatActivity {
 
 
         getSupportActionBar().setTitle(title);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
 
         builder= new AlertDialog.Builder(this);
         builder.setTitle(title);
