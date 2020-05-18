@@ -12,6 +12,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.content.ClipData;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,6 +65,8 @@ public class NavigationDrawer extends AppCompatActivity {
 
                 if (id==R.id.menuCerrarSesion){
                     Session.cerrarSessionUsuario(getApplicationContext());
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
                     finish();
                 }else{
                     //This is for maintaining the behavior of the Navigation view
@@ -81,5 +84,10 @@ public class NavigationDrawer extends AppCompatActivity {
     @Override
     public void onAttachFragment(@NonNull Fragment fragment) {
         super.onAttachFragment(fragment);
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }

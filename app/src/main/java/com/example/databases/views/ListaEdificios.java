@@ -64,7 +64,7 @@ public class ListaEdificios extends AppCompatActivity {
                 Intent i = new Intent( getApplicationContext() , ActualizarEdificio.class  );
                 i.putExtra("id" , String.valueOf(responseEdificioList.get(position).getId()) );
                 startActivity(i);
-
+                finish();
             }
         });
 
@@ -73,6 +73,7 @@ public class ListaEdificios extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent( getApplicationContext() , FormularioEdificios.class  );
                 startActivity(i);
+                finish();
             }
         });
 

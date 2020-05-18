@@ -67,6 +67,7 @@ public class ListaCanchas extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), ActualizarCancha.class);
                 i.putExtra("id", String.valueOf(  responseCanchaList.get(position).getCancha() )   );
                 startActivity(i);
+                finish();
             }
         });
 
@@ -75,6 +76,7 @@ public class ListaCanchas extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), FormularioCanchas.class);
                 startActivity(i);
+                finish();
             }
         });
 
@@ -129,6 +131,16 @@ public class ListaCanchas extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Error de comunicación con el servidor"+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Intent intent =  new Intent(getApplicationContext() , NavigationDrawer.class);
+        startActivity(intent);
+        finish();
+
 
     }
 }

@@ -66,7 +66,6 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
             layoutCanchas.setVisibility(LinearLayout.INVISIBLE);
             layoutEdificios.setVisibility(LinearLayout.INVISIBLE);
             layoutUsuarios.setVisibility(LinearLayout.INVISIBLE);
-
         }
 
 
@@ -82,20 +81,24 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
             case R.id.layoutUsuarios:
                 Intent usuarios = new Intent( getActivity() ,   ListaUsuarios.class);
                 startActivity(usuarios);
+                getActivity().finish();
                 break;
             case R.id.layoutCanchas:
                 Intent canchas = new Intent( getActivity() ,   ListaCanchas.class);
                 startActivity(canchas);
+                getActivity().finish();
                 break;
 
             case R.id.layoutEdificios:
                 Intent edificios = new Intent( getActivity() ,   ListaEdificios.class);
                 startActivity(edificios);
+                getActivity().finish();
                 break;
 
             case R.id.layoutReservas:
                 Intent reservas = new Intent( getActivity() ,   ListaReservas.class);
                 startActivity(reservas);
+                getActivity().finish();
                 break;
         }
 
