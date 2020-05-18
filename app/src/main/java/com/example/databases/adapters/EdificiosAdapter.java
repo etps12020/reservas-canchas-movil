@@ -47,7 +47,9 @@ public class EdificiosAdapter extends ArrayAdapter<ResponseEdificio> {
         tvEdificio.setText( edificio.getNombre() );
 
         ImageView imagenEdificio = view.findViewById( R.id.imagenCard );
+        TextView direccion  =  view.findViewById(R.id.direccion);
 
+        direccion.setText(edificio.getDireccion());
         byte[] decodedString = Base64.decode(  edificio.getImagen()  , Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         imagenEdificio.setImageBitmap(decodedByte);
