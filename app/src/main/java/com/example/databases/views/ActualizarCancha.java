@@ -16,6 +16,7 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -58,6 +59,7 @@ public class ActualizarCancha extends AppCompatActivity {
     private ReservasCanchasService reservasCanchasService;
     private ReservasCanchasClient reservasCanchasClient;
     private Button btnActualizar;
+    private ImageButton imbHoraInicio , imbHoraFin;
 
     private ArrayList<Edificio> edificioArrayList;
     private ArrayList<TipoCancha> tipoCanchaArrayList;
@@ -83,6 +85,8 @@ public class ActualizarCancha extends AppCompatActivity {
         edtHoraFin =  findViewById(R.id.edtHoraFin);
         imvCancha =  findViewById(R.id.imvCancha);
         btnActualizar =   findViewById(R.id.btnActualizar);
+        imbHoraInicio =  findViewById(R.id.imbHoraInicio);
+        imbHoraFin =  findViewById(R.id.imbHoraFin);
 
         spnEdificio =  findViewById(R.id.spnEdificio);
         spnTipoCancha = findViewById(R.id.spnTipoCancha);
@@ -139,14 +143,15 @@ public class ActualizarCancha extends AppCompatActivity {
             }
         });
 
-        edtHoraInicio.setOnClickListener(new View.OnClickListener() {
+
+        imbHoraInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 spinnerDialogHoraInicio.showSpinerDialog();
             }
         });
 
-        edtHoraFin.setOnClickListener(new View.OnClickListener() {
+        imbHoraFin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 spinnerDialogHoraFin.showSpinerDialog();
@@ -357,6 +362,7 @@ public class ActualizarCancha extends AppCompatActivity {
                         edtDescripcion.setText(canchaSeleccionada.getDescripcion());
                         edtHoraInicio.setText(canchaSeleccionada.getHoraInicio());
                         edtHoraFin.setText(canchaSeleccionada.getHoraFin());
+                        imagen = canchaSeleccionada.getImagen();
 
                         byte[] decodedString = Base64.decode(  canchaSeleccionada.getImagen() , Base64.DEFAULT);
                         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -471,7 +477,6 @@ public class ActualizarCancha extends AppCompatActivity {
                 index++;
             }
         }
-
         return index;
     }
 

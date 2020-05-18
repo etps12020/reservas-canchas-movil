@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -53,6 +54,7 @@ public class FormularioCanchas extends AppCompatActivity {
     private ReservasCanchasClient reservasCanchasClient;
     private Spinner spinner, spinner2,spinner3;
     private SpinnerDialog spndHoraInicio ,  spndHoraFin;
+    private ImageButton imbHoraInicio , imbHoraFin;
 
     private ArrayList<Horario> horarioArrayList;
     private ArrayList<Edificio> edificioArrayList;
@@ -85,6 +87,8 @@ public class FormularioCanchas extends AppCompatActivity {
         spnEdificio= findViewById(R.id.spnEdificio);
         spnTipoCancha= findViewById(R.id.spnTipoCancha);
         btnCrear   =  findViewById(R.id.btnCrear);
+        imbHoraInicio =  findViewById(R.id.imbHoraInicio);
+        imbHoraFin =  findViewById(R.id.imbHoraFin);
 
         horarios =  new ArrayList<>();
         retrofitInit();
@@ -129,7 +133,7 @@ public class FormularioCanchas extends AppCompatActivity {
             }
         });
 
-        edtHoraInicio.setOnClickListener(new View.OnClickListener() {
+        imbHoraInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -137,7 +141,7 @@ public class FormularioCanchas extends AppCompatActivity {
             }
         });
 
-        edtHoraFin.setOnClickListener(new View.OnClickListener() {
+        imbHoraFin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
