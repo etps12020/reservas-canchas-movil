@@ -166,7 +166,10 @@ public class FormularioEdificios extends AppCompatActivity {
 //            imvEdificio.setImageURI(path);
             try {
                 Bitmap bitmap  = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver() , path);
-                imagenEdificio = convertirImagenString(bitmap);
+                int alto = 225;//Alto en pixeles
+                int ancho = 225;//Ancho en pixeles
+                Bitmap foto = Bitmap.createScaledBitmap(bitmap ,ancho, alto , true);
+                imagenEdificio = convertirImagenString(foto);
 //
 //
 //                byte[] decodedString = Base64.decode(imagenEdificio, Base64.DEFAULT);

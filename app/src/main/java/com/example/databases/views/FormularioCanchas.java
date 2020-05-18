@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -321,8 +322,11 @@ public class FormularioCanchas extends AppCompatActivity {
 //            imvCanha.setImageURI(path);
             try {
                 Bitmap bitmap  = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver() , path);
-                imagen = convertirImagenString(bitmap);
-                imvCanha.setImageBitmap(bitmap);
+                int alto = 225;//Alto en pixeles
+                int ancho = 225;//Ancho en pixeles
+                Bitmap foto = Bitmap.createScaledBitmap(bitmap ,ancho, alto , true);
+                imagen = convertirImagenString(foto);
+                imvCanha.setImageBitmap(foto);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -274,10 +274,15 @@ public class ActualizarEdificio extends AppCompatActivity {
 
         if(resultCode==RESULT_OK){
             Uri path =  data.getData();
-            imvEdificio.setImageURI(path);
+
             try {
                 Bitmap bitmap  = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver() , path);
-                imagenEdificio = convertirImgString(bitmap);
+
+                int alto = 225;//Alto en pixeles
+                int ancho = 225;//Ancho en pixeles
+                Bitmap foto = Bitmap.createScaledBitmap(bitmap ,ancho, alto , true);
+                imagenEdificio = convertirImgString(foto);
+                imvEdificio.setImageURI(path);
             } catch (IOException e) {
                 e.printStackTrace();
             }

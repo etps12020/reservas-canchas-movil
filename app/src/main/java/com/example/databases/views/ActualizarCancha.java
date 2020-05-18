@@ -432,8 +432,12 @@ public class ActualizarCancha extends AppCompatActivity {
 //            imvCancha.setImageURI(path);
             try {
                 Bitmap bitmap  = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver() , path);
-                imagen = convertirImagenString(bitmap);
-                imvCancha.setImageBitmap(bitmap);
+//                imagen = convertirImagenString(bitmap);
+                int alto = 225;//Alto en pixeles
+                int ancho = 225;//Ancho en pixeles
+                Bitmap foto = Bitmap.createScaledBitmap(bitmap ,ancho, alto , true);
+                imagen = convertirImagenString(foto);
+                imvCancha.setImageBitmap(foto);
             } catch (IOException e) {
                 e.printStackTrace();
             }
