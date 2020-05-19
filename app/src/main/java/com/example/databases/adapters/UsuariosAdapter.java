@@ -48,7 +48,7 @@ public class UsuariosAdapter extends ArrayAdapter<ResponseLogin> {
 
         TextView user =   view.findViewById(R.id.nombreUsuario);
 
-        user.setText(usuario.getNombre());
+        user.setText( usuario.getUsuario()+"   -   "+ usuario.getNombre());
 
 
         return view;
