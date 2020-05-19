@@ -12,126 +12,130 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
-        <com.google.android.material.textfield.TextInputLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="14dp"
-            android:hint="Numero reservacion">
+            android:layout_height="match_parent">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtNumReserva"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:drawableLeft="@drawable/ic_person_black"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:enabled="false"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
+                android:orientation="vertical">
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="14dp"
-            android:hint="Nombre completo"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="14dp"
+                    android:hint="Numero reservacion">
 
-            >
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtNumReserva"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_person_black"
+                        android:enabled="false"
+                        android:inputType="textPersonName" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtNombre"
-                android:layout_width="match_parent"
-                android:drawableLeft="@drawable/ic_person_black"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:enabled="false"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="14dp"
-            android:hint="Fecha/hora reservacion">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="14dp"
+                    android:hint="Nombre completo"
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtFecha"
-                android:layout_width="match_parent"
-                android:drawableLeft="@drawable/ic_person_black"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:enabled="false"
-                />
+                    >
 
-        </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtNombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_person_black"
+                        android:enabled="false"
+                        android:inputType="textPersonName" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cancha reservada"
-            android:layout_marginLeft="16dp"
-            android:textColor="@color/colorPrimary"
-            >
-        </TextView>
-        <Spinner
-            android:id="@+id/spnCancha"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            >
-
-        </Spinner>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Estado Reserva"
-            android:layout_marginLeft="16dp"
-            android:textColor="@color/colorPrimary"
-            >
-
-        </TextView>
-        <Spinner
-            android:id="@+id/spnEstadosReservacion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            >
-
-        </Spinner>
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-        <EditText
-            android:id="@+id/comentarioCancenlacion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Motivo de la cancelacion"
-            android:layout_marginLeft="16dp"
-            >
-        </EditText>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="14dp"
+                    android:hint="Fecha/hora reservacion">
 
-        <Button
-            android:id="@+id/btnActualizar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Actualizar"
-            android:textColor="@color/colorWhite"
-            android:background="@color/colorPrimary"
-            android:layout_margin="16dp"
-            >
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtFecha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_person_black"
+                        android:enabled="false"
+                        android:inputType="textPersonName" />
 
-        </Button>
+                </com.google.android.material.textfield.TextInputLayout>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="Cancha reservada"
+                    android:textColor="@color/colorPrimary"></TextView>
+
+                <Spinner
+                    android:id="@+id/spnCancha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp">
+
+                </Spinner>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="Estado Reserva"
+                    android:textColor="@color/colorPrimary">
+
+                </TextView>
+
+                <Spinner
+                    android:id="@+id/spnEstadosReservacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp">
+
+                </Spinner>
+
+
+                <EditText
+                    android:id="@+id/comentarioCancenlacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:hint="Motivo de la cancelacion"></EditText>
+
+                <Button
+                    android:id="@+id/btnActualizar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:background="@color/colorPrimary"
+                    android:text="Actualizar"
+                    android:textColor="@color/colorWhite">
+
+                </Button>
+
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
