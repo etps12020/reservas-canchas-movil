@@ -72,7 +72,8 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
     private ReservasCanchasClient reservasCanchasClient;  //Clientee retrofit
     private ResponseLogin usuarioLogin;
     private ErrorObject errorObject=  null; //Objecto de error
-    private LinearLayout linearLayout;
+    private LinearLayout linearLayout ,linearLayoutTipoReserva;
+
     String title="Realizar reserva";
 
     @Override
@@ -81,6 +82,8 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
         setContentView(R.layout.activity_realizar_reserva);
 
         calendarViewReserva  =  findViewById(R.id.calendarViewReserva);
+
+        linearLayoutTipoReserva =  findViewById(R.id.linearLayoutTipoReserva);
 
         usuarioLogin= Session.obtenerSessionUsuario(getApplicationContext());
 
@@ -126,6 +129,7 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
 
         if(usuarioLogin.getIdRol()==3){
             linearLayout.setVisibility(LinearLayout.GONE);
+            linearLayoutTipoReserva.setVisibility(LinearLayout.GONE);
         }
 
         calendarViewReserva.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
@@ -133,10 +137,8 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
 
                 String docUsuario  = edtUsuario.getText().toString();
 
-                if(docUsuario.isEmpty()){
+                if(docUsuario.isEmpty()  &&  (usuarioLogin.getIdRol()==1 || usuarioLogin.getIdRol()==2)  ){
                     edtUsuario.setError("Campo requerido");
-                }else if(tiposReservas.size() ==0){
-                    Toast.makeText(getApplicationContext(), "Seleccione un tipo de reservacion", Toast.LENGTH_SHORT).show();
                 }else{
                     Calendar calendar =  Calendar.getInstance();
 
@@ -147,13 +149,16 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     fecha  = simpleDateFormat.format(calendar.getTime());  //Utilizara como fecha
 
-                    if(canchas.size() ==0 ){
+                    if(canchas.size() ==0  ){
                         Toast.makeText(getApplicationContext(), "Seleccione una cancha", Toast.LENGTH_SHORT).show();
                     }else{
+
+                        String idTipoReserva = (usuarioLogin.getIdRol()==3) ? "2" :String.valueOf( tiposReservas.get(  spnTipoReserva.getSelectedItemPosition() ).getId()   );
+
                         Intent i = new  Intent(  getApplicationContext() , HorarioReserva.class  );
                         i.putExtra("idCancha" ,  String.valueOf(canchas.get( spnCancha.getSelectedItemPosition()).getCancha())   );
                         i.putExtra("fecha" , fecha );
-                        i.putExtra( "idTipo"  , String.valueOf( tiposReservas.get(  spnTipoReserva.getSelectedItemPosition() ).getId()   )   );
+                        i.putExtra( "idTipo"  , idTipoReserva );
                         i.putExtra( "dui" , duiUsuario);
                         startActivity(i);
                     }
