@@ -37,6 +37,11 @@ public interface ReservasCanchasService {
     @Headers("Content-Type: application/json")
     Call<JsonElement> listarEstadosReservacion();
 
+    @GET("estadoReservacion.php")
+    @Headers("Content-Type: application/json")
+    Call<JsonElement> listarEstadosReservacionUsuarioFinal(@Query("id") String id);
+
+
     @PUT("reservacion.php")
     Call<JsonElement> actualizarReservacion(@Body RequestUpdateReserva requestUpdateReserva);
 
@@ -90,9 +95,13 @@ public interface ReservasCanchasService {
     @Headers("Content-Type: application/json")
     Call<JsonElement> listarHorariosDisponibles(@Query("fecha") String fecha  , @Query("cancha") String cancha);
 
-    @GET("edificio.php") //Lista completa de edificios activos
+    @GET("edificio.php") //Lista completa de edificios
     @Headers("Content-Type: application/json")
     Call<JsonElement> listarEdificiosReserva();
+
+    @GET("edificio.php") //Lista completa de edificios activos sin imagen
+    @Headers("Content-Type: application/json")
+    Call<JsonElement> listarEdificiosActivosReserva(@Query("activos") String activos   );
 
     @GET("cancha.php")
     @Headers("Content-Type: application/json") //Filtra las canchas por tipo  , edificio  y  o id de cancha

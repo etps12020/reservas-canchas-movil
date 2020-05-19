@@ -32,27 +32,25 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="14dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginBottom="14dp">
+                    android:layout_marginBottom="14dp"
+                    android:orientation="vertical"
+                    >
 
-                    <EditText
-                        android:id="@+id/edtTipoReservacion"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
-                        android:layout_weight="5"
-                        android:hint="Seleccione el tipo de reserva"
-                        android:enabled="false"
-                        />
-
-                    <ImageButton
-                        android:id="@+id/imbTipoReservacion"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/ic_description_black_24dp"
-                        android:layout_weight="2"
+                        android:text="Seleccione el tipo de reserva"
+                        android:textColor="@color/colorPrimaryDark"
                         >
+                    </TextView>
 
-                    </ImageButton>
+
+                    <Spinner
+                        android:id="@+id/spnTipoReserva"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+                    </Spinner>
 
                 </LinearLayout>
             </LinearLayout>
@@ -114,28 +112,25 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="14dp"
-                    android:hint="Seleccione el edificio">
+                    android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/edtNombreEdificio"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Seleccione el edificio"
-                        android:inputType="textPersonName"
-                        android:layout_weight="5"
-                        android:enabled="false"
-                        />
-
-
-                    <ImageButton
-                        android:id="@+id/imBEdificio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/ic_business_black"
-                        android:layout_weight="2"
+                        android:text="Seleccione el edificio"
+                        android:textColor="@color/colorPrimaryDark"
                         >
+                    </TextView>
 
-                    </ImageButton>
+                    <Spinner
+                        android:id="@+id/spnUbicacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+                    </Spinner>
+
+
+
                 </LinearLayout>
             </LinearLayout>
 
@@ -155,6 +150,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Seleccione la cancha"
+                    android:textColor="@color/colorPrimaryDark"
                     >
 
                 </TextView>
@@ -181,6 +177,7 @@
                 android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:text="Seleccione la fecha de la reserva"
+                android:textColor="@color/colorPrimaryDark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"

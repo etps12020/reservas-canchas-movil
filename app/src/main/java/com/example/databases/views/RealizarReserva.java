@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
@@ -17,7 +18,10 @@ import android.widget.Toast;
 import com.example.databases.MainActivity;
 import com.example.databases.R;
 import com.example.databases.adapters.CanchasAdapter;
+import com.example.databases.adapters.EdificioAdapter;
 import com.example.databases.adapters.SpinnerCanchaAdapter;
+import com.example.databases.adapters.TipoCanchaAdapter;
+import com.example.databases.adapters.TipoReservaAdapter;
 import com.example.databases.api.retrofit.ReservasCanchasClient;
 import com.example.databases.api.retrofit.ReservasCanchasService;
 import com.example.databases.api.tiposReservas.TipoReserva;
@@ -38,6 +42,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.microedition.khronos.egl.EGLDisplay;
+
 import in.galaxyofandroid.spinerdialog.OnSpinerItemClick;
 import in.galaxyofandroid.spinerdialog.SpinnerDialog;
 import retrofit2.Call;
@@ -54,10 +60,10 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
     private ArrayList<String>  duisUsuarios  , nombresCanchas , nombresEdificios , nombresTipoReservas; //Lista de string para nombres de edificios, edificios, canchas y duis de usuarios
     private CalendarView calendarViewReserva; //Calendario para dia de reserva
     private SpinnerDialog spinnerDialogUsuarios  , spinnerDialogCanchas  , spinnerDialogEdificios ,spinnerDialogTipoReserva ;//Searchables Spinners controls
-    private Spinner spnCancha;
+    private Spinner spnCancha, spnTipoReserva ,spnUbicacion;
     private ImageButton   imbTipoReservacion , imbUsuario , imbEdificio;
 
-    private EditText edtUsuario , edtNombreEdificio  , edtCancha  , edtTipoReservacion ; //Campos de texto solo para presentacion
+    private EditText edtUsuario  ; //Campos de texto solo para presentacion
     private String fecha; //Fecha quemada //Fecha de reserva
     private String idCancha ="2"; //Cancha quemada //Id de cancha
     private String idCanchaSeleccionada , idEdificioSeleccionado , duiUsuario , idTipoReserva;
@@ -67,6 +73,7 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
     private ResponseLogin usuarioLogin;
     private ErrorObject errorObject=  null; //Objecto de error
     private LinearLayout linearLayout;
+    String title="Realizar reserva";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,28 +85,33 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
         usuarioLogin= Session.obtenerSessionUsuario(getApplicationContext());
 
         edtUsuario =  findViewById(R.id.edtUsuario);
-        edtNombreEdificio =  findViewById(R.id.edtNombreEdificio);
         spnCancha =  findViewById(R.id.spnCancha);
-        edtTipoReservacion =  findViewById(R.id.edtTipoReservacion);
+        spnTipoReserva =  findViewById(R.id.spnTipoReserva);
+        spnUbicacion =  findViewById(R.id.spnUbicacion);
+
+
         linearLayout =  findViewById(R.id.linearLayout);
 
         imbUsuario  =  findViewById(R.id.imbUsuario);
-        imbTipoReservacion =  findViewById(R.id.imbTipoReservacion);
-        imbEdificio =  findViewById(R.id.imBEdificio);
+
+        getSupportActionBar().setTitle(title);
+
+//        imbEdificio =  findViewById(R.id.imBEdificio);
 
         duisUsuarios  = new ArrayList<>();
         nombresCanchas = new ArrayList<>();
         nombresEdificios =  new ArrayList<>();
         nombresTipoReservas =  new ArrayList<>();
         canchas =  new ArrayList<>();
-        edificios =  new ArrayList<>();
+
         tiposReservas =  new ArrayList<>();
         retrofitInit();
 
 
         imbUsuario.setOnClickListener(this); //Evento de busqueda de usuarios
-        imbEdificio.setOnClickListener(this); //Evento de busqueda de edificios
-        imbTipoReservacion.setOnClickListener(this);
+
+        listarEdificios();
+        listarTiposReservas();
 
 
         spinnerDialogUsuarios = new SpinnerDialog( RealizarReserva.this , duisUsuarios , "Seleccione un usuario"  );
@@ -112,29 +124,6 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
         });
 
 
-        spinnerDialogEdificios = new SpinnerDialog( RealizarReserva.this ,    nombresEdificios , "Seleccione el edificio");
-        spinnerDialogEdificios.bindOnSpinerListener(new OnSpinerItemClick() {
-            @Override
-            public void onClick(String edificio, int i) {
-                idEdificioSeleccionado =  String.valueOf( buscarIdEdificio(edificio)   );
-//                Toast.makeText(getApplicationContext(), idEdificioSeleccionado, Toast.LENGTH_SHORT).show();
-                edtNombreEdificio.setText(  edificio );
-                listarCanchas( String.valueOf(   edificios.get(i).getId()    )   );
-            }
-        });
-
-
-        spinnerDialogTipoReserva =  new SpinnerDialog(RealizarReserva.this  , nombresTipoReservas  , "Seleccione el tipo de reserva realizar");
-        spinnerDialogTipoReserva.bindOnSpinerListener(new OnSpinerItemClick() {
-            @Override
-            public void onClick(String tipoReserva, int i) {
-                idTipoReserva  =  String.valueOf( buscarIdTipoReservacion(tipoReserva));
-//                Toast.makeText(getApplicationContext() , idTipoReserva , Toast.LENGTH_SHORT).show();
-                edtTipoReservacion.setText(tipoReserva);
-            }
-        });
-
-
         if(usuarioLogin.getIdRol()==3){
             linearLayout.setVisibility(LinearLayout.GONE);
         }
@@ -143,15 +132,11 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
 
                 String docUsuario  = edtUsuario.getText().toString();
-                String nomEdificio  =  edtNombreEdificio.getText().toString();
-                String tReservacion  =  edtTipoReservacion.getText().toString();
 
                 if(docUsuario.isEmpty()){
                     edtUsuario.setError("Campo requerido");
-                }else if(nomEdificio.isEmpty()) {
-                    edtNombreEdificio.setError("Campo requerido");
-                }else if(tReservacion.isEmpty()){
-                    edtTipoReservacion.setError("Campo requerido");
+                }else if(tiposReservas.size() ==0){
+                    Toast.makeText(getApplicationContext(), "Seleccione un tipo de reservacion", Toast.LENGTH_SHORT).show();
                 }else{
                     Calendar calendar =  Calendar.getInstance();
 
@@ -168,20 +153,26 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
                         Intent i = new  Intent(  getApplicationContext() , HorarioReserva.class  );
                         i.putExtra("idCancha" ,  String.valueOf(canchas.get( spnCancha.getSelectedItemPosition()).getCancha())   );
                         i.putExtra("fecha" , fecha );
-                        i.putExtra( "idTipo"  , idTipoReserva   );
+                        i.putExtra( "idTipo"  , String.valueOf( tiposReservas.get(  spnTipoReserva.getSelectedItemPosition() ).getId()   )   );
                         i.putExtra( "dui" , duiUsuario);
                         startActivity(i);
                     }
 
                 }
-
-
-
-
-
             }
         });
 
+        spnUbicacion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                listarCanchas(String.valueOf(edificios.get(position).getId()));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 
@@ -267,35 +258,25 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
     }
 
     private void listarEdificios(){
-        Call<JsonElement> listar =  reservasCanchasService.listarEdificiosReserva();
+        Call<JsonElement> listar =  reservasCanchasService.listarEdificiosActivosReserva("activos");
         listar.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                 if(response.isSuccessful()){
                     String jsonString  = response.body().toString();
+
                     if(!existsError(jsonString)){
+                        edificios = new Gson().fromJson(jsonString , new TypeToken<ArrayList<Edificio>>(){}.getType() );
+                        EdificioAdapter edificioAdapter =  new EdificioAdapter(getApplicationContext(), R.layout.custom_simple_spinner_item  , edificios);
+                        spnUbicacion.setAdapter(edificioAdapter);
 
-                        ArrayList<Edificio> edificiosTemp = new Gson().fromJson(jsonString , new TypeToken<ArrayList<Edificio>>(){}.getType() );
-
-                        for(Edificio edificio: edificiosTemp){
-                            if(edificio.getIdEstado()==1){
-                                edificios.add(edificio);
-                            }
-                        }
-
-                        if(edificios.size() >  0){
-                            for(int i=0; i<edificios.size() ;  i++){
-                                nombresEdificios.add(  edificios.get(i).getNombre() );
-                            }
-                            spinnerDialogEdificios.showSpinerDialog();
-                        }
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<JsonElement> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Error en la comunicacion con el servidor", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -312,12 +293,19 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
 
                     if(!existsError(jsonString)){
                         tiposReservas = new Gson().fromJson(jsonString , new TypeToken<ArrayList<TipoReserva>>(){}.getType() );
-                        if(tiposReservas.size() >  0){
-                            for(int i=0; i<tiposReservas.size() ;  i++){
-                                nombresTipoReservas.add(  tiposReservas.get(i).getTipo() );
-                            }
-                            spinnerDialogTipoReserva.showSpinerDialog();
+                        if(tiposReservas.size()>0){
+                            TipoReservaAdapter tipoReservaAdapter =  new TipoReservaAdapter(getApplicationContext() , R.layout.support_simple_spinner_dropdown_item ,  tiposReservas  );
+                            spnTipoReserva.setAdapter(tipoReservaAdapter);
                         }
+
+
+                        //spnTipoReserva
+//                        if(tiposReservas.size() >  0){
+//                            for(int i=0; i<tiposReservas.size() ;  i++){
+//                                nombresTipoReservas.add(  tiposReservas.get(i).getTipo() );
+//                            }
+//                            spinnerDialogTipoReserva.showSpinerDialog();
+//                        }
 
                     }
 
@@ -384,21 +372,22 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
                 spinnerDialogUsuarios.showSpinerDialog();
             }
 
-        }else if(v.getId() == R.id.imBEdificio){
-
-            if(nombresEdificios.size()==0){
-                listarEdificios();
-            }else{
-                spinnerDialogEdificios.showSpinerDialog();
-            }
         }
-        else if(v.getId() == R.id.imbTipoReservacion){
-            if(nombresTipoReservas.size() == 0){
-                listarTiposReservas();
-            }else{
-                spinnerDialogTipoReserva.showSpinerDialog();;
-            }
-        }
+//        else if(v.getId() == R.id.imBEdificio){
+//
+//            if(nombresEdificios.size()==0){
+//                listarEdificios();
+//            }else{
+//                spinnerDialogEdificios.showSpinerDialog();
+//            }
+//        }
+//        else if(v.getId() == R.id.imbTipoReservacion){
+//            if(nombresTipoReservas.size() == 0){
+//                listarTiposReservas();
+//            }else{
+//                spinnerDialogTipoReserva.showSpinerDialog();;
+//            }
+//        }
 
     }
 

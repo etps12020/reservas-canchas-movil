@@ -46,6 +46,7 @@ public class ListaReservas extends AppCompatActivity  implements DatePickerDialo
     private FloatingActionButton fabAgregarReserva;
     private FloatingActionButton fabFiltroFecha;
     private ResponseLogin userLogin;
+    private String title="Reservas";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,8 @@ public class ListaReservas extends AppCompatActivity  implements DatePickerDialo
         fabFiltroFecha =  findViewById(R.id.fabFiltroFecha);
         lvReservas.setFocusable(false);
 
+
+        getSupportActionBar().setTitle(title);
 
         userLogin = Session.obtenerSessionUsuario(getApplicationContext()); //Obtener session del usuario
         retrofitInit(); //Inicializacion de retrofit

@@ -186,7 +186,16 @@ public class DetalleReserva extends AppCompatActivity {
 
     }
     private void listarEstadosReservaciones(){
-        Call<JsonElement> listarEstadosReservas =  reservasCanchasService.listarEstadosReservacion();
+
+
+        Call<JsonElement> listarEstadosReservas;
+        if(usuarioLogin.getIdRol()==3){ //Usuario comun
+            listarEstadosReservas =  reservasCanchasService.listarEstadosReservacionUsuarioFinal("4");
+        }else{ //Administradores
+            listarEstadosReservas =  reservasCanchasService.listarEstadosReservacion();
+        }
+
+
 
         listarEstadosReservas.enqueue(new Callback<JsonElement>() {
             @Override

@@ -1,13 +1,12 @@
+package com.example.databases.api.reservas;
 
-package com.example.databases.api.tiposReservas;
-
-import androidx.annotation.NonNull;
-
+import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class TipoReserva {
+public class TipoReserva implements Serializable
+{
 
     @SerializedName("id")
     @Expose
@@ -18,6 +17,7 @@ public class TipoReserva {
     @SerializedName("descripcion")
     @Expose
     private String descripcion;
+    private final static long serialVersionUID = -3346969327577757847L;
 
     /**
      * No args constructor for use in serialization
@@ -63,9 +63,5 @@ public class TipoReserva {
         this.descripcion = descripcion;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return this.getTipo();
-    }
+
 }
