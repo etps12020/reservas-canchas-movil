@@ -269,8 +269,19 @@ public class FormularioUsuarios extends AppCompatActivity {
                         errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
                         Toast.makeText(getApplicationContext(), errorObject.getMensaje(), Toast.LENGTH_SHORT).show();
                     }else{
-                        //Lista de roles de usuario
-                        rolesUsuariosList = new Gson().fromJson(jsonString , new TypeToken<ArrayList<Rol>>(){}.getType() );
+
+                        if(userLogin.getIdRol()==1){
+                            //Lista de roles de usuario
+                            rolesUsuariosList = new Gson().fromJson(jsonString , new TypeToken<ArrayList<Rol>>(){}.getType() );
+                        }else{
+                            rolesUsuariosList =  new ArrayList<>();
+                            Rol rolEstudiante = new Rol(3,"Estudiante" );
+                            rolesUsuariosList.add(rolEstudiante);
+                        }
+
+
+
+
                         RolUsuarioAdapter rolUsuarioAdapter = new RolUsuarioAdapter(getApplicationContext(), R.layout.custom_simple_spinner_item , rolesUsuariosList );
                         spinner.setAdapter(rolUsuarioAdapter);
 
