@@ -139,6 +139,7 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
 
                 if(docUsuario.isEmpty()  &&  (usuarioLogin.getIdRol()==1 || usuarioLogin.getIdRol()==2)  ){
                     edtUsuario.setError("Campo requerido");
+                    Toast.makeText(getApplicationContext(), "Selecciona un usuario", Toast.LENGTH_SHORT).show();
                 }else{
                     Calendar calendar =  Calendar.getInstance();
 
