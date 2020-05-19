@@ -102,11 +102,14 @@ public class HorarioReserva extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                idHorario = horarioArrayList.get(position).getHorario();
-                builder.setMessage("Tu reserva sera realizada para el dia "+fecha+" a las "+horarioArrayList.get(position).getHoraInicio()+" horas"  );
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-
+                if(horarioArrayList.get(position).getEstado().equals("OCUPADO")){
+                    Toast.makeText(getApplicationContext(), "Horario no disponible", Toast.LENGTH_SHORT).show();
+                }else{
+                    idHorario = horarioArrayList.get(position).getHorario();
+                    builder.setMessage("Tu reserva sera realizada para el dia "+fecha+" a las "+horarioArrayList.get(position).getHoraInicio()+" horas"  );
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
             }
         });
     }
@@ -116,7 +119,7 @@ public class HorarioReserva extends AppCompatActivity {
         reservasCanchasService =  reservasCanchasClient.getReservasCanchasService();
     }
 
-    private  void listarHorarios(String fecha ,int idCancha){
+    private  void listarHorarios(final String fecha , int idCancha){
         Call<JsonElement> listarHorarios =reservasCanchasService.listarHorariosDisponibles(fecha ,String.valueOf(idCancha));
 
         listarHorarios.enqueue(new Callback<JsonElement>() {
@@ -130,7 +133,7 @@ public class HorarioReserva extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), errorObject.getMensaje(), Toast.LENGTH_SHORT).show();
                     }else{
                          horarioArrayList= new Gson().fromJson(jsonString , new TypeToken<ArrayList<Horario>>(){}.getType() );
-                         HorariosAdapter  horariosAdapter  = new HorariosAdapter( getApplicationContext() , R.layout.item_horario , horarioArrayList  );
+                         HorariosAdapter  horariosAdapter  = new HorariosAdapter( getApplicationContext() , R.layout.item_horario , horarioArrayList  , fecha );
                          lvHorarios.setAdapter(horariosAdapter);
                     }
                 }
@@ -169,17 +172,16 @@ public class HorarioReserva extends AppCompatActivity {
                     boolean redireccionar = false;
 
                     //Si la reserva se realizo con exito
-                    if(errorObject.getMensaje()=="Reservacion registrada por Asistente" || errorObject.getMensaje()=="Reservacion registrada por usuario"
-                    ){
+                    if(errorObject.getMensaje().equals("Reservacion registrada por Asistente") || errorObject.getMensaje().equals("Reservacion registrada por usuario")){
                         redireccionar = true;
                     }
-                        Toast.makeText(getApplicationContext() , errorObject.getMensaje() , Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext() , errorObject.getMensaje() , Toast.LENGTH_LONG).show();
 
-                        if(redireccionar){
-                            Intent intent = new Intent( getApplicationContext() , ListaReservas.class  );
-                            startActivity(intent);
-                            finish();
-                        }
+                    if(redireccionar){
+                        Intent intent = new Intent( getApplicationContext() , ListaReservas.class  );
+                        startActivity(intent);
+                        finish();
+                    }
 
 
                 }

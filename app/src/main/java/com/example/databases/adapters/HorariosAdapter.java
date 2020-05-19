@@ -1,6 +1,7 @@
 package com.example.databases.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +22,13 @@ public class HorariosAdapter extends ArrayAdapter<Horario> {
 
     private List<Horario> horarioList;
     private Context context;
+    private String fecha;
 
-    public HorariosAdapter(@NonNull Context context, int resource, @NonNull List<Horario> objects) {
+    public HorariosAdapter(@NonNull Context context, int resource, @NonNull List<Horario> objects , String fecha) {
         super(context, resource, objects);
         this.horarioList  =  objects;
         this.context =  context;
+        this.fecha = fecha;
     }
 
     @NonNull
@@ -46,7 +49,14 @@ public class HorariosAdapter extends ArrayAdapter<Horario> {
 
         disponibilidad.setText( horario.getEstado()  );
         hora.setText(  horario.getHoraInicio()  );
-//        fecha.setText(  horario.get  )
+        fecha.setText(  this.fecha );
+
+
+        String color = (horario.getEstado().equals("OCUPADO")) ? "#FF6961" : "#96C93D";
+
+
+        disponibilidad.setTextColor(Color.parseColor(color) );
+
 
 
         return view;
