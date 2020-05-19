@@ -251,6 +251,8 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
                     if(response.isSuccessful()){
                         String jsonString  = response.body().toString();
 
+                        canchas = new ArrayList<>();
+
                         if(!existsError(jsonString)){
 
                             ArrayList<Cancha> listaCanchas = new Gson().fromJson(jsonString , new TypeToken<List<Cancha>>(){}.getType() );
