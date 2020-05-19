@@ -55,7 +55,9 @@
                         android:layout_width="match_parent"
                         android:drawableLeft="@drawable/ic_credit_card_black_24dp"
                         android:layout_height="wrap_content"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:maxLength="10"
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,7 +75,9 @@
                         android:layout_width="match_parent"
                         android:drawableLeft="@drawable/ic_credit_card_black_24dp"
                         android:layout_height="wrap_content"
-                        android:inputType="textPersonName" />
+                        android:inputType="number"
+                        android:maxLength="10"
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,7 +95,7 @@
                         android:layout_width="match_parent"
                         android:drawableLeft="@drawable/ic_email_black_24dp"
                         android:layout_height="wrap_content"
-                        android:inputType="textPersonName" />
+                        android:inputType="textEmailAddress" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -109,7 +113,10 @@
                         android:layout_width="match_parent"
                         android:drawableLeft="@drawable/ic_local_phone_black_24dp"
                         android:layout_height="wrap_content"
-                        android:inputType="textPersonName" />
+                        android:inputType="number"
+                        android:maxLength="8"
+
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 

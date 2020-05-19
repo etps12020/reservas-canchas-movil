@@ -81,7 +81,14 @@ public class MainActivity extends AppCompatActivity {
                     retrofitInit(); //Creacion de instancias de libreria
 
                     if(net.comprobarRed()){
-                        Login(user, password);
+                        if(user.isEmpty()){
+                            edtUsuario.setError("Usuario requerido");
+                        }else if(password.isEmpty()){
+                            edtContrasena.setError("Contraseña requerida");
+                        }else{
+                            Login(user, password);
+                        }
+
                     }else{
                         Toast.makeText(getApplicationContext(), "Verifica tu conexion a internet", Toast.LENGTH_SHORT).show();
                     }

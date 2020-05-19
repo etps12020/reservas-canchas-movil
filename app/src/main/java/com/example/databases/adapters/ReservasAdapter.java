@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.databases.R;
+import com.example.databases.api.reservas.EstadoReserva;
 import com.example.databases.api.reservas.RequestUpdateReserva;
 import com.example.databases.api.reservas.Reserva;
 import com.example.databases.api.retrofit.ReservasCanchasClient;
@@ -70,7 +71,7 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
         TextView nombreCompleto = view.findViewById(R.id.tvNombreCompleto);
         TextView tvFechaHora = view.findViewById(R.id.tvFechaHora);
         TextView tvNumeroReserva= view.findViewById(R.id.tvNumeroReserva);
-        TextView estadoReserva =  view.findViewById(R.id.estadoReserva);
+        final TextView estadoReserva =  view.findViewById(R.id.estadoReserva);
         //Click en elemento de lista
 
 
@@ -101,9 +102,15 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
                     @Override
                     public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                         String jsonString  = response.body().toString();
-                        if(jsonString.contains("mensaje")){ //Mensajes de Usuario inactivo o usuario no existe
+                        if(jsonString.contains("mensaje")){
                             errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
                             Toast.makeText(context, errorObject.getMensaje(), Toast.LENGTH_SHORT).show();
+
+                            if(!errorObject.getMensaje().equals("No se puede actualizar el estado") && !errorObject.equals("No tiene permisos de edicion")){
+                                estadoReserva.setText("Reservacion Aprobado");
+                                estadoReserva.setTextColor(Color.parseColor("#96C93D") );
+                            }
+
                         }
                     }
 
@@ -130,6 +137,13 @@ public class ReservasAdapter  extends ArrayAdapter<Reserva> {
                         if(jsonString.contains("mensaje")){ //Mensajes de Usuario inactivo o usuario no existe
                             errorObject =  new Gson().fromJson(jsonString , ErrorObject.class);
                             Toast.makeText(context, errorObject.getMensaje(), Toast.LENGTH_SHORT).show();
+
+                            if(!errorObject.getMensaje().equals("No se puede actualizar el estado") && !errorObject.equals("No tiene permisos de edicion")){
+                                estadoReserva.setText("Reservacion Rechazada por Demanda");
+                                estadoReserva.setTextColor(Color.parseColor("#EFA94A") );
+                            }
+
+
                         }
                     }
 

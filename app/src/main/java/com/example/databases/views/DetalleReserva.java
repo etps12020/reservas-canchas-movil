@@ -252,5 +252,12 @@ public class DetalleReserva extends AppCompatActivity {
 
         return -1;
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(  getApplicationContext() , ListaReservas.class  );
+        startActivity(intent);
+        finish();
+    }
 }
 
