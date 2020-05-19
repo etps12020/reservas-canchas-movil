@@ -172,7 +172,7 @@ public class HorarioReserva extends AppCompatActivity {
                     boolean redireccionar = false;
 
                     //Si la reserva se realizo con exito
-                    if(errorObject.getMensaje().equals("Reservacion registrada por Asistente") || errorObject.getMensaje().equals("Reservacion registrada por usuario")){
+                    if(errorObject.getMensaje().equals("Reservacion registrada")){
                         redireccionar = true;
                     }
                     Toast.makeText(getApplicationContext() , errorObject.getMensaje() , Toast.LENGTH_LONG).show();

@@ -141,16 +141,30 @@ public class RealizarReserva extends AppCompatActivity  implements View.OnClickL
                     edtUsuario.setError("Campo requerido");
                     Toast.makeText(getApplicationContext(), "Selecciona un usuario", Toast.LENGTH_SHORT).show();
                 }else{
+
+
+
                     Calendar calendar =  Calendar.getInstance();
+                    Calendar calendar1  = Calendar.getInstance();
 
                     calendar.set(Calendar.YEAR ,  year);
                     calendar.set(Calendar.MONTH , month);
                     calendar.set(Calendar.DAY_OF_MONTH , dayOfMonth);
 
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    fecha  = simpleDateFormat.format(calendar.getTime());  //Utilizara como fecha
 
-                    if(canchas.size() ==0  ){
+                    fecha  = simpleDateFormat.format(calendar.getTime());  //Utilizara como fecha
+                    String fechaActual  = simpleDateFormat.format(calendar1.getTime());  //Utilizara como fecha
+
+                    long hoy = calendar1.getTimeInMillis();
+                    long seleccion  = calendar.getTimeInMillis();
+
+                    if(seleccion< hoy){
+                        Toast.makeText(getApplicationContext(), "La fecha seleccionada no puede ser menor a la actual", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                    else if(canchas.size() ==0  ){
                         Toast.makeText(getApplicationContext(), "Seleccione una cancha", Toast.LENGTH_SHORT).show();
                     }else{
 
